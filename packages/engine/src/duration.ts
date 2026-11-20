@@ -1,14 +1,20 @@
 /**
- * Upper limits on transition duration, per motion role (PRD decision 7).
- * Both motion themes stay under these. The values are starting values and are
- * expected to be tuned once the v0 components exist.
+ * Upper limits on transition duration, per semantic motion role (PRD FR-M2
+ * and FR-M13). Roles are named by surface and direction, so each one has
+ * exactly one cap. An enter and its exit share the surface's cap; FR-M3 keeps
+ * the exit shorter. Both motion themes stay under these. The values are
+ * starting values and are expected to be tuned once the v0 components exist.
  */
 export const DURATION_CAPS_MS = {
   press: 200,
   highlight: 200,
-  'small-overlay': 300,
-  dialog: 400,
-  sheet: 450,
+  feedback: 200,
+  'popover-enter': 300,
+  'popover-exit': 300,
+  'dialog-enter': 400,
+  'dialog-exit': 400,
+  'sheet-enter': 450,
+  'sheet-exit': 450,
   layout: 450,
 } as const satisfies Record<string, number>
 
