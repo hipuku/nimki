@@ -1,0 +1,8 @@
+# npm joins this file with the first package.json.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels: ["deps"]

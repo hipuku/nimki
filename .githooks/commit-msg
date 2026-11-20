@@ -1,0 +1,3 @@
+#!/bin/sh
+# Blocks a commit whose message contains a blocked name.
+exec node scripts/check-names.mjs --message "$1"
