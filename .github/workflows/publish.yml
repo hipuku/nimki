@@ -1,0 +1,123 @@
+name: Publish
+
+# Publishes one package to npm when a `<dir>-v<version>` tag is pushed, where
+# `<dir>` is its directory under packages/. `engine-v0.1.0` publishes
+# packages/engine as @hipuku/nimki 0.1.0. The registry and docs are not on npm;
+# Vercel deploys them from main.
+#
+# Authenticates by npm trusted publishing (OIDC): GitHub mints a short-lived
+# token for this workflow and npm checks it against the trusted publisher set on
+# the package. There is deliberately no NPM_TOKEN secret. The package must have
+# hipuku/nimki and publish.yml registered as its trusted publisher on npmjs.com
+# before the first tag. Adapted from haus's publish.yml.
+
+on:
+  push:
+    tags:
+      - '*-v*'
+
+permissions:
+  contents: read
+
+jobs:
+  # Reading the tag is separate from acting on it, so a tag naming a version
+  # already on npm is skipped instead of failed.
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      dir: ${{ steps.tag.outputs.dir }}
+      name: ${{ steps.tag.outputs.name }}
+      version: ${{ steps.tag.outputs.version }}
+      publish: ${{ steps.published.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+
+      # Refuses unless the manifest agrees with the tag, so every published
+      # version traces back to the commit that declares it.
+      - name: Read the tag
+        id: tag
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          dir="${tag%-v*}"
+          version="${tag##*-v}"
+          manifest="packages/${dir}/package.json"
+
+          if [ ! -f "$manifest" ]; then
+            echo "No package at ${manifest}. The tag prefix must be a directory under packages/."
+            exit 1
+          fi
+
+          name=$(node -p "require('./${manifest}').name")
+          declared=$(node -p "require('./${manifest}').version")
+
+          if [ "$declared" != "$version" ]; then
+            echo "Tag ${tag} wants ${version}, but ${manifest} says ${declared}."
+            exit 1
+          fi
+
+          echo "dir=${dir}"         >> "$GITHUB_OUTPUT"
+          echo "name=${name}"       >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Is this version already on npm?
+        id: published
+        run: |
+          if npm view "${{ steps.tag.outputs.name }}@${{ steps.tag.outputs.version }}" version > /dev/null 2>&1; then
+            echo "${{ steps.tag.outputs.name }}@${{ steps.tag.outputs.version }} is already published. Nothing to do."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  publish:
+    needs: plan
+    if: needs.plan.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    # id-token lets this job request the OIDC token npm authenticates against.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+
+      # The whole workspace, as in haus: a filtered build once left a package a
+      # test imported unbuilt and stopped a release.
+      - name: Build
+        run: pnpm run build
+
+      - name: Test
+        run: pnpm --filter ${{ needs.plan.outputs.name }} run --if-present test
+
+      - name: Package
+        run: pnpm --filter ${{ needs.plan.outputs.name }} run --if-present check:package
+
+      # Trusted publishing needs npm 11.5.1 or later, newer than the npm that
+      # ships with Node 22. Pinned, because this step runs with the credential
+      # that publishes.
+      - name: Upgrade npm to a version that speaks OIDC
+        run: npm install -g npm@11.21.2
+
+      # pnpm packs, because it rewrites workspace: ranges to real versions. npm
+      # publishes, because it holds the OIDC credential.
+      - name: Pack
+        id: pack
+        run: |
+          pnpm --filter ${{ needs.plan.outputs.name }} pack --pack-destination "${RUNNER_TEMP}"
+          tarball=$(ls "${RUNNER_TEMP}"/*.tgz)
+          echo "tarball=${tarball}" >> "$GITHUB_OUTPUT"
+
+      # No token and no .npmrc credential. Provenance is attached automatically.
+      - name: Publish
+        run: npm publish "${{ steps.pack.outputs.tarball }}" --access public

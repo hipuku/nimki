@@ -1,8 +1,42 @@
-# npm joins this file with the first package.json.
+# Weekly and grouped, so a review is one pull request rather than several.
 version: 2
 updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom', 'next', '@next/*']
+      test:
+        patterns: ['vitest', '@vitest/*']
+      tooling:
+        patterns:
+          - 'eslint*'
+          - '@eslint/*'
+          - 'typescript-eslint'
+          - 'globals'
+          - 'prettier'
+          - 'markdownlint-cli2'
+          - 'knip'
+          - 'publint'
+          - '@arethetypeswrong/*'
+    commit-message:
+      prefix: 'deps'
+    labels: ['deps']
+    ignore:
+      # @types/node follows the Node line CI runs (.nvmrc), not the newest.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # TypeScript 7 is the native rewrite, deferred across every hipuku repo
+      # so they move together.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
-    labels: ["deps"]
+    labels: ['deps']

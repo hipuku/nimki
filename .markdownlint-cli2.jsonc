@@ -1,0 +1,16 @@
+{
+  // Structure only. Prettier owns wrapping and spacing, and house style owns
+  // voice, so the rules that overlap with either are off.
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD033": {
+      "allowed_elements": ["picture", "source", "img", "br", "kbd", "details", "summary"],
+    },
+    "MD024": { "siblings_only": true },
+    "MD041": false,
+  },
+  "globs": ["**/*.md"],
+  "gitignore": true,
+  "ignores": ["**/node_modules/**", "**/dist/**", "**/coverage/**", "**/.next/**"],
+}

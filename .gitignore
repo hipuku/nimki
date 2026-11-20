@@ -6,3 +6,8 @@ coverage/
 .DS_Store
 .env*
 !.env.example
+*.tgz
+next-env.d.ts
+*.tsbuildinfo
+# Written by shadcn build from apps/docs/registry.json on every docs build.
+apps/docs/public/r/

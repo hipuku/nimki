@@ -1,5 +1,10 @@
-# One job per check, named exactly as the main ruleset requires them. Only Lint
-# exists until there is code to typecheck, test and build.
+# One job per check, named exactly as the main ruleset requires them: Lint,
+# Links, Format, Typecheck, Test and Build. They run in parallel and Build runs
+# last, after the others pass, so a red tick names the check that failed.
+#
+# The docs app imports @hipuku/nimki through workspace:^, which resolves to the
+# engine's dist/. dist is gitignored, so any job that reads types across that
+# boundary builds the engine first. It builds in about a second.
 name: CI
 
 on:
@@ -20,14 +25,121 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      # Full history, so the names check reads every commit message and
-      # author, not only the files at the tip.
+      # Full history, so the names check reads every commit message and author.
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+      - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
 
       - name: Names
-        run: node scripts/check-names.mjs
+        run: pnpm run lint:names
+
+      # Type-aware rules need the engine's declarations.
+      - name: Build engine
+        run: pnpm run build:engine
+
+      - name: ESLint
+        if: always()
+        run: pnpm run lint
+
+      - name: Prose
+        if: always()
+        run: pnpm run lint:prose
+
+      - name: Markdown
+        if: always()
+        run: pnpm run lint:md
+
+      # Unused files, exports and dependencies across the workspace.
+      - name: Knip
+        if: always()
+        run: pnpm run knip
+
+  # Every relative link and heading anchor in the markdown resolves. Offline, so
+  # an outside site being down never fails a pull request.
+  links:
+    name: Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --include-fragments --no-progress --hidden --exclude-path node_modules --exclude-path '(^|/)\.git/' './**/*.md'
+          fail: true
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Prettier
+        run: pnpm run format:check
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build engine
+        run: pnpm run build:engine
+      - name: Typecheck
+        run: pnpm run typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # With coverage, so the floors in each vitest.config.ts are enforced here.
+      - name: Test
+        run: pnpm run test:coverage
+
+  build:
+    name: Build
+    needs: [lint, links, format, typecheck, test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # The engine, then the shadcn registry JSON and the docs site.
+      - name: Build
+        run: pnpm run build
+
+      # What npm would receive: exports resolve, types match the JavaScript
+      # under ESM and bundler resolution, and the tarball holds only dist/.
+      - name: Package
+        run: pnpm --filter @hipuku/nimki run check:package

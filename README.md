@@ -6,13 +6,23 @@ Nothing is released yet. Version 0 is six components: Button, Input with Label, 
 
 ## Develop
 
-Requires Node 22 (`.nvmrc`).
+Requires Node 22 (`.nvmrc`) and pnpm 10 (`packageManager` in `package.json`).
 
 ```bash
-git config core.hooksPath .githooks
+pnpm install
+pnpm run check
 ```
 
-The hooks run `scripts/check-names.mjs` on staged files and commit messages. CI runs the same check on every file and the full history.
+`pnpm install` points git at `.githooks`, which run `scripts/check-names.mjs` on staged files and commit messages. `pnpm run check` runs every CI check locally.
+
+| Path              | Contents                                                      |
+| ----------------- | ------------------------------------------------------------- |
+| `packages/engine` | `@hipuku/nimki` on npm: motion maths and hooks                |
+| `apps/docs`       | The docs site, which also serves the shadcn registry at `/r/` |
+
+## Release
+
+The engine publishes from a tag shaped `engine-v<version>`, through `.github/workflows/publish.yml`, by npm trusted publishing. The docs site and registry deploy from `main`.
 
 ## Licence
 
