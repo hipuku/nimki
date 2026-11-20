@@ -14,88 +14,88 @@
 // Files are listed with `git ls-files --cached --others --exclude-standard`, so
 // a new file is checked before it is ever added.
 
-import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 
 const BLOCKED = new Set([
-  "d7a98e7d5ce496e71555c4599b1f613b2e5fbc16c52586d5f951ce1fe993e0de",
-  "891b6b5e36a41a89930df5c8b68eb5b339271c327e5da736b5b7a1f528f4808e",
-  "b1fca1e43b68200b66ecdbd4cab9d6d80f6d0f55d480db6e8d27ac1c876d7edb",
-  "5e32cab3fba457f8fe24614ee789967cb011cbb50783f37f21c514673d0543a2",
-  "bca6cc053dd0e20c7c4b71d0e46e1994b9d45250f35a2b65a5f2fd1b7423f04e",
-]);
+  'd7a98e7d5ce496e71555c4599b1f613b2e5fbc16c52586d5f951ce1fe993e0de',
+  '891b6b5e36a41a89930df5c8b68eb5b339271c327e5da736b5b7a1f528f4808e',
+  'b1fca1e43b68200b66ecdbd4cab9d6d80f6d0f55d480db6e8d27ac1c876d7edb',
+  '5e32cab3fba457f8fe24614ee789967cb011cbb50783f37f21c514673d0543a2',
+  'bca6cc053dd0e20c7c4b71d0e46e1994b9d45250f35a2b65a5f2fd1b7423f04e',
+])
 
 const git = (...args) =>
-  execFileSync("git", args, { encoding: "utf8", maxBuffer: 256 * 1024 * 1024 });
+  execFileSync('git', args, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 })
 
-const hash = (word) => createHash("sha256").update(word).digest("hex");
+const hash = word => createHash('sha256').update(word).digest('hex')
 
-const findings = [];
+const findings = []
 
 function scan(text, where) {
-  text.split("\n").forEach((line, index) => {
+  text.split('\n').forEach((line, index) => {
     for (const word of line.toLowerCase().match(/[a-z0-9]+/g) ?? []) {
       if (BLOCKED.has(hash(word))) {
-        findings.push(`${where}:${index + 1}`);
-        return;
+        findings.push(`${where}:${index + 1}`)
+        return
       }
     }
-  });
+  })
 }
 
 function scanFile(path, read) {
-  const buffer = read(path);
-  if (buffer.includes(0)) return; // binary
-  scan(buffer.toString("utf8"), path);
+  const buffer = read(path)
+  if (buffer.includes(0)) return // binary
+  scan(buffer.toString('utf8'), path)
 }
 
 function scanIdentity() {
-  scan(git("var", "GIT_AUTHOR_IDENT"), "author identity");
-  scan(git("var", "GIT_COMMITTER_IDENT"), "committer identity");
+  scan(git('var', 'GIT_AUTHOR_IDENT'), 'author identity')
+  scan(git('var', 'GIT_COMMITTER_IDENT'), 'committer identity')
 }
 
-const args = process.argv.slice(2);
+const args = process.argv.slice(2)
 
-if (args[0] === "--message") {
-  scan(readFileSync(args[1], "utf8"), "commit message");
-  scanIdentity();
-} else if (args[0] === "--staged") {
-  const staged = git("diff", "--cached", "--name-only", "--diff-filter=ACMR", "-z")
-    .split("\0")
-    .filter(Boolean);
+if (args[0] === '--message') {
+  scan(readFileSync(args[1], 'utf8'), 'commit message')
+  scanIdentity()
+} else if (args[0] === '--staged') {
+  const staged = git('diff', '--cached', '--name-only', '--diff-filter=ACMR', '-z')
+    .split('\0')
+    .filter(Boolean)
   for (const path of staged) {
-    scanFile(path, (p) => execFileSync("git", ["show", `:${p}`], { maxBuffer: 64 * 1024 * 1024 }));
+    scanFile(path, p => execFileSync('git', ['show', `:${p}`], { maxBuffer: 64 * 1024 * 1024 }))
   }
-  scanIdentity();
+  scanIdentity()
 } else {
-  const files = git("ls-files", "--cached", "--others", "--exclude-standard", "-z")
-    .split("\0")
-    .filter(Boolean);
+  const files = git('ls-files', '--cached', '--others', '--exclude-standard', '-z')
+    .split('\0')
+    .filter(Boolean)
   for (const path of files) {
     try {
-      scanFile(path, (p) => readFileSync(p));
+      scanFile(path, p => readFileSync(p))
     } catch (error) {
-      if (error.code !== "ENOENT") throw error; // deleted but not yet staged
+      if (error.code !== 'ENOENT') throw error // deleted but not yet staged
     }
   }
   // Commit messages and every author and committer name and email.
   const hasCommits = (() => {
     try {
-      execFileSync("git", ["rev-parse", "--verify", "--quiet", "HEAD"], { stdio: "ignore" });
-      return true;
+      execFileSync('git', ['rev-parse', '--verify', '--quiet', 'HEAD'], { stdio: 'ignore' })
+      return true
     } catch {
-      return false;
+      return false
     }
-  })();
+  })()
   if (hasCommits) {
-    scan(git("log", "--all", "--format=%H %an <%ae> %cn <%ce>%n%B"), "history");
+    scan(git('log', '--all', '--format=%H %an <%ae> %cn <%ce>%n%B'), 'history')
   }
 }
 
 if (findings.length > 0) {
-  console.error("Blocked name found. Remove it before committing:");
-  for (const where of findings) console.error(`  ${where}`);
-  process.exit(1);
+  console.error('Blocked name found. Remove it before committing:')
+  for (const where of findings) console.error(`  ${where}`)
+  process.exit(1)
 }
-console.log("Names check passed.");
+console.log('Names check passed.')

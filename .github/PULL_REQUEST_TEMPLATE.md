@@ -24,7 +24,7 @@
 
 ## Checklist
 
-- [ ] `node scripts/check-names.mjs` passes locally
+- [ ] `pnpm run check` passes locally
 - [ ] A test that fails without this change, for a fix
 - [ ] Tokens only, no raw values in component styles
 - [ ] Keyboard and screen reader checked, for anything interactive
