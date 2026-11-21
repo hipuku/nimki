@@ -16,3 +16,22 @@ export {
   STAGGER,
 } from './tokens.generated.js'
 export type { MotionMode, MotionRole, MotionTransition, RoleToken } from './tokens.generated.js'
+export {
+  DISTANCE_MIN_SHARE,
+  DISTANCE_REFERENCE_PX,
+  durationForDistance,
+  highlightMove,
+  originFromTrigger,
+} from './geometry.js'
+export type { HighlightCause, Rect } from './geometry.js'
+export {
+  DISMISS_DISTANCE_SHARE,
+  DISMISS_VELOCITY,
+  VELOCITY_WINDOW_MS,
+  VelocityTracker,
+  dragMovesSheet,
+  releaseTarget,
+  rubberBand,
+} from './sheet.js'
+export { isMounted, presence } from './presence.js'
+export type { PresenceEvent, PresenceState } from './presence.js'
