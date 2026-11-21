@@ -1,0 +1,337 @@
+{
+  "$description": "Motion tokens (PRD FR-M1 to FR-M16). Primitives hold values; role tokens alias primitives per mode. The default value of a role is the Subtle theme; Expressive and reduced motion are modes.",
+  "duration": {
+    "$type": "duration",
+    "fast": { "$value": { "value": 120, "unit": "ms" } },
+    "base": { "$value": { "value": 180, "unit": "ms" } },
+    "moderate": { "$value": { "value": 240, "unit": "ms" } },
+    "slow": { "$value": { "value": 320, "unit": "ms" } },
+    "slower": { "$value": { "value": 400, "unit": "ms" } }
+  },
+  "ease": {
+    "$type": "cubicBezier",
+    "enter": { "$value": [0.16, 1, 0.3, 1], "$description": "Elements arriving" },
+    "exit": { "$value": [0.4, 0, 1, 1], "$description": "Elements leaving" },
+    "move": { "$value": [0.65, 0, 0.35, 1], "$description": "Elements moving on screen" }
+  },
+  "spring": {
+    "$type": "duration",
+    "$description": "Springs, as Motion defines them. The value is the visual duration; the bounce is in the extension, because DTCG has no spring type.",
+    "snappy": {
+      "$value": { "value": 200, "unit": "ms" },
+      "$extensions": { "dev.hipuku.nimki": { "bounce": 0 } }
+    },
+    "smooth": {
+      "$value": { "value": 300, "unit": "ms" },
+      "$extensions": { "dev.hipuku.nimki": { "bounce": 0 } }
+    },
+    "snappy-bounce": {
+      "$value": { "value": 200, "unit": "ms" },
+      "$extensions": { "dev.hipuku.nimki": { "bounce": 0.15 } }
+    },
+    "smooth-bounce": {
+      "$value": { "value": 320, "unit": "ms" },
+      "$extensions": { "dev.hipuku.nimki": { "bounce": 0.1 } }
+    }
+  },
+  "offset": {
+    "$type": "dimension",
+    "sm": { "$value": { "value": 4, "unit": "px" } },
+    "md": { "$value": { "value": 8, "unit": "px" } }
+  },
+  "scale": {
+    "$type": "number",
+    "xs": { "$value": 0.98, "$description": "Press in the Subtle theme" },
+    "sm": { "$value": 0.96 },
+    "md": { "$value": 0.94 }
+  },
+  "stagger": {
+    "$type": "duration",
+    "sm": {
+      "step": { "$value": { "value": 20, "unit": "ms" } },
+      "max": { "$value": { "value": 120, "unit": "ms" } }
+    },
+    "md": {
+      "step": { "$value": { "value": 30, "unit": "ms" } },
+      "max": { "$value": { "value": 180, "unit": "ms" } }
+    }
+  },
+  "role": {
+    "$description": "What components read (FR-M2). Each role token's value is its Subtle mapping; the extension holds its Expressive and reduced mappings.",
+    "press": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{duration.fast}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{duration.base}", "reduced": "{duration.fast}" }
+          }
+        }
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{ease.move}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{ease.move}", "reduced": "{ease.move}" } }
+        }
+      },
+      "scale": {
+        "$type": "number",
+        "$description": "Large pressable surfaces, such as an interactive card, keep the state layer only and do not read this.",
+        "$value": "{scale.xs}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{scale.sm}", "reduced": 1 } }
+        }
+      }
+    },
+    "highlight": {
+      "spring": {
+        "$type": "duration",
+        "$value": "{spring.snappy}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "expressive": "{spring.snappy-bounce}",
+              "reduced": { "value": 0, "unit": "ms" }
+            }
+          }
+        }
+      }
+    },
+    "feedback": {
+      "spring": {
+        "$type": "duration",
+        "$value": "{spring.snappy}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "expressive": "{spring.snappy-bounce}",
+              "reduced": { "value": 0, "unit": "ms" }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "spring": {
+        "$type": "duration",
+        "$value": "{spring.smooth}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "expressive": "{spring.smooth-bounce}",
+              "reduced": { "value": 0, "unit": "ms" }
+            }
+          }
+        }
+      }
+    },
+    "popover-enter": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{duration.base}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{duration.moderate}", "reduced": "{duration.fast}" }
+          }
+        }
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{ease.enter}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{ease.enter}", "reduced": "{ease.move}" }
+          }
+        }
+      },
+      "offset": {
+        "$type": "dimension",
+        "$value": "{offset.sm}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{offset.md}", "reduced": { "value": 0, "unit": "px" } }
+          }
+        }
+      },
+      "scale": {
+        "$type": "number",
+        "$value": "{scale.sm}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{scale.md}", "reduced": 1 } }
+        }
+      }
+    },
+    "popover-exit": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{duration.fast}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{duration.base}", "reduced": "{duration.fast}" }
+          }
+        }
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{ease.exit}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{ease.exit}", "reduced": "{ease.move}" } }
+        }
+      }
+    },
+    "dialog-enter": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{duration.moderate}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{duration.slow}", "reduced": "{duration.fast}" }
+          }
+        }
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{ease.enter}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{ease.enter}", "reduced": "{ease.move}" }
+          }
+        }
+      },
+      "offset": {
+        "$type": "dimension",
+        "$value": "{offset.sm}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{offset.md}", "reduced": { "value": 0, "unit": "px" } }
+          }
+        }
+      },
+      "scale": {
+        "$type": "number",
+        "$value": "{scale.sm}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{scale.md}", "reduced": 1 } }
+        }
+      }
+    },
+    "dialog-exit": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{duration.base}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{duration.moderate}", "reduced": "{duration.fast}" }
+          }
+        }
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{ease.exit}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{ease.exit}", "reduced": "{ease.move}" } }
+        }
+      }
+    },
+    "sheet-enter": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{duration.slow}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{duration.slower}", "reduced": "{duration.fast}" }
+          }
+        }
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{ease.enter}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{ease.enter}", "reduced": "{ease.move}" }
+          }
+        }
+      },
+      "offset": {
+        "$type": "dimension",
+        "$value": "{offset.sm}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{offset.md}", "reduced": { "value": 0, "unit": "px" } }
+          }
+        }
+      },
+      "scale": {
+        "$type": "number",
+        "$value": "{scale.sm}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{scale.md}", "reduced": 1 } }
+        }
+      }
+    },
+    "sheet-exit": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{duration.moderate}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{duration.slow}", "reduced": "{duration.fast}" }
+          }
+        }
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{ease.exit}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{ease.exit}", "reduced": "{ease.move}" } }
+        }
+      }
+    },
+    "stagger": {
+      "step": {
+        "$type": "duration",
+        "$value": "{stagger.sm.step}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{stagger.md.step}", "reduced": { "value": 0, "unit": "ms" } }
+          }
+        }
+      },
+      "max": {
+        "$type": "duration",
+        "$value": "{stagger.sm.max}",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": { "expressive": "{stagger.md.max}", "reduced": { "value": 0, "unit": "ms" } }
+          }
+        }
+      }
+    }
+  },
+  "limit": {
+    "$description": "The ceiling every theme stays under (FR-M13). Read by the token tests and the engine; not written to CSS.",
+    "cap": {
+      "$type": "duration",
+      "$description": "Per-role duration caps. A spring role is measured by its visual duration.",
+      "press": { "$value": { "value": 200, "unit": "ms" } },
+      "highlight": { "$value": { "value": 200, "unit": "ms" } },
+      "feedback": { "$value": { "value": 200, "unit": "ms" } },
+      "popover-enter": { "$value": { "value": 300, "unit": "ms" } },
+      "popover-exit": { "$value": { "value": 300, "unit": "ms" } },
+      "dialog-enter": { "$value": { "value": 400, "unit": "ms" } },
+      "dialog-exit": { "$value": { "value": 400, "unit": "ms" } },
+      "sheet-enter": { "$value": { "value": 450, "unit": "ms" } },
+      "sheet-exit": { "$value": { "value": 450, "unit": "ms" } },
+      "layout": { "$value": { "value": 450, "unit": "ms" } }
+    },
+    "bounce-max": { "$type": "number", "$value": 0.2 },
+    "offset-max": { "$type": "dimension", "$value": { "value": 12, "unit": "px" } },
+    "scale-min": { "$type": "number", "$value": 0.92 },
+    "reduced-duration-max": {
+      "$type": "duration",
+      "$value": { "value": 120, "unit": "ms" },
+      "$description": "Reduced motion changes opacity and colour within this time (FR-M9)."
+    }
+  }
+}

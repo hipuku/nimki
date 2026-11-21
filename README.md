@@ -19,6 +19,8 @@ pnpm run check
 | ----------------- | ------------------------------------------------------------- |
 | `packages/engine` | `@hipuku/nimki` on npm: motion maths and hooks                |
 | `apps/docs`       | The docs site, which also serves the shadcn registry at `/r/` |
+| `tokens`          | The DTCG token source and the generator for every output      |
+| `registry/styles` | Generated token CSS that components read                      |
 
 ## Release
 

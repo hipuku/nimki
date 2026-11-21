@@ -1,0 +1,510 @@
+{
+  "$description": "The Linear visual theme (PRD FR-V1 to FR-V5, FR-V9, FR-V12) and nimki's colour extensions. A token's value is light mode; dark is a mode. Colours are OKLCH.",
+  "color": {
+    "$type": "color",
+    "$description": "shadcn's variables, written to CSS under their shadcn names so a project can replace any of them.",
+    "background": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.99, 0.002, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.16, 0.005, 260]
+            }
+          }
+        }
+      }
+    },
+    "foreground": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.2, 0.006, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.96, 0.003, 260]
+            }
+          }
+        }
+      }
+    },
+    "card": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.99, 0.002, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.19, 0.005, 260]
+            }
+          }
+        }
+      }
+    },
+    "card-foreground": {
+      "$value": "{color.foreground}"
+    },
+    "popover": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.21, 0.006, 260]
+            }
+          }
+        }
+      }
+    },
+    "popover-foreground": {
+      "$value": "{color.foreground}"
+    },
+    "primary": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.21, 0.006, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.96, 0.003, 260]
+            }
+          }
+        }
+      }
+    },
+    "primary-foreground": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.985, 0.002, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.16, 0.005, 260]
+            }
+          }
+        }
+      }
+    },
+    "secondary": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.96, 0.004, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.25, 0.006, 260]
+            }
+          }
+        }
+      }
+    },
+    "secondary-foreground": {
+      "$value": "{color.foreground}"
+    },
+    "muted": {
+      "$value": "{color.secondary}"
+    },
+    "muted-foreground": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.48, 0.01, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.7, 0.01, 260]
+            }
+          }
+        }
+      }
+    },
+    "accent": {
+      "$value": "{color.secondary}"
+    },
+    "accent-foreground": {
+      "$value": "{color.foreground}"
+    },
+    "destructive": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.58, 0.22, 27]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.65, 0.2, 25]
+            }
+          }
+        }
+      }
+    },
+    "border": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.93, 0.004, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [1, 0, 0],
+              "alpha": 0.08
+            }
+          }
+        }
+      }
+    },
+    "input": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.64, 0.004, 260]
+      },
+      "$description": "The edge that identifies a field: 3:1 against the background, card and popover (WCAG 2.2, 1.4.11). --border, for dividers, stays lighter",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.52, 0.006, 260]
+            }
+          }
+        }
+      }
+    },
+    "ring": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.55, 0.01, 260]
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0.6, 0.01, 260]
+            }
+          }
+        }
+      }
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "$value": {
+      "value": 6,
+      "unit": "px"
+    },
+    "$description": "shadcn's --radius, the base its radius steps derive from"
+  },
+  "font": {
+    "$type": "fontFamily",
+    "$description": "nimki's own theme, docs and Figma kit. Components inherit whatever --font-sans the project sets.",
+    "sans": {
+      "$value": ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"]
+    },
+    "mono": {
+      "$value": ["DM Mono", "ui-monospace", "monospace"]
+    },
+    "serif": {
+      "$value": ["DM Serif Text", "ui-serif", "Georgia", "serif"]
+    },
+    "display": {
+      "$value": ["DM Serif Display", "ui-serif", "Georgia", "serif"],
+      "$description": "Display headings on the docs site"
+    }
+  },
+  "nk": {
+    "$description": "Colours shadcn has no variable for (FR-V3). Each defaults to a value derived from shadcn's variables, so a project that sets only those gets matching colours.",
+    "success": {
+      "$type": "color",
+      "$value": "{color.destructive}",
+      "$description": "Text-safe: 4.5:1 as text on the background, card and popover in both modes",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": 0.54,
+              "chromaMax": 0.145,
+              "hue": 150
+            },
+            "dark": {
+              "lightness": "keep",
+              "chromaMax": 0.175,
+              "hue": 150
+            }
+          }
+        }
+      }
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "{color.destructive}",
+      "$description": "Text-safe: 4.5:1 as text on the background, card and popover in both modes",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": 0.55,
+              "chromaMax": 0.11,
+              "hue": 80
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.12
+              },
+              "chromaMax": 0.155,
+              "hue": 80
+            }
+          }
+        }
+      }
+    },
+    "highlight": {
+      "$type": "color",
+      "$value": "{color.accent}",
+      "$description": "The moving highlight behind the active option"
+    },
+    "highlight-foreground": {
+      "$type": "color",
+      "$value": "{color.accent-foreground}"
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0, 0, 0],
+        "alpha": 0.5
+      },
+      "$description": "Behind a dialog or sheet. Black in both modes, because --foreground turns white in dark mode",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0, 0, 0],
+              "alpha": 0.6
+            }
+          }
+        }
+      }
+    },
+    "hover-amount": {
+      "$type": "number",
+      "$value": 0.08,
+      "$description": "The share of the text colour laid over a fill on hover"
+    },
+    "pressed-amount": {
+      "$type": "number",
+      "$value": 0.12,
+      "$description": "The share of the text colour laid over a fill when pressed"
+    },
+    "shadow-soft": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0, 0, 0],
+        "alpha": 0.06
+      },
+      "$description": "Elevation shadow layers. Stronger in dark mode, where a shadow on a dark page barely shows",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0, 0, 0],
+              "alpha": 0.24
+            }
+          }
+        }
+      }
+    },
+    "shadow-strong": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0, 0, 0],
+        "alpha": 0.12
+      },
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [0, 0, 0],
+              "alpha": 0.48
+            }
+          }
+        }
+      }
+    },
+    "edge": {
+      "$type": "color",
+      "$value": "{color.foreground}",
+      "$description": "The 1 px top edge of a raised surface: none in light mode, --foreground at 6% in dark",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "mix": {
+            "light": 0,
+            "dark": 0.06
+          }
+        }
+      }
+    },
+    "elevation-1": {
+      "$type": "shadow",
+      "$description": "Popover, Select, menus, tooltips, over a 1 px --border edge",
+      "$value": [
+        {
+          "color": "{nk.shadow-soft}",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 2,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": "{nk.shadow-soft}",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 4,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 12,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": "{nk.edge}",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 0,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          },
+          "inset": true
+        }
+      ]
+    },
+    "elevation-2": {
+      "$type": "shadow",
+      "$description": "Dialog and sheet, over a 1 px --border edge",
+      "$value": [
+        {
+          "color": "{nk.shadow-soft}",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 2,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 4,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": "{nk.shadow-strong}",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 16,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 40,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          }
+        },
+        {
+          "color": "{nk.edge}",
+          "offsetX": {
+            "value": 0,
+            "unit": "px"
+          },
+          "offsetY": {
+            "value": 1,
+            "unit": "px"
+          },
+          "blur": {
+            "value": 0,
+            "unit": "px"
+          },
+          "spread": {
+            "value": 0,
+            "unit": "px"
+          },
+          "inset": true
+        }
+      ]
+    }
+  }
+}

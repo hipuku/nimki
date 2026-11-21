@@ -97,6 +97,27 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(@types/node@22.20.5)(@vitest/coverage-v8@5.1.1)(vite@8.3.8(@types/node@22.20.5)(jiti@2.7.0)(yaml@2.9.1))
 
+  tokens:
+    devDependencies:
+      '@hipuku/nimki':
+        specifier: workspace:^
+        version: link:../packages/engine
+      '@types/node':
+        specifier: ^22.20.5
+        version: 22.20.5
+      '@vitest/coverage-v8':
+        specifier: ^5.1.1
+        version: 5.1.1(vitest@5.1.1)
+      prettier:
+        specifier: ^3.10.1
+        version: 3.10.1
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^5.1.1
+        version: 5.1.1(@types/node@22.20.5)(@vitest/coverage-v8@5.1.1)(vite@8.3.8(@types/node@22.20.5)(jiti@2.7.0)(yaml@2.9.1))
+
 packages:
 
   '@andrewbranch/untar.js@1.0.4':

@@ -1,0 +1,2585 @@
+{
+  "variableCollections": [
+    {
+      "action": "CREATE",
+      "id": "collection:primitives",
+      "name": "nimki/primitives",
+      "initialModeId": "mode:primitives:value"
+    },
+    {
+      "action": "CREATE",
+      "id": "collection:motion",
+      "name": "nimki/motion",
+      "initialModeId": "mode:motion:subtle"
+    },
+    {
+      "action": "CREATE",
+      "id": "collection:density",
+      "name": "nimki/density",
+      "initialModeId": "mode:density:comfortable"
+    },
+    {
+      "action": "CREATE",
+      "id": "collection:colour",
+      "name": "nimki/colour",
+      "initialModeId": "mode:colour:light"
+    },
+    {
+      "action": "CREATE",
+      "id": "collection:theme",
+      "name": "nimki/theme",
+      "initialModeId": "mode:theme:linear"
+    }
+  ],
+  "variableModes": [
+    {
+      "action": "UPDATE",
+      "id": "mode:primitives:value",
+      "name": "Value",
+      "variableCollectionId": "collection:primitives"
+    },
+    {
+      "action": "UPDATE",
+      "id": "mode:motion:subtle",
+      "name": "Subtle",
+      "variableCollectionId": "collection:motion"
+    },
+    {
+      "action": "CREATE",
+      "id": "mode:motion:expressive",
+      "name": "Expressive",
+      "variableCollectionId": "collection:motion"
+    },
+    {
+      "action": "CREATE",
+      "id": "mode:motion:reduced",
+      "name": "Reduced",
+      "variableCollectionId": "collection:motion"
+    },
+    {
+      "action": "UPDATE",
+      "id": "mode:density:comfortable",
+      "name": "Comfortable",
+      "variableCollectionId": "collection:density"
+    },
+    {
+      "action": "CREATE",
+      "id": "mode:density:compact",
+      "name": "Compact",
+      "variableCollectionId": "collection:density"
+    },
+    {
+      "action": "UPDATE",
+      "id": "mode:colour:light",
+      "name": "Light",
+      "variableCollectionId": "collection:colour"
+    },
+    {
+      "action": "CREATE",
+      "id": "mode:colour:dark",
+      "name": "Dark",
+      "variableCollectionId": "collection:colour"
+    },
+    {
+      "action": "UPDATE",
+      "id": "mode:theme:linear",
+      "name": "Linear",
+      "variableCollectionId": "collection:theme"
+    }
+  ],
+  "variables": [
+    {
+      "action": "CREATE",
+      "id": "variable:duration/fast",
+      "name": "duration/fast",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-duration-fast)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:duration/base",
+      "name": "duration/base",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-duration-base)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:duration/moderate",
+      "name": "duration/moderate",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-duration-moderate)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:duration/slow",
+      "name": "duration/slow",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-duration-slow)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:duration/slower",
+      "name": "duration/slower",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-duration-slower)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:ease/enter",
+      "name": "ease/enter",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-ease-enter)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:ease/exit",
+      "name": "ease/exit",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-ease-exit)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:ease/move",
+      "name": "ease/move",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-ease-move)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/snappy/duration",
+      "name": "spring/snappy/duration",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": []
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/snappy/easing",
+      "name": "spring/snappy/easing",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-spring-snappy-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/smooth/duration",
+      "name": "spring/smooth/duration",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": []
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/smooth/easing",
+      "name": "spring/smooth/easing",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-spring-smooth-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/snappy-bounce/duration",
+      "name": "spring/snappy-bounce/duration",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": []
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/snappy-bounce/easing",
+      "name": "spring/snappy-bounce/easing",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-spring-snappy-bounce-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/smooth-bounce/duration",
+      "name": "spring/smooth-bounce/duration",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": []
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/smooth-bounce/easing",
+      "name": "spring/smooth-bounce/easing",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-spring-smooth-bounce-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:offset/sm",
+      "name": "offset/sm",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-offset-sm)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:offset/md",
+      "name": "offset/md",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-offset-md)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:scale/xs",
+      "name": "scale/xs",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-scale-xs)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:scale/sm",
+      "name": "scale/sm",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-scale-sm)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:scale/md",
+      "name": "scale/md",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-scale-md)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:stagger/sm/step",
+      "name": "stagger/sm/step",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-stagger-sm-step)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:stagger/sm/max",
+      "name": "stagger/sm/max",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-stagger-sm-max)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:stagger/md/step",
+      "name": "stagger/md/step",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-stagger-md-step)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:stagger/md/max",
+      "name": "stagger/md/max",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-stagger-md-max)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:press/duration",
+      "name": "press/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-press-duration)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:press/easing",
+      "name": "press/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-press-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:press/scale",
+      "name": "press/scale",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-press-scale)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:highlight/duration",
+      "name": "highlight/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": []
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:highlight/easing",
+      "name": "highlight/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-highlight-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:feedback/duration",
+      "name": "feedback/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": []
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:feedback/easing",
+      "name": "feedback/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-feedback-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:layout/duration",
+      "name": "layout/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": []
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:layout/easing",
+      "name": "layout/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-layout-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:popover-enter/duration",
+      "name": "popover-enter/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-popover-enter-duration)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:popover-enter/easing",
+      "name": "popover-enter/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-popover-enter-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:popover-enter/offset",
+      "name": "popover-enter/offset",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-popover-enter-offset)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:popover-enter/scale",
+      "name": "popover-enter/scale",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-popover-enter-scale)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:popover-exit/duration",
+      "name": "popover-exit/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-popover-exit-duration)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:popover-exit/easing",
+      "name": "popover-exit/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-popover-exit-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:dialog-enter/duration",
+      "name": "dialog-enter/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-dialog-enter-duration)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:dialog-enter/easing",
+      "name": "dialog-enter/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-dialog-enter-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:dialog-enter/offset",
+      "name": "dialog-enter/offset",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-dialog-enter-offset)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:dialog-enter/scale",
+      "name": "dialog-enter/scale",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-dialog-enter-scale)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:dialog-exit/duration",
+      "name": "dialog-exit/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-dialog-exit-duration)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:dialog-exit/easing",
+      "name": "dialog-exit/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-dialog-exit-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:sheet-enter/duration",
+      "name": "sheet-enter/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-sheet-enter-duration)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:sheet-enter/easing",
+      "name": "sheet-enter/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-sheet-enter-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:sheet-enter/offset",
+      "name": "sheet-enter/offset",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-sheet-enter-offset)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:sheet-enter/scale",
+      "name": "sheet-enter/scale",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-sheet-enter-scale)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:sheet-exit/duration",
+      "name": "sheet-exit/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-sheet-exit-duration)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:sheet-exit/easing",
+      "name": "sheet-exit/easing",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-sheet-exit-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:stagger/step",
+      "name": "stagger/step",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-stagger-step)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:stagger/max",
+      "name": "stagger/max",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-stagger-max)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:control-sm",
+      "name": "control-sm",
+      "variableCollectionId": "collection:density",
+      "resolvedType": "FLOAT",
+      "scopes": ["WIDTH_HEIGHT"],
+      "codeSyntax": {
+        "WEB": "var(--nk-control-sm)"
+      },
+      "description": "shadcn sm size, h-8"
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:control-md",
+      "name": "control-md",
+      "variableCollectionId": "collection:density",
+      "resolvedType": "FLOAT",
+      "scopes": ["WIDTH_HEIGHT"],
+      "codeSyntax": {
+        "WEB": "var(--nk-control-md)"
+      },
+      "description": "shadcn default size, h-9"
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:control-lg",
+      "name": "control-lg",
+      "variableCollectionId": "collection:density",
+      "resolvedType": "FLOAT",
+      "scopes": ["WIDTH_HEIGHT"],
+      "codeSyntax": {
+        "WEB": "var(--nk-control-lg)"
+      },
+      "description": "shadcn lg size, h-10"
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:item",
+      "name": "item",
+      "variableCollectionId": "collection:density",
+      "resolvedType": "FLOAT",
+      "scopes": ["WIDTH_HEIGHT"],
+      "codeSyntax": {
+        "WEB": "var(--nk-item)"
+      },
+      "description": "Select and menu item height"
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:control-px",
+      "name": "control-px",
+      "variableCollectionId": "collection:density",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "var(--nk-control-px)"
+      },
+      "description": "Inline padding of a control, shadcn px-4"
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:gap",
+      "name": "gap",
+      "variableCollectionId": "collection:density",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "var(--nk-gap)"
+      },
+      "description": "Gap inside a control, shadcn gap-2"
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:background",
+      "name": "background",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--background)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:foreground",
+      "name": "foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:card",
+      "name": "card",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--card)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:card-foreground",
+      "name": "card-foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--card-foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:popover",
+      "name": "popover",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--popover)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:popover-foreground",
+      "name": "popover-foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--popover-foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:primary",
+      "name": "primary",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--primary)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:primary-foreground",
+      "name": "primary-foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--primary-foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:secondary",
+      "name": "secondary",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--secondary)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:secondary-foreground",
+      "name": "secondary-foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--secondary-foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:muted",
+      "name": "muted",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--muted)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:muted-foreground",
+      "name": "muted-foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--muted-foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:accent",
+      "name": "accent",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--accent)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:accent-foreground",
+      "name": "accent-foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--accent-foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:destructive",
+      "name": "destructive",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL", "FRAME_FILL", "STROKE_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--destructive)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:border",
+      "name": "border",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["STROKE_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--border)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:input",
+      "name": "input",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["STROKE_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--input)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:ring",
+      "name": "ring",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["STROKE_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--ring)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/success",
+      "name": "nk/success",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL", "FRAME_FILL", "STROKE_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--nk-success)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/warning",
+      "name": "nk/warning",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL", "FRAME_FILL", "STROKE_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--nk-warning)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/highlight",
+      "name": "nk/highlight",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--nk-highlight)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/highlight-foreground",
+      "name": "nk/highlight-foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--nk-highlight-foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/scrim",
+      "name": "nk/scrim",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--nk-scrim)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/shadow-soft",
+      "name": "nk/shadow-soft",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["EFFECT_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--nk-shadow-soft)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/shadow-strong",
+      "name": "nk/shadow-strong",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["EFFECT_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--nk-shadow-strong)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/edge",
+      "name": "nk/edge",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["EFFECT_COLOR"],
+      "codeSyntax": {
+        "WEB": "var(--nk-edge)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:radius",
+      "name": "radius",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "FLOAT",
+      "scopes": ["CORNER_RADIUS"],
+      "codeSyntax": {
+        "WEB": "var(--radius)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:font/sans",
+      "name": "font/sans",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "STRING",
+      "scopes": ["FONT_FAMILY"],
+      "codeSyntax": {
+        "WEB": "var(--font-sans)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:font/mono",
+      "name": "font/mono",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "STRING",
+      "scopes": ["FONT_FAMILY"],
+      "codeSyntax": {
+        "WEB": "var(--font-mono)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:font/serif",
+      "name": "font/serif",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "STRING",
+      "scopes": ["FONT_FAMILY"],
+      "codeSyntax": {
+        "WEB": "var(--font-serif)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:font/display",
+      "name": "font/display",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "STRING",
+      "scopes": ["FONT_FAMILY"],
+      "codeSyntax": {
+        "WEB": "var(--font-display)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/hover-amount",
+      "name": "nk/hover-amount",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-hover-amount)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/pressed-amount",
+      "name": "nk/pressed-amount",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-pressed-amount)"
+      }
+    }
+  ],
+  "variableModeValues": [
+    {
+      "variableId": "variable:duration/fast",
+      "modeId": "mode:primitives:value",
+      "value": 0.12
+    },
+    {
+      "variableId": "variable:duration/base",
+      "modeId": "mode:primitives:value",
+      "value": 0.18
+    },
+    {
+      "variableId": "variable:duration/moderate",
+      "modeId": "mode:primitives:value",
+      "value": 0.24
+    },
+    {
+      "variableId": "variable:duration/slow",
+      "modeId": "mode:primitives:value",
+      "value": 0.32
+    },
+    {
+      "variableId": "variable:duration/slower",
+      "modeId": "mode:primitives:value",
+      "value": 0.4
+    },
+    {
+      "variableId": "variable:ease/enter",
+      "modeId": "mode:primitives:value",
+      "value": {
+        "type": "CUSTOM_CUBIC_BEZIER",
+        "easingFunctionCubicBezier": {
+          "x1": 0.16,
+          "y1": 1,
+          "x2": 0.3,
+          "y2": 1
+        }
+      }
+    },
+    {
+      "variableId": "variable:ease/exit",
+      "modeId": "mode:primitives:value",
+      "value": {
+        "type": "CUSTOM_CUBIC_BEZIER",
+        "easingFunctionCubicBezier": {
+          "x1": 0.4,
+          "y1": 0,
+          "x2": 1,
+          "y2": 1
+        }
+      }
+    },
+    {
+      "variableId": "variable:ease/move",
+      "modeId": "mode:primitives:value",
+      "value": {
+        "type": "CUSTOM_CUBIC_BEZIER",
+        "easingFunctionCubicBezier": {
+          "x1": 0.65,
+          "y1": 0,
+          "x2": 0.35,
+          "y2": 1
+        }
+      }
+    },
+    {
+      "variableId": "variable:spring/snappy/duration",
+      "modeId": "mode:primitives:value",
+      "value": 0.2
+    },
+    {
+      "variableId": "variable:spring/snappy/easing",
+      "modeId": "mode:primitives:value",
+      "value": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0
+        }
+      }
+    },
+    {
+      "variableId": "variable:spring/smooth/duration",
+      "modeId": "mode:primitives:value",
+      "value": 0.3
+    },
+    {
+      "variableId": "variable:spring/smooth/easing",
+      "modeId": "mode:primitives:value",
+      "value": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0
+        }
+      }
+    },
+    {
+      "variableId": "variable:spring/snappy-bounce/duration",
+      "modeId": "mode:primitives:value",
+      "value": 0.2
+    },
+    {
+      "variableId": "variable:spring/snappy-bounce/easing",
+      "modeId": "mode:primitives:value",
+      "value": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0.15
+        }
+      }
+    },
+    {
+      "variableId": "variable:spring/smooth-bounce/duration",
+      "modeId": "mode:primitives:value",
+      "value": 0.32
+    },
+    {
+      "variableId": "variable:spring/smooth-bounce/easing",
+      "modeId": "mode:primitives:value",
+      "value": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0.1
+        }
+      }
+    },
+    {
+      "variableId": "variable:offset/sm",
+      "modeId": "mode:primitives:value",
+      "value": 4
+    },
+    {
+      "variableId": "variable:offset/md",
+      "modeId": "mode:primitives:value",
+      "value": 8
+    },
+    {
+      "variableId": "variable:scale/xs",
+      "modeId": "mode:primitives:value",
+      "value": 0.98
+    },
+    {
+      "variableId": "variable:scale/sm",
+      "modeId": "mode:primitives:value",
+      "value": 0.96
+    },
+    {
+      "variableId": "variable:scale/md",
+      "modeId": "mode:primitives:value",
+      "value": 0.94
+    },
+    {
+      "variableId": "variable:stagger/sm/step",
+      "modeId": "mode:primitives:value",
+      "value": 0.02
+    },
+    {
+      "variableId": "variable:stagger/sm/max",
+      "modeId": "mode:primitives:value",
+      "value": 0.12
+    },
+    {
+      "variableId": "variable:stagger/md/step",
+      "modeId": "mode:primitives:value",
+      "value": 0.03
+    },
+    {
+      "variableId": "variable:stagger/md/max",
+      "modeId": "mode:primitives:value",
+      "value": 0.18
+    },
+    {
+      "variableId": "variable:press/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:press/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:press/scale",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/xs"
+      }
+    },
+    {
+      "variableId": "variable:press/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/base"
+      }
+    },
+    {
+      "variableId": "variable:press/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:press/scale",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/sm"
+      }
+    },
+    {
+      "variableId": "variable:press/duration",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:press/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:press/scale",
+      "modeId": "mode:motion:reduced",
+      "value": 1
+    },
+    {
+      "variableId": "variable:highlight/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/snappy/duration"
+      }
+    },
+    {
+      "variableId": "variable:highlight/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/snappy/easing"
+      }
+    },
+    {
+      "variableId": "variable:highlight/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/snappy-bounce/duration"
+      }
+    },
+    {
+      "variableId": "variable:highlight/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/snappy-bounce/easing"
+      }
+    },
+    {
+      "variableId": "variable:highlight/duration",
+      "modeId": "mode:motion:reduced",
+      "value": 0
+    },
+    {
+      "variableId": "variable:highlight/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "LINEAR"
+      }
+    },
+    {
+      "variableId": "variable:feedback/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/snappy/duration"
+      }
+    },
+    {
+      "variableId": "variable:feedback/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/snappy/easing"
+      }
+    },
+    {
+      "variableId": "variable:feedback/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/snappy-bounce/duration"
+      }
+    },
+    {
+      "variableId": "variable:feedback/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/snappy-bounce/easing"
+      }
+    },
+    {
+      "variableId": "variable:feedback/duration",
+      "modeId": "mode:motion:reduced",
+      "value": 0
+    },
+    {
+      "variableId": "variable:feedback/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "LINEAR"
+      }
+    },
+    {
+      "variableId": "variable:layout/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/smooth/duration"
+      }
+    },
+    {
+      "variableId": "variable:layout/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/smooth/easing"
+      }
+    },
+    {
+      "variableId": "variable:layout/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/smooth-bounce/duration"
+      }
+    },
+    {
+      "variableId": "variable:layout/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:spring/smooth-bounce/easing"
+      }
+    },
+    {
+      "variableId": "variable:layout/duration",
+      "modeId": "mode:motion:reduced",
+      "value": 0
+    },
+    {
+      "variableId": "variable:layout/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "LINEAR"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/base"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/enter"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/offset",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:offset/sm"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/scale",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/sm"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/moderate"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/enter"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/offset",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:offset/md"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/scale",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/md"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/duration",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:popover-enter/offset",
+      "modeId": "mode:motion:reduced",
+      "value": 0
+    },
+    {
+      "variableId": "variable:popover-enter/scale",
+      "modeId": "mode:motion:reduced",
+      "value": 1
+    },
+    {
+      "variableId": "variable:popover-exit/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:popover-exit/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/exit"
+      }
+    },
+    {
+      "variableId": "variable:popover-exit/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/base"
+      }
+    },
+    {
+      "variableId": "variable:popover-exit/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/exit"
+      }
+    },
+    {
+      "variableId": "variable:popover-exit/duration",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:popover-exit/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/moderate"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/enter"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/offset",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:offset/sm"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/scale",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/sm"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/slow"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/enter"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/offset",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:offset/md"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/scale",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/md"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/duration",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:dialog-enter/offset",
+      "modeId": "mode:motion:reduced",
+      "value": 0
+    },
+    {
+      "variableId": "variable:dialog-enter/scale",
+      "modeId": "mode:motion:reduced",
+      "value": 1
+    },
+    {
+      "variableId": "variable:dialog-exit/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/base"
+      }
+    },
+    {
+      "variableId": "variable:dialog-exit/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/exit"
+      }
+    },
+    {
+      "variableId": "variable:dialog-exit/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/moderate"
+      }
+    },
+    {
+      "variableId": "variable:dialog-exit/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/exit"
+      }
+    },
+    {
+      "variableId": "variable:dialog-exit/duration",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:dialog-exit/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/slow"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/enter"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/offset",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:offset/sm"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/scale",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/sm"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/slower"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/enter"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/offset",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:offset/md"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/scale",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/md"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/duration",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:sheet-enter/offset",
+      "modeId": "mode:motion:reduced",
+      "value": 0
+    },
+    {
+      "variableId": "variable:sheet-enter/scale",
+      "modeId": "mode:motion:reduced",
+      "value": 1
+    },
+    {
+      "variableId": "variable:sheet-exit/duration",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/moderate"
+      }
+    },
+    {
+      "variableId": "variable:sheet-exit/easing",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/exit"
+      }
+    },
+    {
+      "variableId": "variable:sheet-exit/duration",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/slow"
+      }
+    },
+    {
+      "variableId": "variable:sheet-exit/easing",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/exit"
+      }
+    },
+    {
+      "variableId": "variable:sheet-exit/duration",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:duration/fast"
+      }
+    },
+    {
+      "variableId": "variable:sheet-exit/easing",
+      "modeId": "mode:motion:reduced",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:stagger/step",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:stagger/sm/step"
+      }
+    },
+    {
+      "variableId": "variable:stagger/max",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:stagger/sm/max"
+      }
+    },
+    {
+      "variableId": "variable:stagger/step",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:stagger/md/step"
+      }
+    },
+    {
+      "variableId": "variable:stagger/max",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:stagger/md/max"
+      }
+    },
+    {
+      "variableId": "variable:stagger/step",
+      "modeId": "mode:motion:reduced",
+      "value": 0
+    },
+    {
+      "variableId": "variable:stagger/max",
+      "modeId": "mode:motion:reduced",
+      "value": 0
+    },
+    {
+      "variableId": "variable:control-sm",
+      "modeId": "mode:density:comfortable",
+      "value": 32
+    },
+    {
+      "variableId": "variable:control-sm",
+      "modeId": "mode:density:compact",
+      "value": 28
+    },
+    {
+      "variableId": "variable:control-md",
+      "modeId": "mode:density:comfortable",
+      "value": 36
+    },
+    {
+      "variableId": "variable:control-md",
+      "modeId": "mode:density:compact",
+      "value": 32
+    },
+    {
+      "variableId": "variable:control-lg",
+      "modeId": "mode:density:comfortable",
+      "value": 40
+    },
+    {
+      "variableId": "variable:control-lg",
+      "modeId": "mode:density:compact",
+      "value": 36
+    },
+    {
+      "variableId": "variable:item",
+      "modeId": "mode:density:comfortable",
+      "value": 32
+    },
+    {
+      "variableId": "variable:item",
+      "modeId": "mode:density:compact",
+      "value": 28
+    },
+    {
+      "variableId": "variable:control-px",
+      "modeId": "mode:density:comfortable",
+      "value": 16
+    },
+    {
+      "variableId": "variable:control-px",
+      "modeId": "mode:density:compact",
+      "value": 12
+    },
+    {
+      "variableId": "variable:gap",
+      "modeId": "mode:density:comfortable",
+      "value": 8
+    },
+    {
+      "variableId": "variable:gap",
+      "modeId": "mode:density:compact",
+      "value": 6
+    },
+    {
+      "variableId": "variable:background",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.9839,
+        "g": 0.9872,
+        "b": 0.9925,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:background",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.047,
+        "g": 0.0522,
+        "b": 0.0606,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.0801,
+        "g": 0.0867,
+        "b": 0.0973,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.9431,
+        "g": 0.948,
+        "b": 0.9559,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:card",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.9839,
+        "g": 0.9872,
+        "b": 0.9925,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:card",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.0724,
+        "g": 0.0778,
+        "b": 0.0865,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:card-foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:foreground"
+      }
+    },
+    {
+      "variableId": "variable:card-foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:foreground"
+      }
+    },
+    {
+      "variableId": "variable:popover",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:popover",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.0889,
+        "g": 0.0956,
+        "b": 0.1063,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:popover-foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:foreground"
+      }
+    },
+    {
+      "variableId": "variable:popover-foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:foreground"
+      }
+    },
+    {
+      "variableId": "variable:primary",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.0889,
+        "g": 0.0956,
+        "b": 0.1063,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:primary",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.9431,
+        "g": 0.948,
+        "b": 0.9559,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:primary-foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.9773,
+        "g": 0.9806,
+        "b": 0.9859,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:primary-foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.047,
+        "g": 0.0522,
+        "b": 0.0606,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:secondary",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.9417,
+        "g": 0.9482,
+        "b": 0.9587,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:secondary",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.1252,
+        "g": 0.1321,
+        "b": 0.1433,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:secondary-foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:foreground"
+      }
+    },
+    {
+      "variableId": "variable:secondary-foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:foreground"
+      }
+    },
+    {
+      "variableId": "variable:muted",
+      "modeId": "mode:colour:light",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:secondary"
+      }
+    },
+    {
+      "variableId": "variable:muted",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:secondary"
+      }
+    },
+    {
+      "variableId": "variable:muted-foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.3541,
+        "g": 0.3678,
+        "b": 0.3898,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:muted-foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.6069,
+        "g": 0.6219,
+        "b": 0.6461,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:accent",
+      "modeId": "mode:colour:light",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:secondary"
+      }
+    },
+    {
+      "variableId": "variable:accent",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:secondary"
+      }
+    },
+    {
+      "variableId": "variable:accent-foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:foreground"
+      }
+    },
+    {
+      "variableId": "variable:accent-foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:foreground"
+      }
+    },
+    {
+      "variableId": "variable:destructive",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.8742,
+        "g": 0.1327,
+        "b": 0.1467,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:destructive",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.9436,
+        "g": 0.3038,
+        "b": 0.299,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:border",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.9027,
+        "g": 0.9092,
+        "b": 0.9196,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:border",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 0.08
+      }
+    },
+    {
+      "variableId": "variable:input",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.5436,
+        "g": 0.5495,
+        "b": 0.559,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:input",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.4033,
+        "g": 0.4117,
+        "b": 0.4252,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:ring",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.4319,
+        "g": 0.446,
+        "b": 0.4688,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:ring",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.4891,
+        "g": 0.5035,
+        "b": 0.5268,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:nk/success",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.0473,
+        "g": 0.521,
+        "b": 0.2399,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:nk/success",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.0682,
+        "g": 0.6715,
+        "b": 0.316,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:nk/warning",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.5759,
+        "g": 0.412,
+        "b": 0.0514,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:nk/warning",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.907,
+        "g": 0.6557,
+        "b": 0.0938,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:nk/highlight",
+      "modeId": "mode:colour:light",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:accent"
+      }
+    },
+    {
+      "variableId": "variable:nk/highlight",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:accent"
+      }
+    },
+    {
+      "variableId": "variable:nk/highlight-foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:accent-foreground"
+      }
+    },
+    {
+      "variableId": "variable:nk/highlight-foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:accent-foreground"
+      }
+    },
+    {
+      "variableId": "variable:nk/scrim",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.5
+      }
+    },
+    {
+      "variableId": "variable:nk/scrim",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.6
+      }
+    },
+    {
+      "variableId": "variable:nk/shadow-soft",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      }
+    },
+    {
+      "variableId": "variable:nk/shadow-soft",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.24
+      }
+    },
+    {
+      "variableId": "variable:nk/shadow-strong",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.12
+      }
+    },
+    {
+      "variableId": "variable:nk/shadow-strong",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.48
+      }
+    },
+    {
+      "variableId": "variable:nk/edge",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.0801,
+        "g": 0.0867,
+        "b": 0.0973,
+        "a": 0
+      }
+    },
+    {
+      "variableId": "variable:nk/edge",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.9431,
+        "g": 0.948,
+        "b": 0.9559,
+        "a": 0.06
+      }
+    },
+    {
+      "variableId": "variable:radius",
+      "modeId": "mode:theme:linear",
+      "value": 6
+    },
+    {
+      "variableId": "variable:font/sans",
+      "modeId": "mode:theme:linear",
+      "value": "DM Sans"
+    },
+    {
+      "variableId": "variable:font/mono",
+      "modeId": "mode:theme:linear",
+      "value": "DM Mono"
+    },
+    {
+      "variableId": "variable:font/serif",
+      "modeId": "mode:theme:linear",
+      "value": "DM Serif Text"
+    },
+    {
+      "variableId": "variable:font/display",
+      "modeId": "mode:theme:linear",
+      "value": "DM Serif Display"
+    },
+    {
+      "variableId": "variable:nk/hover-amount",
+      "modeId": "mode:theme:linear",
+      "value": 8
+    },
+    {
+      "variableId": "variable:nk/pressed-amount",
+      "modeId": "mode:theme:linear",
+      "value": 12
+    }
+  ],
+  "effectStyles": [
+    {
+      "name": "elevation/1",
+      "codeSyntax": "var(--nk-elevation-1)",
+      "layers": [
+        {
+          "type": "DROP_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "radius": 2,
+          "spread": 0,
+          "colorVariableId": "variable:nk/shadow-soft"
+        },
+        {
+          "type": "DROP_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 4
+          },
+          "radius": 12,
+          "spread": 0,
+          "colorVariableId": "variable:nk/shadow-soft"
+        },
+        {
+          "type": "INNER_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "radius": 0,
+          "spread": 0,
+          "colorVariableId": "variable:nk/edge"
+        }
+      ]
+    },
+    {
+      "name": "elevation/2",
+      "codeSyntax": "var(--nk-elevation-2)",
+      "layers": [
+        {
+          "type": "DROP_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 2
+          },
+          "radius": 4,
+          "spread": 0,
+          "colorVariableId": "variable:nk/shadow-soft"
+        },
+        {
+          "type": "DROP_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 16
+          },
+          "radius": 40,
+          "spread": 0,
+          "colorVariableId": "variable:nk/shadow-strong"
+        },
+        {
+          "type": "INNER_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "radius": 0,
+          "spread": 0,
+          "colorVariableId": "variable:nk/edge"
+        }
+      ]
+    }
+  ]
+}
