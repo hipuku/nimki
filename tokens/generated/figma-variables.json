@@ -63,7 +63,7 @@
       "id": "variable:duration/fast",
       "name": "duration/fast",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-duration-fast)"
@@ -74,7 +74,7 @@
       "id": "variable:duration/base",
       "name": "duration/base",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-duration-base)"
@@ -85,7 +85,7 @@
       "id": "variable:duration/moderate",
       "name": "duration/moderate",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-duration-moderate)"
@@ -96,7 +96,7 @@
       "id": "variable:duration/slow",
       "name": "duration/slow",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-duration-slow)"
@@ -107,7 +107,7 @@
       "id": "variable:duration/slower",
       "name": "duration/slower",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-duration-slower)"
@@ -118,7 +118,7 @@
       "id": "variable:ease/enter",
       "name": "ease/enter",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-ease-enter)"
@@ -129,7 +129,7 @@
       "id": "variable:ease/exit",
       "name": "ease/exit",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-ease-exit)"
@@ -140,7 +140,7 @@
       "id": "variable:ease/move",
       "name": "ease/move",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-ease-move)"
@@ -148,67 +148,79 @@
     },
     {
       "action": "CREATE",
-      "id": "variable:spring/snappy/visual-duration",
-      "name": "spring/snappy/visual-duration",
+      "id": "variable:spring/snappy/duration",
+      "name": "spring/snappy/duration",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": []
     },
     {
       "action": "CREATE",
-      "id": "variable:spring/snappy/bounce",
-      "name": "spring/snappy/bounce",
+      "id": "variable:spring/snappy/easing",
+      "name": "spring/snappy/easing",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-spring-snappy-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/smooth/duration",
+      "name": "spring/smooth/duration",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
       "scopes": []
     },
     {
       "action": "CREATE",
-      "id": "variable:spring/smooth/visual-duration",
-      "name": "spring/smooth/visual-duration",
+      "id": "variable:spring/smooth/easing",
+      "name": "spring/smooth/easing",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-spring-smooth-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/snappy-bounce/duration",
+      "name": "spring/snappy-bounce/duration",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
       "scopes": []
     },
     {
       "action": "CREATE",
-      "id": "variable:spring/smooth/bounce",
-      "name": "spring/smooth/bounce",
+      "id": "variable:spring/snappy-bounce/easing",
+      "name": "spring/snappy-bounce/easing",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-spring-snappy-bounce-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spring/smooth-bounce/duration",
+      "name": "spring/smooth-bounce/duration",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "TIMING",
       "scopes": []
     },
     {
       "action": "CREATE",
-      "id": "variable:spring/snappy-bounce/visual-duration",
-      "name": "spring/snappy-bounce/visual-duration",
+      "id": "variable:spring/smooth-bounce/easing",
+      "name": "spring/smooth-bounce/easing",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
-      "scopes": []
-    },
-    {
-      "action": "CREATE",
-      "id": "variable:spring/snappy-bounce/bounce",
-      "name": "spring/snappy-bounce/bounce",
-      "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
-      "scopes": []
-    },
-    {
-      "action": "CREATE",
-      "id": "variable:spring/smooth-bounce/visual-duration",
-      "name": "spring/smooth-bounce/visual-duration",
-      "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
-      "scopes": []
-    },
-    {
-      "action": "CREATE",
-      "id": "variable:spring/smooth-bounce/bounce",
-      "name": "spring/smooth-bounce/bounce",
-      "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
-      "scopes": []
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-spring-smooth-bounce-easing)"
+      }
     },
     {
       "action": "CREATE",
@@ -259,7 +271,7 @@
       "id": "variable:stagger/sm/step",
       "name": "stagger/sm/step",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-stagger-sm-step)"
@@ -270,7 +282,7 @@
       "id": "variable:stagger/sm/max",
       "name": "stagger/sm/max",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-stagger-sm-max)"
@@ -281,7 +293,7 @@
       "id": "variable:stagger/md/step",
       "name": "stagger/md/step",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-stagger-md-step)"
@@ -292,7 +304,7 @@
       "id": "variable:stagger/md/max",
       "name": "stagger/md/max",
       "variableCollectionId": "collection:primitives",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-stagger-md-max)"
@@ -303,7 +315,7 @@
       "id": "variable:press/duration",
       "name": "press/duration",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-press-duration)"
@@ -314,7 +326,7 @@
       "id": "variable:press/easing",
       "name": "press/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-press-easing)"
@@ -322,58 +334,67 @@
     },
     {
       "action": "CREATE",
-      "id": "variable:highlight/visual-duration",
-      "name": "highlight/visual-duration",
+      "id": "variable:highlight/duration",
+      "name": "highlight/duration",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": []
     },
     {
       "action": "CREATE",
-      "id": "variable:highlight/bounce",
-      "name": "highlight/bounce",
+      "id": "variable:highlight/easing",
+      "name": "highlight/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-highlight-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:feedback/duration",
+      "name": "feedback/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
       "scopes": []
     },
     {
       "action": "CREATE",
-      "id": "variable:feedback/visual-duration",
-      "name": "feedback/visual-duration",
+      "id": "variable:feedback/easing",
+      "name": "feedback/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-feedback-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:layout/duration",
+      "name": "layout/duration",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "TIMING",
       "scopes": []
     },
     {
       "action": "CREATE",
-      "id": "variable:feedback/bounce",
-      "name": "feedback/bounce",
+      "id": "variable:layout/easing",
+      "name": "layout/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
-      "scopes": []
-    },
-    {
-      "action": "CREATE",
-      "id": "variable:layout/visual-duration",
-      "name": "layout/visual-duration",
-      "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
-      "scopes": []
-    },
-    {
-      "action": "CREATE",
-      "id": "variable:layout/bounce",
-      "name": "layout/bounce",
-      "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
-      "scopes": []
+      "resolvedType": "EASING",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-layout-easing)"
+      }
     },
     {
       "action": "CREATE",
       "id": "variable:popover-enter/duration",
       "name": "popover-enter/duration",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-popover-enter-duration)"
@@ -384,7 +405,7 @@
       "id": "variable:popover-enter/easing",
       "name": "popover-enter/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-popover-enter-easing)"
@@ -417,7 +438,7 @@
       "id": "variable:popover-exit/duration",
       "name": "popover-exit/duration",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-popover-exit-duration)"
@@ -428,7 +449,7 @@
       "id": "variable:popover-exit/easing",
       "name": "popover-exit/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-popover-exit-easing)"
@@ -439,7 +460,7 @@
       "id": "variable:dialog-enter/duration",
       "name": "dialog-enter/duration",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-dialog-enter-duration)"
@@ -450,7 +471,7 @@
       "id": "variable:dialog-enter/easing",
       "name": "dialog-enter/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-dialog-enter-easing)"
@@ -483,7 +504,7 @@
       "id": "variable:dialog-exit/duration",
       "name": "dialog-exit/duration",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-dialog-exit-duration)"
@@ -494,7 +515,7 @@
       "id": "variable:dialog-exit/easing",
       "name": "dialog-exit/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-dialog-exit-easing)"
@@ -505,7 +526,7 @@
       "id": "variable:sheet-enter/duration",
       "name": "sheet-enter/duration",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-sheet-enter-duration)"
@@ -516,7 +537,7 @@
       "id": "variable:sheet-enter/easing",
       "name": "sheet-enter/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-sheet-enter-easing)"
@@ -549,7 +570,7 @@
       "id": "variable:sheet-exit/duration",
       "name": "sheet-exit/duration",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-sheet-exit-duration)"
@@ -560,7 +581,7 @@
       "id": "variable:sheet-exit/easing",
       "name": "sheet-exit/easing",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "STRING",
+      "resolvedType": "EASING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-sheet-exit-easing)"
@@ -571,7 +592,7 @@
       "id": "variable:stagger/step",
       "name": "stagger/step",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-stagger-step)"
@@ -582,7 +603,7 @@
       "id": "variable:stagger/max",
       "name": "stagger/max",
       "variableCollectionId": "collection:motion",
-      "resolvedType": "FLOAT",
+      "resolvedType": "TIMING",
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-stagger-max)"
@@ -665,82 +686,126 @@
     {
       "variableId": "variable:duration/fast",
       "modeId": "mode:primitives:value",
-      "value": 120
+      "value": 0.12
     },
     {
       "variableId": "variable:duration/base",
       "modeId": "mode:primitives:value",
-      "value": 180
+      "value": 0.18
     },
     {
       "variableId": "variable:duration/moderate",
       "modeId": "mode:primitives:value",
-      "value": 240
+      "value": 0.24
     },
     {
       "variableId": "variable:duration/slow",
       "modeId": "mode:primitives:value",
-      "value": 320
+      "value": 0.32
     },
     {
       "variableId": "variable:duration/slower",
       "modeId": "mode:primitives:value",
-      "value": 400
+      "value": 0.4
     },
     {
       "variableId": "variable:ease/enter",
       "modeId": "mode:primitives:value",
-      "value": "cubic-bezier(0.16, 1, 0.3, 1)"
+      "value": {
+        "type": "CUSTOM_CUBIC_BEZIER",
+        "easingFunctionCubicBezier": {
+          "x1": 0.16,
+          "y1": 1,
+          "x2": 0.3,
+          "y2": 1
+        }
+      }
     },
     {
       "variableId": "variable:ease/exit",
       "modeId": "mode:primitives:value",
-      "value": "cubic-bezier(0.4, 0, 1, 1)"
+      "value": {
+        "type": "CUSTOM_CUBIC_BEZIER",
+        "easingFunctionCubicBezier": {
+          "x1": 0.4,
+          "y1": 0,
+          "x2": 1,
+          "y2": 1
+        }
+      }
     },
     {
       "variableId": "variable:ease/move",
       "modeId": "mode:primitives:value",
-      "value": "cubic-bezier(0.65, 0, 0.35, 1)"
+      "value": {
+        "type": "CUSTOM_CUBIC_BEZIER",
+        "easingFunctionCubicBezier": {
+          "x1": 0.65,
+          "y1": 0,
+          "x2": 0.35,
+          "y2": 1
+        }
+      }
     },
     {
-      "variableId": "variable:spring/snappy/visual-duration",
+      "variableId": "variable:spring/snappy/duration",
       "modeId": "mode:primitives:value",
-      "value": 200
+      "value": 0.2
     },
     {
-      "variableId": "variable:spring/snappy/bounce",
+      "variableId": "variable:spring/snappy/easing",
       "modeId": "mode:primitives:value",
-      "value": 0
+      "value": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0
+        }
+      }
     },
     {
-      "variableId": "variable:spring/smooth/visual-duration",
+      "variableId": "variable:spring/smooth/duration",
       "modeId": "mode:primitives:value",
-      "value": 300
+      "value": 0.3
     },
     {
-      "variableId": "variable:spring/smooth/bounce",
+      "variableId": "variable:spring/smooth/easing",
       "modeId": "mode:primitives:value",
-      "value": 0
+      "value": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0
+        }
+      }
     },
     {
-      "variableId": "variable:spring/snappy-bounce/visual-duration",
+      "variableId": "variable:spring/snappy-bounce/duration",
       "modeId": "mode:primitives:value",
-      "value": 200
+      "value": 0.2
     },
     {
-      "variableId": "variable:spring/snappy-bounce/bounce",
+      "variableId": "variable:spring/snappy-bounce/easing",
       "modeId": "mode:primitives:value",
-      "value": 0.15
+      "value": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0.15
+        }
+      }
     },
     {
-      "variableId": "variable:spring/smooth-bounce/visual-duration",
+      "variableId": "variable:spring/smooth-bounce/duration",
       "modeId": "mode:primitives:value",
-      "value": 320
+      "value": 0.32
     },
     {
-      "variableId": "variable:spring/smooth-bounce/bounce",
+      "variableId": "variable:spring/smooth-bounce/easing",
       "modeId": "mode:primitives:value",
-      "value": 0.1
+      "value": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0.1
+        }
+      }
     },
     {
       "variableId": "variable:offset/sm",
@@ -765,22 +830,22 @@
     {
       "variableId": "variable:stagger/sm/step",
       "modeId": "mode:primitives:value",
-      "value": 20
+      "value": 0.02
     },
     {
       "variableId": "variable:stagger/sm/max",
       "modeId": "mode:primitives:value",
-      "value": 120
+      "value": 0.12
     },
     {
       "variableId": "variable:stagger/md/step",
       "modeId": "mode:primitives:value",
-      "value": 30
+      "value": 0.03
     },
     {
       "variableId": "variable:stagger/md/max",
       "modeId": "mode:primitives:value",
-      "value": 180
+      "value": 0.18
     },
     {
       "variableId": "variable:press/duration",
@@ -831,130 +896,136 @@
       }
     },
     {
-      "variableId": "variable:highlight/visual-duration",
+      "variableId": "variable:highlight/duration",
       "modeId": "mode:motion:subtle",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/snappy/visual-duration"
+        "id": "variable:spring/snappy/duration"
       }
     },
     {
-      "variableId": "variable:highlight/bounce",
+      "variableId": "variable:highlight/easing",
       "modeId": "mode:motion:subtle",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/snappy/bounce"
+        "id": "variable:spring/snappy/easing"
       }
     },
     {
-      "variableId": "variable:highlight/visual-duration",
+      "variableId": "variable:highlight/duration",
       "modeId": "mode:motion:expressive",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/snappy-bounce/visual-duration"
+        "id": "variable:spring/snappy-bounce/duration"
       }
     },
     {
-      "variableId": "variable:highlight/bounce",
+      "variableId": "variable:highlight/easing",
       "modeId": "mode:motion:expressive",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/snappy-bounce/bounce"
+        "id": "variable:spring/snappy-bounce/easing"
       }
     },
     {
-      "variableId": "variable:highlight/visual-duration",
+      "variableId": "variable:highlight/duration",
       "modeId": "mode:motion:reduced",
       "value": 0
     },
     {
-      "variableId": "variable:highlight/bounce",
+      "variableId": "variable:highlight/easing",
       "modeId": "mode:motion:reduced",
-      "value": 0
+      "value": {
+        "type": "LINEAR"
+      }
     },
     {
-      "variableId": "variable:feedback/visual-duration",
+      "variableId": "variable:feedback/duration",
       "modeId": "mode:motion:subtle",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/snappy/visual-duration"
+        "id": "variable:spring/snappy/duration"
       }
     },
     {
-      "variableId": "variable:feedback/bounce",
+      "variableId": "variable:feedback/easing",
       "modeId": "mode:motion:subtle",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/snappy/bounce"
+        "id": "variable:spring/snappy/easing"
       }
     },
     {
-      "variableId": "variable:feedback/visual-duration",
+      "variableId": "variable:feedback/duration",
       "modeId": "mode:motion:expressive",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/snappy-bounce/visual-duration"
+        "id": "variable:spring/snappy-bounce/duration"
       }
     },
     {
-      "variableId": "variable:feedback/bounce",
+      "variableId": "variable:feedback/easing",
       "modeId": "mode:motion:expressive",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/snappy-bounce/bounce"
+        "id": "variable:spring/snappy-bounce/easing"
       }
     },
     {
-      "variableId": "variable:feedback/visual-duration",
+      "variableId": "variable:feedback/duration",
       "modeId": "mode:motion:reduced",
       "value": 0
     },
     {
-      "variableId": "variable:feedback/bounce",
+      "variableId": "variable:feedback/easing",
       "modeId": "mode:motion:reduced",
-      "value": 0
+      "value": {
+        "type": "LINEAR"
+      }
     },
     {
-      "variableId": "variable:layout/visual-duration",
+      "variableId": "variable:layout/duration",
       "modeId": "mode:motion:subtle",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/smooth/visual-duration"
+        "id": "variable:spring/smooth/duration"
       }
     },
     {
-      "variableId": "variable:layout/bounce",
+      "variableId": "variable:layout/easing",
       "modeId": "mode:motion:subtle",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/smooth/bounce"
+        "id": "variable:spring/smooth/easing"
       }
     },
     {
-      "variableId": "variable:layout/visual-duration",
+      "variableId": "variable:layout/duration",
       "modeId": "mode:motion:expressive",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/smooth-bounce/visual-duration"
+        "id": "variable:spring/smooth-bounce/duration"
       }
     },
     {
-      "variableId": "variable:layout/bounce",
+      "variableId": "variable:layout/easing",
       "modeId": "mode:motion:expressive",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:spring/smooth-bounce/bounce"
+        "id": "variable:spring/smooth-bounce/easing"
       }
     },
     {
-      "variableId": "variable:layout/visual-duration",
+      "variableId": "variable:layout/duration",
       "modeId": "mode:motion:reduced",
       "value": 0
     },
     {
-      "variableId": "variable:layout/bounce",
+      "variableId": "variable:layout/easing",
       "modeId": "mode:motion:reduced",
-      "value": 0
+      "value": {
+        "type": "LINEAR"
+      }
     },
     {
       "variableId": "variable:popover-enter/duration",

@@ -1,3 +1,4 @@
+import type { CubicBezier } from './dtcg.ts'
 import {
   DENSITY_MODES,
   MOTION_MODES,
@@ -203,16 +204,39 @@ interface FigmaVariable {
   id: string
   name: string
   variableCollectionId: string
-  resolvedType: 'FLOAT' | 'STRING'
+  resolvedType: 'FLOAT' | 'TIMING' | 'EASING'
   scopes: string[]
   codeSyntax?: { WEB: string }
   description?: string
 }
 
+/** Figma's easing value: a cubic bezier, a spring defined by its bounce, or linear. */
+type FigmaEasing =
+  | {
+      type: 'CUSTOM_CUBIC_BEZIER'
+      easingFunctionCubicBezier: { x1: number; y1: number; x2: number; y2: number }
+    }
+  | { type: 'CUSTOM_SPRING'; easingFunctionSpring: { bounce: number } }
+  | { type: 'LINEAR' }
+
+type FigmaValue = number | FigmaEasing | { alias: string }
+
+function bezier([x1, y1, x2, y2]: CubicBezier): FigmaEasing {
+  return { type: 'CUSTOM_CUBIC_BEZIER', easingFunctionCubicBezier: { x1, y1, x2, y2 } }
+}
+
+/** Figma's TIMING variables hold seconds. */
+const seconds = (ms: number) => ms / 1000
+
 /**
  * tokens/generated/figma-variables.json, in the shape of the body of Figma's
  * POST /v1/files/:key/variables. Ids are temporary ids that tie the entries
- * together; the Figma build prompt reads this file and creates the variables.
+ * together; the Figma build reads this file and creates the variables.
+ *
+ * Durations are TIMING variables and easings are EASING variables, Figma's
+ * own motion types. A spring is a TIMING variable holding its visual duration
+ * and an EASING variable holding its bounce, which is how Figma and Motion
+ * both define a spring.
  */
 export function figmaVariables(motion: Motion, density: Density): string {
   const collections: object[] = []
@@ -255,12 +279,12 @@ export function figmaVariables(motion: Motion, density: Density): string {
     })
     return id
   }
-  const set = (variableId: string, modeId: string, value: number | string | { alias: string }) => {
+  const set = (variableId: string, modeId: string, value: FigmaValue) => {
     values.push({
       variableId,
       modeId,
       value:
-        typeof value === 'object'
+        typeof value === 'object' && 'alias' in value
           ? { type: 'VARIABLE_ALIAS', id: `variable:${value.alias}` }
           : value,
     })
@@ -269,66 +293,66 @@ export function figmaVariables(motion: Motion, density: Density): string {
 
   const primitives = collection('primitives', 'nimki/primitives', ['value'])
   const p = 'mode:primitives:value'
-  for (const d of motion.primitives.durations)
-    set(variable(primitives, slash(d.name), 'FLOAT', cssVar(d.name), []), p, d.ms)
+  for (const d of motion.primitives.durations) {
+    set(variable(primitives, slash(d.name), 'TIMING', cssVar(d.name), []), p, seconds(d.ms))
+  }
   for (const e of motion.primitives.easings) {
-    set(
-      variable(primitives, slash(e.name), 'STRING', cssVar(e.name), []),
-      p,
-      cubicBezierCss(e.value),
-    )
+    set(variable(primitives, slash(e.name), 'EASING', cssVar(e.name), []), p, bezier(e.value))
   }
   for (const s of motion.primitives.springs) {
     const base = slash(s.primitive)
-    // The CSS turns a spring into a settle duration and a linear() easing, so
-    // neither Figma variable has a custom property with the same value.
-    set(variable(primitives, `${base}/visual-duration`, 'FLOAT', null, []), p, s.visualDurationMs)
-    set(variable(primitives, `${base}/bounce`, 'FLOAT', null, []), p, s.bounce)
+    // The CSS runs a spring for its settle time, not its visual duration, so the
+    // duration has no matching custom property. The easing does: the CSS
+    // linear() is sampled from the same spring.
+    set(
+      variable(primitives, `${base}/duration`, 'TIMING', null, []),
+      p,
+      seconds(s.visualDurationMs),
+    )
+    set(variable(primitives, `${base}/easing`, 'EASING', cssVar(s.primitive, 'easing'), []), p, {
+      type: 'CUSTOM_SPRING',
+      easingFunctionSpring: { bounce: s.bounce },
+    })
   }
-  for (const o of motion.primitives.offsets)
+  for (const o of motion.primitives.offsets) {
     set(variable(primitives, slash(o.name), 'FLOAT', cssVar(o.name), []), p, o.px)
-  for (const s of motion.primitives.scales)
+  }
+  for (const s of motion.primitives.scales) {
     set(variable(primitives, slash(s.name), 'FLOAT', cssVar(s.name), []), p, s.value)
-  for (const s of motion.primitives.staggers)
-    set(variable(primitives, slash(s.name), 'FLOAT', cssVar(s.name), []), p, s.ms)
+  }
+  for (const s of motion.primitives.staggers) {
+    set(variable(primitives, slash(s.name), 'TIMING', cssVar(s.name), []), p, seconds(s.ms))
+  }
 
   const motionId = collection('motion', 'nimki/motion', [...MOTION_MODES])
-  const ref = (css: string) => {
-    const match = /^var\(--nk-(.+)\)$/.exec(css)
-    return match?.[1]
-  }
   // Each role variable is an alias of the primitive the CSS points at, so a
   // primitive changed in Figma moves every role that uses it, as in the CSS.
-  const aliasOrValue = (
-    css: string,
-    value: number | string,
-  ): number | string | { alias: string } => {
-    const target = ref(css)
-    if (!target) return value
-    const name = variables.find(v => v.codeSyntax?.WEB === `var(--nk-${target})`)?.name
+  const aliasOrValue = (css: string, value: FigmaValue): FigmaValue => {
+    const name = variables.find(v => v.codeSyntax?.WEB === css)?.name
     return name ? { alias: name } : value
   }
   for (const role of motion.roles) {
     const first = motion.modes.subtle.roles[role] as RoleValue
     if (first.kind === 'spring') {
-      const visual = variable(motionId, `${role}/visual-duration`, 'FLOAT', null, [])
-      const bounce = variable(motionId, `${role}/bounce`, 'FLOAT', null, [])
+      const duration = variable(motionId, `${role}/duration`, 'TIMING', null, [])
+      const easing = variable(motionId, `${role}/easing`, 'EASING', cssVar(role, 'easing'), [])
       for (const mode of MOTION_MODES) {
         const value = motion.modes[mode].roles[role] as RoleValue
         const modeId = `mode:motion:${mode}`
         if (value.kind === 'spring') {
-          set(visual, modeId, { alias: `${slash(value.spring.primitive)}/visual-duration` })
-          set(bounce, modeId, { alias: `${slash(value.spring.primitive)}/bounce` })
+          set(duration, modeId, { alias: `${slash(value.spring.primitive)}/duration` })
+          set(easing, modeId, { alias: `${slash(value.spring.primitive)}/easing` })
         } else {
-          set(visual, modeId, value.durationMs)
-          set(bounce, modeId, 0)
+          // Reduced motion: the change happens at once.
+          set(duration, modeId, seconds(value.durationMs))
+          set(easing, modeId, { type: 'LINEAR' })
         }
       }
       continue
     }
     const ids = {
-      duration: variable(motionId, `${role}/duration`, 'FLOAT', cssVar(role, 'duration'), []),
-      easing: variable(motionId, `${role}/easing`, 'STRING', cssVar(role, 'easing'), []),
+      duration: variable(motionId, `${role}/duration`, 'TIMING', cssVar(role, 'duration'), []),
+      easing: variable(motionId, `${role}/easing`, 'EASING', cssVar(role, 'easing'), []),
       offset:
         first.kind === 'tween' && first.offset
           ? variable(motionId, `${role}/offset`, 'FLOAT', cssVar(role, 'offset'), [])
@@ -342,22 +366,24 @@ export function figmaVariables(motion: Motion, density: Density): string {
       const value = motion.modes[mode].roles[role] as RoleValue
       if (value.kind !== 'tween') continue
       const modeId = `mode:motion:${mode}`
-      set(ids.duration, modeId, aliasOrValue(value.duration.css, value.durationMs))
-      set(ids.easing, modeId, aliasOrValue(value.easingCss.css, cubicBezierCss(value.easing)))
-      if (ids.offset && value.offset)
+      set(ids.duration, modeId, aliasOrValue(value.duration.css, seconds(value.durationMs)))
+      set(ids.easing, modeId, aliasOrValue(value.easingCss.css, bezier(value.easing)))
+      if (ids.offset && value.offset) {
         set(ids.offset, modeId, aliasOrValue(value.offset.css, value.offsetPx as number))
-      if (ids.scale && value.scaleCss)
+      }
+      if (ids.scale && value.scaleCss) {
         set(ids.scale, modeId, aliasOrValue(value.scaleCss.css, value.scale as number))
+      }
     }
   }
   const stagger = {
-    step: variable(motionId, 'stagger/step', 'FLOAT', '--nk-stagger-step', []),
-    max: variable(motionId, 'stagger/max', 'FLOAT', '--nk-stagger-max', []),
+    step: variable(motionId, 'stagger/step', 'TIMING', '--nk-stagger-step', []),
+    max: variable(motionId, 'stagger/max', 'TIMING', '--nk-stagger-max', []),
   }
   for (const mode of MOTION_MODES) {
     const { step, max } = motion.modes[mode].stagger
-    set(stagger.step, `mode:motion:${mode}`, aliasOrValue(step.css, step.ms))
-    set(stagger.max, `mode:motion:${mode}`, aliasOrValue(max.css, max.ms))
+    set(stagger.step, `mode:motion:${mode}`, aliasOrValue(step.css, seconds(step.ms)))
+    set(stagger.max, `mode:motion:${mode}`, aliasOrValue(max.css, seconds(max.ms)))
   }
 
   const densityId = collection('density', 'nimki/density', [...DENSITY_MODES])

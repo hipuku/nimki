@@ -10,7 +10,7 @@ const outputs = render(loadSource(join(root, 'tokens/source')))
 interface Figma {
   variableCollections: { id: string; name: string; initialModeId: string }[]
   variableModes: { id: string; name: string; variableCollectionId: string; action: string }[]
-  variables: { id: string; name: string; codeSyntax?: { WEB: string } }[]
+  variables: { id: string; name: string; resolvedType: string; codeSyntax?: { WEB: string } }[]
   variableModeValues: { variableId: string; modeId: string; value: unknown }[]
 }
 const figma = JSON.parse(outputs.figma) as Figma
@@ -106,27 +106,47 @@ describe('figma-variables.json', () => {
     }
   })
 
+  const value = (name: string, mode: string) =>
+    figma.variableModeValues.find(v => v.variableId === `variable:${name}` && v.modeId === mode)
+      ?.value
+  const type = (name: string) => figma.variables.find(v => v.name === name)?.resolvedType
+
+  it('uses Figma motion types: durations in seconds, easings as curves or springs', () => {
+    expect(type('duration/fast')).toBe('TIMING')
+    expect(value('duration/fast', 'mode:primitives:value')).toBe(0.12)
+    expect(type('ease/exit')).toBe('EASING')
+    expect(value('ease/exit', 'mode:primitives:value')).toEqual({
+      type: 'CUSTOM_CUBIC_BEZIER',
+      easingFunctionCubicBezier: { x1: 0.4, y1: 0, x2: 1, y2: 1 },
+    })
+    expect(value('spring/snappy-bounce/duration', 'mode:primitives:value')).toBe(0.2)
+    expect(value('spring/snappy-bounce/easing', 'mode:primitives:value')).toEqual({
+      type: 'CUSTOM_SPRING',
+      easingFunctionSpring: { bounce: 0.15 },
+    })
+  })
+
   it('aliases role variables to the primitive the CSS uses', () => {
-    const value = (name: string, mode: string) =>
-      figma.variableModeValues.find(v => v.variableId === `variable:${name}` && v.modeId === mode)
-        ?.value
     expect(value('dialog-enter/duration', 'mode:motion:subtle')).toEqual({
       type: 'VARIABLE_ALIAS',
       id: 'variable:duration/moderate',
     })
-    expect(value('highlight/bounce', 'mode:motion:expressive')).toEqual({
+    expect(value('highlight/easing', 'mode:motion:expressive')).toEqual({
       type: 'VARIABLE_ALIAS',
-      id: 'variable:spring/snappy-bounce/bounce',
+      id: 'variable:spring/snappy-bounce/easing',
     })
     expect(value('dialog-enter/offset', 'mode:motion:reduced')).toBe(0)
-    expect(value('highlight/visual-duration', 'mode:motion:reduced')).toBe(0)
+  })
+
+  it('makes spring roles change at once under reduced motion', () => {
+    expect(value('highlight/duration', 'mode:motion:reduced')).toBe(0)
+    expect(value('highlight/easing', 'mode:motion:reduced')).toEqual({ type: 'LINEAR' })
   })
 
   it('points every alias at a variable that exists', () => {
     for (const { value } of figma.variableModeValues) {
-      if (typeof value === 'object' && value !== null) {
-        expect(ids.has((value as { id: string }).id)).toBe(true)
-      }
+      const alias = value as { type?: string; id?: string }
+      if (alias.type === 'VARIABLE_ALIAS') expect(ids.has(alias.id as string)).toBe(true)
     }
   })
 
@@ -134,6 +154,7 @@ describe('figma-variables.json', () => {
     const syntax = (name: string) => figma.variables.find(v => v.name === name)?.codeSyntax
     expect(syntax('duration/fast')).toEqual({ WEB: 'var(--nk-duration-fast)' })
     expect(syntax('control-md')).toEqual({ WEB: 'var(--nk-control-md)' })
-    expect(syntax('spring/snappy/visual-duration')).toBeUndefined()
+    expect(syntax('spring/snappy/duration')).toBeUndefined()
+    expect(syntax('spring/snappy/easing')).toEqual({ WEB: 'var(--nk-spring-snappy-easing)' })
   })
 })
