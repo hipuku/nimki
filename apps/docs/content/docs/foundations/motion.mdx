@@ -1,0 +1,38 @@
+---
+title: Motion
+description: Every motion role in every theme, with the curves drawn and played side by side.
+---
+
+Components never pick a duration or a curve themselves. Each moving part names a role, such as `popover-enter` or `highlight`, and the role's tokens decide how it moves. The values here come from the same generated tokens the components run, so this page cannot drift from them.
+
+## Themes
+
+There are two motion themes and one reduced mode.
+
+- **Subtle**, the default: short, no bounce.
+- **Expressive**: a little longer, with a small bounce on the springs.
+- **Reduced**: used when the system asks for reduced motion or the Reduced motion control is on. Nothing travels: overlays fade in place within 120 ms, and anything that would move jumps.
+
+## Live, through the CSS variables
+
+These follow the controls at the top of the page. Switch Motion between Subtle and Expressive, or turn on Reduced motion, then move them again.
+
+<LiveCss />
+
+## Roles
+
+Each role in each theme, from the engine's tokens. Play runs all three at once. With reduced motion on, only the Reduced column moves.
+
+<RoleGallery />
+
+## Stagger
+
+When a list opens, its items can start one after another. The total delay is capped, so a long list does not wait.
+
+<StaggerTable />
+
+## Limits
+
+The token build fails if any theme breaks one of these, so a theme can change its values but not its character.
+
+<LimitsTable />
