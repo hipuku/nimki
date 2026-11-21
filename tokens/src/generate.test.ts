@@ -174,6 +174,13 @@ describe('figma-variables.json', () => {
     expect(syntax('duration/fast')).toEqual({ WEB: 'var(--nk-duration-fast)' })
     expect(syntax('control-md')).toEqual({ WEB: 'var(--nk-control-md)' })
     expect(syntax('spring/snappy/duration')).toBeUndefined()
+  })
+
+  it('offers shadow colours only to effects', () => {
+    const scopes = (name: string) =>
+      (figma.variables as { name: string; scopes?: string[] }[]).find(v => v.name === name)?.scopes
+    expect(scopes('nk/shadow-soft')).toEqual(['EFFECT_COLOR'])
+    expect(scopes('nk/edge')).toEqual(['EFFECT_COLOR'])
     expect(syntax('spring/snappy/easing')).toEqual({ WEB: 'var(--nk-spring-snappy-easing)' })
   })
 })

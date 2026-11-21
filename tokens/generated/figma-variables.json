@@ -992,7 +992,7 @@
       "name": "nk/shadow-soft",
       "variableCollectionId": "collection:colour",
       "resolvedType": "COLOR",
-      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "scopes": ["EFFECT_COLOR"],
       "codeSyntax": {
         "WEB": "var(--nk-shadow-soft)"
       }
@@ -1003,7 +1003,7 @@
       "name": "nk/shadow-strong",
       "variableCollectionId": "collection:colour",
       "resolvedType": "COLOR",
-      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "scopes": ["EFFECT_COLOR"],
       "codeSyntax": {
         "WEB": "var(--nk-shadow-strong)"
       }
@@ -1014,7 +1014,7 @@
       "name": "nk/edge",
       "variableCollectionId": "collection:colour",
       "resolvedType": "COLOR",
-      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "scopes": ["EFFECT_COLOR"],
       "codeSyntax": {
         "WEB": "var(--nk-edge)"
       }

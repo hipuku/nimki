@@ -459,6 +459,7 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
 function colourScopes(name: string): string[] {
   if (/(^|-)foreground$/.test(name)) return ['TEXT_FILL', 'SHAPE_FILL']
   if (/^(border|input|ring)$/.test(name)) return ['STROKE_COLOR']
+  if (/^nk\/(shadow-soft|shadow-strong|edge)$/.test(name)) return ['EFFECT_COLOR']
   if (/^(destructive|nk\/success|nk\/warning)$/.test(name)) {
     return ['TEXT_FILL', 'SHAPE_FILL', 'FRAME_FILL', 'STROKE_COLOR']
   }
