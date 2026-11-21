@@ -1,0 +1,21 @@
+{
+  "name": "tokens",
+  "private": true,
+  "type": "module",
+  "description": "nimki's DTCG token source and the generator that writes the CSS, the engine's token runtime and the Figma variables file",
+  "scripts": {
+    "write": "node src/cli.ts write",
+    "check": "node src/cli.ts check",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@hipuku/nimki": "workspace:^",
+    "@types/node": "^22.20.5",
+    "@vitest/coverage-v8": "^5.1.1",
+    "prettier": "^3.10.1",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.1"
+  }
+}

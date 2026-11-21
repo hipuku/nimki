@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { DURATION_CAPS_MS, capDuration } from './duration.js'
+import { capDuration } from './duration.js'
+import { DURATION_CAPS_MS } from './tokens.generated.js'
 
 describe('DURATION_CAPS_MS', () => {
   it('gives an enter and its exit the same cap', () => {
@@ -16,7 +17,7 @@ describe('capDuration', () => {
 
   it('clamps a duration over the cap to the cap', () => {
     expect(capDuration('press', 320)).toBe(DURATION_CAPS_MS.press)
-    expect(capDuration('sheet-enter', 900)).toBe(450)
+    expect(capDuration('sheet-enter', 900)).toBe(DURATION_CAPS_MS['sheet-enter'])
   })
 
   it('returns 0 for zero, negative and non-finite input', () => {

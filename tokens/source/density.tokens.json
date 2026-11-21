@@ -1,0 +1,55 @@
+{
+  "$description": "Density tokens (PRD FR-V5). The value is comfortable, which matches shadcn's default sizes; compact is a mode.",
+  "density": {
+    "$type": "dimension",
+    "control-sm": {
+      "$value": { "value": 32, "unit": "px" },
+      "$description": "shadcn size=\"sm\", h-8",
+      "$extensions": {
+        "dev.hipuku.nimki": { "modes": { "compact": { "value": 28, "unit": "px" } } }
+      }
+    },
+    "control-md": {
+      "$value": { "value": 36, "unit": "px" },
+      "$description": "shadcn default size, h-9",
+      "$extensions": {
+        "dev.hipuku.nimki": { "modes": { "compact": { "value": 32, "unit": "px" } } }
+      }
+    },
+    "control-lg": {
+      "$value": { "value": 40, "unit": "px" },
+      "$description": "shadcn size=\"lg\", h-10",
+      "$extensions": {
+        "dev.hipuku.nimki": { "modes": { "compact": { "value": 36, "unit": "px" } } }
+      }
+    },
+    "item": {
+      "$value": { "value": 32, "unit": "px" },
+      "$description": "Select and menu item height",
+      "$extensions": {
+        "dev.hipuku.nimki": { "modes": { "compact": { "value": 28, "unit": "px" } } }
+      }
+    },
+    "control-px": {
+      "$value": { "value": 16, "unit": "px" },
+      "$description": "Inline padding of a control, shadcn px-4",
+      "$extensions": {
+        "dev.hipuku.nimki": { "modes": { "compact": { "value": 12, "unit": "px" } } }
+      }
+    },
+    "gap": {
+      "$value": { "value": 8, "unit": "px" },
+      "$description": "Gap inside a control, shadcn gap-2",
+      "$extensions": {
+        "dev.hipuku.nimki": { "modes": { "compact": { "value": 6, "unit": "px" } } }
+      }
+    }
+  },
+  "limit": {
+    "hit-min": {
+      "$type": "dimension",
+      "$value": { "value": 24, "unit": "px" },
+      "$description": "No control or item is shorter than this in any density (WCAG 2.2, 2.5.8)."
+    }
+  }
+}

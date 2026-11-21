@@ -43,6 +43,10 @@ jobs:
       - name: Build engine
         run: pnpm run build:engine
 
+      # Every generated token file matches tokens/source (PRD FR-M5).
+      - name: Tokens
+        run: pnpm run tokens:check
+
       - name: ESLint
         if: always()
         run: pnpm run lint
@@ -117,6 +121,9 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # The token tests run the engine's spring maths from its dist/.
+      - name: Build engine
+        run: pnpm run build:engine
       # With coverage, so the floors in each vitest.config.ts are enforced here.
       - name: Test
         run: pnpm run test:coverage
