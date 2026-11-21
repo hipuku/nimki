@@ -12,5 +12,11 @@
   },
   "globs": ["**/*.md"],
   "gitignore": true,
-  "ignores": ["**/node_modules/**", "**/dist/**", "**/coverage/**", "**/.next/**"],
+  "ignores": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/coverage/**",
+    "**/.next/**",
+    "**/storybook-static/**",
+  ],
 }

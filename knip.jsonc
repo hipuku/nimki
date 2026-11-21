@@ -13,6 +13,12 @@
       "entry": ["src/**/*.test.ts"],
       "project": ["src/**/*.ts"],
     },
+    "apps/storybook": {
+      "entry": [".storybook/*.{ts,tsx}", "src/**/*.stories.tsx"],
+      // Imported by src/styles.css (@import 'tailwindcss'), which knip does not read.
+      "ignoreDependencies": ["tailwindcss"],
+      "project": ["src/**/*.{ts,tsx}", ".storybook/*.{ts,tsx}"],
+    },
     "apps/docs": {
       "project": ["app/**/*.{ts,tsx}"],
     },

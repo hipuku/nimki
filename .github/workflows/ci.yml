@@ -124,6 +124,9 @@ jobs:
       # The token tests run the engine's spring maths from its dist/.
       - name: Build engine
         run: pnpm run build:engine
+      # The stories run as tests in a real browser (apps/storybook).
+      - name: Install Chromium
+        run: pnpm --filter storybook exec playwright install --with-deps --only-shell chromium
       # With coverage, so the floors in each vitest.config.ts are enforced here.
       - name: Test
         run: pnpm run test:coverage
@@ -150,3 +153,7 @@ jobs:
       # under ESM and bundler resolution, and the tarball holds only dist/.
       - name: Package
         run: pnpm --filter @hipuku/nimki run check:package
+
+      # The engine's size budget (PRD NFR-9); per-component budgets join with components.
+      - name: Size
+        run: pnpm --filter @hipuku/nimki run size

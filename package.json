@@ -18,9 +18,10 @@
     "knip": "knip",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "pnpm run lint:names && pnpm run build:engine && pnpm run tokens:check && pnpm run lint && pnpm run lint:prose && pnpm run lint:md && pnpm run knip && pnpm run format:check && pnpm run typecheck && pnpm run test:coverage && pnpm run build && pnpm --filter @hipuku/nimki run check:package",
+    "check": "pnpm run lint:names && pnpm run build:engine && pnpm run tokens:check && pnpm run lint && pnpm run lint:prose && pnpm run lint:md && pnpm run knip && pnpm run format:check && pnpm run typecheck && pnpm run test:coverage && pnpm run build && pnpm --filter @hipuku/nimki run check:package && pnpm --filter @hipuku/nimki run size",
     "prepare": "git config core.hooksPath .githooks",
     "build:engine": "pnpm --filter @hipuku/nimki run build",
+    "storybook": "pnpm --filter storybook run dev",
     "tokens:write": "pnpm --filter tokens run write",
     "tokens:check": "pnpm --filter tokens run check"
   },

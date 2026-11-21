@@ -1,0 +1,55 @@
+name: Chromatic
+
+# Both events, because a baseline is promoted only when Chromatic builds the
+# base branch: on pull requests alone, main is never built and every pull
+# request reports the same changes against nothing (haus learned this).
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  visual:
+    name: Visual regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Forks have no access to the token, so their pull requests skip.
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Chromatic diffs against a baseline commit, so it needs the history;
+          # with a shallow clone every run reads as the first.
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build engine
+        run: pnpm run build:engine
+
+      - name: Publish to Chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
+        uses: chromaui/action@v18
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: apps/storybook
+          buildScriptName: build-storybook
+          # Only stories whose files changed are snapshotted, to keep inside the
+          # free plan's monthly quota.
+          onlyChanged: true
+          # A visual change is for a person to accept in Chromatic, not a red tick.
+          exitZeroOnChanges: true
+          autoAcceptChanges: false
+
+      - name: Say why this was skipped
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN == '' }}
+        run: echo "CHROMATIC_PROJECT_TOKEN is not set for this repository, so no snapshots were taken."

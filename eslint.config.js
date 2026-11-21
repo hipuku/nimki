@@ -10,7 +10,14 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 // accessibility, type-checked promise rules and exhaustive hook dependencies as
 // errors, from the first commit rather than added later.
 export default defineConfig([
-  globalIgnores(['**/dist', '**/.next', '**/coverage', '**/node_modules', '**/next-env.d.ts']),
+  globalIgnores([
+    '**/dist',
+    '**/.next',
+    '**/coverage',
+    '**/node_modules',
+    '**/next-env.d.ts',
+    '**/storybook-static',
+  ]),
 
   {
     files: ['**/*.{ts,tsx}'],
