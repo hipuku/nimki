@@ -50,6 +50,12 @@ describe('motion.css', () => {
     expect(outputs.motionCss).toContain(`--nk-spring-snappy-easing: ${spring.easing};`)
   })
 
+  it('scales press per theme, and not at all under reduced motion', () => {
+    expect(outputs.motionCss).toContain('--nk-press-scale: var(--nk-scale-xs);')
+    expect(outputs.motionCss).toContain('--nk-press-scale: var(--nk-scale-sm);')
+    expect(outputs.motionCss).toContain('--nk-press-scale: 1;')
+  })
+
   it('jumps the spring roles under reduced motion', () => {
     expect(outputs.motionCss).toContain('--nk-layout-duration: 0ms;')
     expect(outputs.motionCss).toContain('--nk-layout-easing: linear;')

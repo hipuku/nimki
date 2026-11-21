@@ -246,6 +246,17 @@
     },
     {
       "action": "CREATE",
+      "id": "variable:scale/xs",
+      "name": "scale/xs",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-scale-xs)"
+      }
+    },
+    {
+      "action": "CREATE",
       "id": "variable:scale/sm",
       "name": "scale/sm",
       "variableCollectionId": "collection:primitives",
@@ -330,6 +341,17 @@
       "scopes": [],
       "codeSyntax": {
         "WEB": "var(--nk-press-easing)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:press/scale",
+      "name": "press/scale",
+      "variableCollectionId": "collection:motion",
+      "resolvedType": "FLOAT",
+      "scopes": [],
+      "codeSyntax": {
+        "WEB": "var(--nk-press-scale)"
       }
     },
     {
@@ -818,6 +840,11 @@
       "value": 8
     },
     {
+      "variableId": "variable:scale/xs",
+      "modeId": "mode:primitives:value",
+      "value": 0.98
+    },
+    {
       "variableId": "variable:scale/sm",
       "modeId": "mode:primitives:value",
       "value": 0.96
@@ -864,6 +891,14 @@
       }
     },
     {
+      "variableId": "variable:press/scale",
+      "modeId": "mode:motion:subtle",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/xs"
+      }
+    },
+    {
       "variableId": "variable:press/duration",
       "modeId": "mode:motion:expressive",
       "value": {
@@ -877,6 +912,14 @@
       "value": {
         "type": "VARIABLE_ALIAS",
         "id": "variable:ease/move"
+      }
+    },
+    {
+      "variableId": "variable:press/scale",
+      "modeId": "mode:motion:expressive",
+      "value": {
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:scale/sm"
       }
     },
     {
@@ -894,6 +937,11 @@
         "type": "VARIABLE_ALIAS",
         "id": "variable:ease/move"
       }
+    },
+    {
+      "variableId": "variable:press/scale",
+      "modeId": "mode:motion:reduced",
+      "value": 1
     },
     {
       "variableId": "variable:highlight/duration",

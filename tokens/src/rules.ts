@@ -22,11 +22,14 @@ export function checkShape(set: TokenSet): string[] {
     const props = new Set(
       set.under(`role.${role}`).map(token => token.name.slice(`role.${role}.`.length)),
     )
+    // An enter moves and scales in; press may scale (FR-M16); an exit only fades.
     const wanted = props.has('spring')
       ? ['spring']
       : ENTER.test(role)
         ? ['duration', 'easing', 'offset', 'scale']
-        : ['duration', 'easing']
+        : !EXIT.test(role) && props.has('scale')
+          ? ['duration', 'easing', 'scale']
+          : ['duration', 'easing']
     if (props.has('spring') && (ENTER.test(role) || EXIT.test(role))) {
       problems.push(`role.${role}: an enter or exit cannot be a spring (FR-M3)`)
     }

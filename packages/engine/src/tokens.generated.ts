@@ -43,7 +43,7 @@ export interface RoleToken {
 /** Every role in every mode, resolved to values. The same values as the CSS custom properties. */
 export const MOTION_TOKENS: Record<MotionMode, Record<MotionRole, RoleToken>> = {
   subtle: {
-    press: { durationMs: 120, easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+    press: { durationMs: 120, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', scale: 0.98 },
     highlight: {
       durationMs: 353,
       easing:
@@ -88,7 +88,7 @@ export const MOTION_TOKENS: Record<MotionMode, Record<MotionRole, RoleToken>> = 
     'sheet-exit': { durationMs: 240, easing: 'cubic-bezier(0.4, 0, 1, 1)' },
   },
   expressive: {
-    press: { durationMs: 180, easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+    press: { durationMs: 180, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', scale: 0.96 },
     highlight: {
       durationMs: 335,
       easing:
@@ -133,7 +133,7 @@ export const MOTION_TOKENS: Record<MotionMode, Record<MotionRole, RoleToken>> = 
     'sheet-exit': { durationMs: 320, easing: 'cubic-bezier(0.4, 0, 1, 1)' },
   },
   reduced: {
-    press: { durationMs: 120, easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+    press: { durationMs: 120, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', scale: 1 },
     highlight: { durationMs: 0, easing: 'linear' },
     feedback: { durationMs: 0, easing: 'linear' },
     layout: { durationMs: 0, easing: 'linear' },

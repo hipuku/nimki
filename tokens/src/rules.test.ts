@@ -77,6 +77,11 @@ describe('shape', () => {
     expect(found).toContain('role.popover-exit: an enter or exit cannot be a spring (FR-M3)')
   })
 
+  it('fails a press that still scales under reduced motion (FR-M9)', () => {
+    const found = problems(m => (modes(m.role.press.scale).reduced = '{scale.xs}'))
+    expect(found).toContain('role.press (reduced): reduced motion cannot scale (scale 0.98)')
+  })
+
   it('needs both stagger tokens', () => {
     expect(problems(m => delete m.role.stagger.max)).toContain('role.stagger.max is missing')
   })

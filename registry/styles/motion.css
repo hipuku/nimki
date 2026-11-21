@@ -188,6 +188,7 @@
   );
   --nk-offset-sm: 4px;
   --nk-offset-md: 8px;
+  --nk-scale-xs: 0.98;
   --nk-scale-sm: 0.96;
   --nk-scale-md: 0.94;
   --nk-stagger-sm-step: 20ms;
@@ -201,6 +202,7 @@
 [data-motion='subtle'] {
   --nk-press-duration: var(--nk-duration-fast);
   --nk-press-easing: var(--nk-ease-move);
+  --nk-press-scale: var(--nk-scale-xs);
   --nk-highlight-duration: var(--nk-spring-snappy-duration);
   --nk-highlight-easing: var(--nk-spring-snappy-easing);
   --nk-feedback-duration: var(--nk-spring-snappy-duration);
@@ -232,6 +234,7 @@
 [data-motion='expressive'] {
   --nk-press-duration: var(--nk-duration-base);
   --nk-press-easing: var(--nk-ease-move);
+  --nk-press-scale: var(--nk-scale-sm);
   --nk-highlight-duration: var(--nk-spring-snappy-bounce-duration);
   --nk-highlight-easing: var(--nk-spring-snappy-bounce-easing);
   --nk-feedback-duration: var(--nk-spring-snappy-bounce-duration);
@@ -266,6 +269,7 @@
   [data-motion] {
     --nk-press-duration: var(--nk-duration-fast);
     --nk-press-easing: var(--nk-ease-move);
+    --nk-press-scale: 1;
     --nk-highlight-duration: 0ms;
     --nk-highlight-easing: linear;
     --nk-feedback-duration: 0ms;
@@ -300,6 +304,7 @@
 [data-motion-reduce] [data-motion] {
   --nk-press-duration: var(--nk-duration-fast);
   --nk-press-easing: var(--nk-ease-move);
+  --nk-press-scale: 1;
   --nk-highlight-duration: 0ms;
   --nk-highlight-easing: linear;
   --nk-feedback-duration: 0ms;

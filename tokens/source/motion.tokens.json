@@ -41,6 +41,7 @@
   },
   "scale": {
     "$type": "number",
+    "xs": { "$value": 0.98, "$description": "Press in the Subtle theme" },
     "sm": { "$value": 0.96 },
     "md": { "$value": 0.94 }
   },
@@ -72,6 +73,14 @@
         "$value": "{ease.move}",
         "$extensions": {
           "dev.hipuku.nimki": { "modes": { "expressive": "{ease.move}", "reduced": "{ease.move}" } }
+        }
+      },
+      "scale": {
+        "$type": "number",
+        "$description": "Large pressable surfaces, such as an interactive card, keep the state layer only and do not read this.",
+        "$value": "{scale.xs}",
+        "$extensions": {
+          "dev.hipuku.nimki": { "modes": { "expressive": "{scale.sm}", "reduced": 1 } }
         }
       }
     },
