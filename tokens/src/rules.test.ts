@@ -20,6 +20,7 @@ function renderWith(change: (motion: Json, density: Json) => void) {
   change(motion, density)
   return render(
     new TokenSet([
+      ...parseDocument(read('colour.tokens.json'), 'colour.tokens.json'),
       ...parseDocument(density, 'density.tokens.json'),
       ...parseDocument(motion, 'motion.tokens.json'),
     ]),

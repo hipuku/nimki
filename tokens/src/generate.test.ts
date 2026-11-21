@@ -94,6 +94,8 @@ describe('figma-variables.json', () => {
       'nimki/primitives',
       'nimki/motion',
       'nimki/density',
+      'nimki/colour',
+      'nimki/theme',
     ])
     const motion = figma.variableModes.filter(m => m.variableCollectionId === 'collection:motion')
     expect(motion.map(m => m.name)).toEqual(['Subtle', 'Expressive', 'Reduced'])
@@ -147,6 +149,17 @@ describe('figma-variables.json', () => {
   it('makes spring roles change at once under reduced motion', () => {
     expect(value('highlight/duration', 'mode:motion:reduced')).toBe(0)
     expect(value('highlight/easing', 'mode:motion:reduced')).toEqual({ type: 'LINEAR' })
+  })
+
+  it('aliases a colour where the CSS does, and resolves a derived one', () => {
+    expect(value('muted', 'mode:colour:dark')).toEqual({
+      type: 'VARIABLE_ALIAS',
+      id: 'variable:secondary',
+    })
+    const success = value('nk/success', 'mode:colour:light') as { r: number; g: number }
+    expect(success.g).toBeGreaterThan(success.r)
+    expect(value('font/sans', 'mode:theme:linear')).toBe('DM Sans')
+    expect(value('nk/hover-amount', 'mode:theme:linear')).toBe(8)
   })
 
   it('points every alias at a variable that exists', () => {

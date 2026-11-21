@@ -32,6 +32,33 @@ describe('parseDocument', () => {
     expect(tokens.map(t => t.value)).toEqual([{ literal: [0.4, 0, 1, 1] }, { literal: 0.96 }])
   })
 
+  it('reads an OKLCH colour, with alpha defaulting to 1', () => {
+    const tokens = parse({
+      a: { $type: 'color', $value: { colorSpace: 'oklch', components: [0.5, 0.1, 200] } },
+      b: { $type: 'color', $value: { colorSpace: 'oklch', components: [1, 0, 0], alpha: 0.08 } },
+    })
+    expect(tokens.map(t => t.value)).toEqual([
+      { literal: { l: 0.5, c: 0.1, h: 200, alpha: 1 } },
+      { literal: { l: 1, c: 0, h: 0, alpha: 0.08 } },
+    ])
+  })
+
+  it('reads a font family as one name or a list, and still reads an alias', () => {
+    const tokens = parse({
+      font: {
+        $type: 'fontFamily',
+        one: { $value: 'DM Sans' },
+        list: { $value: ['DM Mono', 'monospace'] },
+        alias: { $value: '{font.one}' },
+      },
+    })
+    expect(tokens.map(t => t.value)).toEqual([
+      { literal: ['DM Sans'] },
+      { literal: ['DM Mono', 'monospace'] },
+      { alias: 'font.one' },
+    ])
+  })
+
   it('keeps the description, the modes and the rest of the extension apart', () => {
     const [token] = parse({
       spring: {
@@ -61,11 +88,7 @@ describe('parseDocument', () => {
       { a: { $type: 'number', $value: 1, $deprecated: true } },
       /\$deprecated is not supported/,
     ],
-    [
-      'an unknown type',
-      { a: { $type: 'color', $value: '#fff' } },
-      /\$type "color" is not supported/,
-    ],
+    ['an unknown type', { a: { $type: 'shadow', $value: 1 } }, /\$type "shadow" is not supported/],
     ['a token with no type anywhere', { a: { $value: 1 } }, /no \$type/],
     ['a value on the root', { $type: 'number', $value: 1 }, /root cannot be a token/],
     [
@@ -88,6 +111,21 @@ describe('parseDocument', () => {
       'a duration in a unit it does not know',
       { a: { $type: 'duration', $value: { value: 1, unit: 'min' } } },
       /unit ms or s/,
+    ],
+    [
+      'a colour in another space',
+      { a: { $type: 'color', $value: { colorSpace: 'srgb', components: [1, 1, 1] } } },
+      /colorSpace: "oklch"/,
+    ],
+    [
+      'a colour lightness over 1',
+      { a: { $type: 'color', $value: { colorSpace: 'oklch', components: [1.2, 0, 0] } } },
+      /lightness is 0 to 1/,
+    ],
+    [
+      'an empty font family list',
+      { a: { $type: 'fontFamily', $value: [] } },
+      /a name or a list of names/,
     ],
     ['a dimension as a bare number', { a: { $type: 'dimension', $value: 4 } }, /unit px or rem/],
     [

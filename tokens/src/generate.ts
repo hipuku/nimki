@@ -2,14 +2,17 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { format, resolveConfig } from 'prettier'
 import { TokenSet, parseDocument } from './dtcg.ts'
-import { densityCss, engineTs, figmaVariables, motionCss } from './emit.ts'
+import { densityCss, engineTs, extensionsCss, figmaVariables, motionCss, themeCss } from './emit.ts'
 import { readDensity, readMotion } from './model.ts'
 import { checkDensity, checkMotion, checkShape } from './rules.ts'
+import { checkTheme, checkThemeShape, readTheme } from './theme.ts'
 
 /** Every generated file, by its path from the repository root. */
 export const OUTPUTS = {
   motionCss: 'registry/styles/motion.css',
   densityCss: 'registry/styles/density.css',
+  themeCss: 'registry/styles/theme-linear.css',
+  extensionsCss: 'registry/styles/extensions.css',
   engine: 'packages/engine/src/tokens.generated.ts',
   figma: 'tokens/generated/figma-variables.json',
 } as const
@@ -37,17 +40,20 @@ export function loadSource(dir: string): TokenSet {
 
 /** Checks the rules and renders every output, unformatted. Throws RuleError on a broken rule. */
 export function render(set: TokenSet): Record<keyof typeof OUTPUTS, string> {
-  const shape = checkShape(set)
+  const shape = [...checkShape(set), ...checkThemeShape(set)]
   if (shape.length > 0) throw new RuleError(shape)
   const motion = readMotion(set)
   const density = readDensity(set)
-  const problems = [...checkMotion(motion), ...checkDensity(density)]
+  const theme = readTheme(set)
+  const problems = [...checkMotion(motion), ...checkDensity(density), ...checkTheme(theme)]
   if (problems.length > 0) throw new RuleError(problems)
   return {
     motionCss: motionCss(motion),
     densityCss: densityCss(density),
+    themeCss: themeCss(theme),
+    extensionsCss: extensionsCss(theme),
     engine: engineTs(motion),
-    figma: figmaVariables(motion, density),
+    figma: figmaVariables(motion, density, theme),
   }
 }
 

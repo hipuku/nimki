@@ -11,13 +11,31 @@
 
 export const EXTENSION = 'dev.hipuku.nimki'
 
-export type TokenType = 'duration' | 'cubicBezier' | 'number' | 'dimension'
-const TYPES: readonly TokenType[] = ['duration', 'cubicBezier', 'number', 'dimension']
+export type TokenType = 'duration' | 'cubicBezier' | 'number' | 'dimension' | 'color' | 'fontFamily'
+const TYPES: readonly TokenType[] = [
+  'duration',
+  'cubicBezier',
+  'number',
+  'dimension',
+  'color',
+  'fontFamily',
+]
 
 export type CubicBezier = [number, number, number, number]
 
-/** A literal value after units are normalised: durations in ms, dimensions in px. */
-export type Literal = number | CubicBezier
+/** An OKLCH colour, the only colour space the source uses. */
+export interface Oklch {
+  l: number
+  c: number
+  h: number
+  alpha: number
+}
+
+/**
+ * A literal value after units are normalised: durations in ms, dimensions in
+ * px, colours as OKLCH, font families as a list of names.
+ */
+export type Literal = number | CubicBezier | Oklch | string[]
 
 export interface Token {
   /** Dot path, as an alias writes it: "duration.fast". */
@@ -49,7 +67,8 @@ function isObject(value: unknown): value is Record<string, unknown> {
 }
 
 function readEntry(raw: unknown, type: TokenType, where: string): Entry {
-  if (typeof raw === 'string') {
+  // A font family may be written as one name; anything else in a string is an alias.
+  if (typeof raw === 'string' && !(type === 'fontFamily' && !raw.startsWith('{'))) {
     const match = ALIAS.exec(raw)
     if (!match?.[1])
       throw new TokenError(`${where}: "${raw}" is not an alias of the form {group.token}`)
@@ -60,6 +79,36 @@ function readEntry(raw: unknown, type: TokenType, where: string): Entry {
 
 function readLiteral(raw: unknown, type: TokenType, where: string): Literal {
   switch (type) {
+    case 'color': {
+      if (
+        isObject(raw) &&
+        raw.colorSpace === 'oklch' &&
+        Array.isArray(raw.components) &&
+        raw.components.length === 3 &&
+        raw.components.every(n => typeof n === 'number' && Number.isFinite(n)) &&
+        (raw.alpha === undefined ||
+          (typeof raw.alpha === 'number' && raw.alpha >= 0 && raw.alpha <= 1))
+      ) {
+        const [l, c, h] = raw.components as [number, number, number]
+        if (l < 0 || l > 1 || c < 0)
+          throw new TokenError(`${where}: OKLCH lightness is 0 to 1 and chroma is not negative`)
+        return { l, c, h, alpha: raw.alpha ?? 1 }
+      }
+      throw new TokenError(
+        `${where}: a color token needs { colorSpace: "oklch", components: [l, c, h], alpha? }`,
+      )
+    }
+    case 'fontFamily': {
+      const names = typeof raw === 'string' ? [raw] : raw
+      if (
+        Array.isArray(names) &&
+        names.length > 0 &&
+        names.every(n => typeof n === 'string' && n.length > 0)
+      ) {
+        return names as string[]
+      }
+      throw new TokenError(`${where}: a fontFamily token needs a name or a list of names`)
+    }
     case 'number':
       if (typeof raw === 'number' && Number.isFinite(raw)) return raw
       throw new TokenError(`${where}: a number token needs a finite number`)

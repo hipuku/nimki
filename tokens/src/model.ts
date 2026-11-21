@@ -87,8 +87,10 @@ function numberOf(set: TokenSet, name: string, mode?: string): number {
 
 function bezierOf(set: TokenSet, name: string, mode?: string): CubicBezier {
   const { literal } = set.resolve(name, mode)
-  if (typeof literal === 'number') throw new TokenError(`${name} must resolve to a cubic bezier`)
-  return literal
+  if (!Array.isArray(literal) || typeof literal[0] !== 'number') {
+    throw new TokenError(`${name} must resolve to a cubic bezier`)
+  }
+  return literal as CubicBezier
 }
 
 function bounceOf(set: TokenSet, name: string): number | undefined {
