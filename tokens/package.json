@@ -8,7 +8,10 @@
     "check": "node src/cli.ts check",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "figma:check": "node src/figma-cli.ts check",
+    "figma:script": "node src/figma-cli.ts script",
+    "figma:save": "node src/figma-cli.ts save"
   },
   "devDependencies": {
     "@hipuku/nimki": "workspace:^",
