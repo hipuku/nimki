@@ -10,7 +10,13 @@ const outputs = render(loadSource(join(root, 'tokens/source')))
 interface Figma {
   variableCollections: { id: string; name: string; initialModeId: string }[]
   variableModes: { id: string; name: string; variableCollectionId: string; action: string }[]
-  variables: { id: string; name: string; resolvedType: string; codeSyntax?: { WEB: string } }[]
+  variables: {
+    id: string
+    name: string
+    resolvedType: string
+    scopes: string[]
+    codeSyntax?: { WEB: string }
+  }[]
   variableModeValues: { variableId: string; modeId: string; value: unknown }[]
 }
 const figma = JSON.parse(outputs.figma) as Figma
@@ -174,13 +180,12 @@ describe('figma-variables.json', () => {
     expect(syntax('duration/fast')).toEqual({ WEB: 'var(--nk-duration-fast)' })
     expect(syntax('control-md')).toEqual({ WEB: 'var(--nk-control-md)' })
     expect(syntax('spring/snappy/duration')).toBeUndefined()
+    expect(syntax('spring/snappy/easing')).toEqual({ WEB: 'var(--nk-spring-snappy-easing)' })
   })
 
   it('offers shadow colours only to effects', () => {
-    const scopes = (name: string) =>
-      (figma.variables as { name: string; scopes?: string[] }[]).find(v => v.name === name)?.scopes
+    const scopes = (name: string) => figma.variables.find(v => v.name === name)?.scopes
     expect(scopes('nk/shadow-soft')).toEqual(['EFFECT_COLOR'])
     expect(scopes('nk/edge')).toEqual(['EFFECT_COLOR'])
-    expect(syntax('spring/snappy/easing')).toEqual({ WEB: 'var(--nk-spring-snappy-easing)' })
   })
 })
