@@ -189,6 +189,15 @@ describe('outputs', () => {
     expect(darkBlock).toContain('--nk-scrim: oklch(0 0 0 / 60%);')
     expect(darkBlock).toContain('--nk-elevation-1:')
   })
+
+  it('maps every colour and the radius steps to Tailwind utilities', () => {
+    expect(out.tailwindCss).toContain('@theme inline {')
+    expect(out.tailwindCss).toContain('--color-foreground: var(--foreground);')
+    expect(out.tailwindCss).toContain('--color-input: var(--input);')
+    expect(out.tailwindCss).toContain('--color-nk-success: var(--nk-success);')
+    expect(out.tailwindCss).toContain('--radius-md: calc(var(--radius) - 2px);')
+    expect(out.tailwindCss).not.toContain('--font-')
+  })
 })
 
 describe('helpers', () => {
