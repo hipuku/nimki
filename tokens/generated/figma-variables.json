@@ -988,6 +988,39 @@
     },
     {
       "action": "CREATE",
+      "id": "variable:nk/shadow-soft",
+      "name": "nk/shadow-soft",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--nk-shadow-soft)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/shadow-strong",
+      "name": "nk/shadow-strong",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--nk-shadow-strong)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/edge",
+      "name": "nk/edge",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--nk-edge)"
+      }
+    },
+    {
+      "action": "CREATE",
       "id": "variable:radius",
       "name": "radius",
       "variableCollectionId": "collection:theme",
@@ -2251,9 +2284,9 @@
       "variableId": "variable:input",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.8769,
-        "g": 0.8833,
-        "b": 0.8937,
+        "r": 0.5436,
+        "g": 0.5495,
+        "b": 0.559,
         "a": 1
       }
     },
@@ -2261,10 +2294,10 @@
       "variableId": "variable:input",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 1,
-        "g": 1,
-        "b": 1,
-        "a": 0.12
+        "r": 0.4033,
+        "g": 0.4117,
+        "b": 0.4252,
+        "a": 1
       }
     },
     {
@@ -2380,6 +2413,66 @@
       }
     },
     {
+      "variableId": "variable:nk/shadow-soft",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      }
+    },
+    {
+      "variableId": "variable:nk/shadow-soft",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.24
+      }
+    },
+    {
+      "variableId": "variable:nk/shadow-strong",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.12
+      }
+    },
+    {
+      "variableId": "variable:nk/shadow-strong",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.48
+      }
+    },
+    {
+      "variableId": "variable:nk/edge",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.0801,
+        "g": 0.0867,
+        "b": 0.0973,
+        "a": 0
+      }
+    },
+    {
+      "variableId": "variable:nk/edge",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.9431,
+        "g": 0.948,
+        "b": 0.9559,
+        "a": 0.06
+      }
+    },
+    {
       "variableId": "variable:radius",
       "modeId": "mode:theme:linear",
       "value": 6
@@ -2413,6 +2506,80 @@
       "variableId": "variable:nk/pressed-amount",
       "modeId": "mode:theme:linear",
       "value": 12
+    }
+  ],
+  "effectStyles": [
+    {
+      "name": "elevation/1",
+      "codeSyntax": "var(--nk-elevation-1)",
+      "layers": [
+        {
+          "type": "DROP_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "radius": 2,
+          "spread": 0,
+          "colorVariableId": "variable:nk/shadow-soft"
+        },
+        {
+          "type": "DROP_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 4
+          },
+          "radius": 12,
+          "spread": 0,
+          "colorVariableId": "variable:nk/shadow-soft"
+        },
+        {
+          "type": "INNER_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "radius": 0,
+          "spread": 0,
+          "colorVariableId": "variable:nk/edge"
+        }
+      ]
+    },
+    {
+      "name": "elevation/2",
+      "codeSyntax": "var(--nk-elevation-2)",
+      "layers": [
+        {
+          "type": "DROP_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 2
+          },
+          "radius": 4,
+          "spread": 0,
+          "colorVariableId": "variable:nk/shadow-soft"
+        },
+        {
+          "type": "DROP_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 16
+          },
+          "radius": 40,
+          "spread": 0,
+          "colorVariableId": "variable:nk/shadow-strong"
+        },
+        {
+          "type": "INNER_SHADOW",
+          "offset": {
+            "x": 0,
+            "y": 1
+          },
+          "radius": 0,
+          "spread": 0,
+          "colorVariableId": "variable:nk/edge"
+        }
+      ]
     }
   ]
 }

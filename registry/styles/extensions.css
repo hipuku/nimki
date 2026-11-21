@@ -6,12 +6,32 @@
   --nk-highlight: var(--accent);
   --nk-highlight-foreground: var(--accent-foreground);
   --nk-scrim: oklch(0 0 0 / 50%);
+  --nk-shadow-soft: oklch(0 0 0 / 6%);
+  --nk-shadow-strong: oklch(0 0 0 / 12%);
+  --nk-edge: color-mix(in oklch, var(--foreground) 0%, transparent);
   --nk-hover-amount: 8%;
   --nk-pressed-amount: 12%;
+  --nk-elevation-1:
+    0px 1px 2px 0px var(--nk-shadow-soft), 0px 4px 12px 0px var(--nk-shadow-soft),
+    inset 0px 1px 0px 0px var(--nk-edge);
+  --nk-elevation-2:
+    0px 2px 4px 0px var(--nk-shadow-soft), 0px 16px 40px 0px var(--nk-shadow-strong),
+    inset 0px 1px 0px 0px var(--nk-edge);
 }
 
 .dark {
   --nk-success: oklch(from var(--destructive) l min(c, 0.175) 150);
   --nk-warning: oklch(from var(--destructive) calc(l + 0.12) min(c, 0.155) 80);
+  --nk-highlight: var(--accent);
+  --nk-highlight-foreground: var(--accent-foreground);
   --nk-scrim: oklch(0 0 0 / 60%);
+  --nk-shadow-soft: oklch(0 0 0 / 24%);
+  --nk-shadow-strong: oklch(0 0 0 / 48%);
+  --nk-edge: color-mix(in oklch, var(--foreground) 6%, transparent);
+  --nk-elevation-1:
+    0px 1px 2px 0px var(--nk-shadow-soft), 0px 4px 12px 0px var(--nk-shadow-soft),
+    inset 0px 1px 0px 0px var(--nk-edge);
+  --nk-elevation-2:
+    0px 2px 4px 0px var(--nk-shadow-soft), 0px 16px 40px 0px var(--nk-shadow-strong),
+    inset 0px 1px 0px 0px var(--nk-edge);
 }

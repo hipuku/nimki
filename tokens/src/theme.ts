@@ -1,5 +1,5 @@
 import { contrast, inSrgb, oklchCss } from './colour.ts'
-import { TokenError, type Oklch, type TokenSet } from './dtcg.ts'
+import { TokenError, type Oklch, type ShadowLayer, type TokenSet } from './dtcg.ts'
 
 export const COLOUR_MODES = ['light', 'dark'] as const
 export type ColourMode = (typeof COLOUR_MODES)[number]
@@ -23,8 +23,16 @@ export interface ThemeColour {
   css: Record<ColourMode, string>
 }
 
+export interface ThemeShadow {
+  token: string
+  cssVar: string
+  css: string
+  layers: ShadowLayer[]
+}
+
 export interface Theme {
   colours: ThemeColour[]
+  shadows: ThemeShadow[]
   amounts: { token: string; cssVar: string; value: number }[]
   radiusPx: number
   fonts: { token: string; cssVar: string; families: string[] }[]
@@ -80,16 +88,25 @@ function recipeCss(baseVar: string, recipe: Recipe): string {
 function readColour(set: TokenSet, name: string): ThemeColour {
   const token = set.get(name)
   const relative = token.extension.relative
+  const mix = token.extension.mix as Record<string, unknown> | undefined
   const value = {} as Record<ColourMode, Oklch>
   const css = {} as Record<ColourMode, string>
   for (const mode of COLOUR_MODES) {
     const entry = (mode === 'light' ? undefined : token.modes[mode]) ?? token.value
     const alias = 'alias' in entry ? entry.alias : null
-    if (relative !== undefined) {
-      if (!alias) throw new TokenError(`${name}: a relative colour must alias its base`)
+    // checkThemeShape has already refused a recipe on a colour that aliases nothing.
+    if (relative !== undefined && alias) {
       const recipe = readRecipe(name, (relative as Record<string, unknown>)[mode])
       value[mode] = applyRecipe(colourOf(set, alias, mode), recipe)
       css[mode] = recipeCss(themeVar(alias), recipe)
+    } else if (mix !== undefined && alias) {
+      // The base at a share of its opacity: color-mix with transparent.
+      const amount = mix[mode]
+      if (typeof amount !== 'number') throw new TokenError(`${name}: mix needs a ${mode} amount`)
+      const base = colourOf(set, alias, mode)
+      value[mode] = { ...base, alpha: base.alpha * amount }
+      css[mode] =
+        `color-mix(in oklch, var(${themeVar(alias)}) ${Number((amount * 100).toFixed(4))}%, transparent)`
     } else {
       value[mode] = colourOf(set, name, mode)
       css[mode] = alias ? `var(${themeVar(alias)})` : oklchCss(value[mode])
@@ -102,10 +119,17 @@ export function readTheme(set: TokenSet): Theme {
   const colourNames = [...set.under('color'), ...set.under('nk')]
     .filter(token => token.type === 'color')
     .map(token => token.name)
-  const radius = set.resolve('radius').literal
-  if (typeof radius !== 'number') throw new TokenError('radius must resolve to a dimension')
+  // The parser has already checked radius is a dimension, so this is px.
+  const radius = set.resolve('radius').literal as number
   return {
     colours: colourNames.map(name => readColour(set, name)),
+    shadows: set
+      .under('nk')
+      .filter(token => token.type === 'shadow')
+      .map(token => {
+        const layers = set.resolve(token.name).literal as ShadowLayer[]
+        return { token: token.name, cssVar: themeVar(token.name), css: shadowCss(layers), layers }
+      }),
     amounts: set
       .under('nk')
       .filter(token => token.type === 'number')
@@ -142,7 +166,13 @@ export const TEXT_PAIRS: [string, string][] = [
 ]
 
 /** Pairs that must reach 3:1, for focus indicators (FR-V9, FR-V10). */
-export const UI_PAIRS: [string, string][] = [['color.ring', 'color.background']]
+export const UI_PAIRS: [string, string][] = [
+  ['color.ring', 'color.background'],
+  // The edge that identifies a field (WCAG 2.2, 1.4.11), wherever a field sits.
+  ['color.input', 'color.background'],
+  ['color.input', 'color.card'],
+  ['color.input', 'color.popover'],
+]
 
 /** Source shape for the theme: colour tokens carry exactly the dark mode, unless they alias. */
 export function checkThemeShape(set: TokenSet): string[] {
@@ -150,19 +180,35 @@ export function checkThemeShape(set: TokenSet): string[] {
   for (const token of [...set.under('color'), ...set.under('nk')]) {
     if (token.type !== 'color') continue
     const modes = Object.keys(token.modes).join(', ')
-    const relative = token.extension.relative !== undefined
+    const recipe = (token.extension.relative ?? token.extension.mix) as
+      Record<string, unknown> | undefined
     if ('alias' in token.value) {
       if (modes) problems.push(`${token.name} aliases a colour, so it takes no modes`)
-      if (relative) {
+      if (recipe) {
         for (const mode of COLOUR_MODES) {
-          if ((token.extension.relative as Record<string, unknown>)[mode] === undefined) {
-            problems.push(`${token.name} has no ${mode} recipe`)
-          }
+          if (recipe[mode] === undefined) problems.push(`${token.name} has no ${mode} recipe`)
         }
       }
     } else {
-      if (relative) problems.push(`${token.name} has a recipe but no base to apply it to`)
+      if (recipe) problems.push(`${token.name} has a recipe but no base to apply it to`)
       if (modes !== 'dark') problems.push(`${token.name} has modes [${modes}]; it needs [dark]`)
+    }
+  }
+  // A shadow keeps one shape in both modes; its layer colours carry the dark mode.
+  for (const token of set.under('nk')) {
+    if (token.type !== 'shadow') continue
+    if (Object.keys(token.modes).length > 0) {
+      problems.push(`${token.name} takes no modes; give its layer colours a dark mode instead`)
+    }
+    if ('literal' in token.value) {
+      for (const layer of token.value.literal as ShadowLayer[]) {
+        if ('alias' in layer.color) {
+          const target = set.tokens.get(layer.color.alias)
+          if (target?.type !== 'color') {
+            problems.push(`${token.name}: {${layer.color.alias}} is not a color token`)
+          }
+        }
+      }
     }
   }
   return problems
@@ -208,4 +254,16 @@ export function checkTheme(theme: Theme): string[] {
 /** A font family list as CSS: names with spaces quoted, generic families as written. */
 export function fontCss(families: string[]): string {
   return families.map(name => (/\s/.test(name) ? `"${name}"` : name)).join(', ')
+}
+
+/** A shadow as CSS box-shadow layers; a layer colour that aliases a token reads its custom property. */
+export function shadowCss(layers: ShadowLayer[]): string {
+  return layers
+    .map(layer => {
+      const colour =
+        'alias' in layer.color ? `var(${themeVar(layer.color.alias)})` : oklchCss(layer.color)
+      const inset = layer.inset ? 'inset ' : ''
+      return `${inset}${layer.x}px ${layer.y}px ${layer.blur}px ${layer.spread}px ${colour}`
+    })
+    .join(', ')
 }

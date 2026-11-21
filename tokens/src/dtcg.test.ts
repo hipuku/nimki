@@ -59,6 +59,32 @@ describe('parseDocument', () => {
     ])
   })
 
+  it('reads a shadow as layers, with colours as values or aliases', () => {
+    const px = (value: number) => ({ value, unit: 'px' })
+    const [token] = parse({
+      a: {
+        $type: 'shadow',
+        $value: [
+          { color: '{c.soft}', offsetX: px(0), offsetY: px(4), blur: px(12), spread: px(0) },
+          {
+            color: { colorSpace: 'oklch', components: [1, 0, 0], alpha: 0.06 },
+            offsetX: px(0),
+            offsetY: px(1),
+            blur: px(0),
+            spread: px(0),
+            inset: true,
+          },
+        ],
+      },
+    })
+    expect(token?.value).toEqual({
+      literal: [
+        { color: { alias: 'c.soft' }, x: 0, y: 4, blur: 12, spread: 0, inset: false },
+        { color: { l: 1, c: 0, h: 0, alpha: 0.06 }, x: 0, y: 1, blur: 0, spread: 0, inset: true },
+      ],
+    })
+  })
+
   it('keeps the description, the modes and the rest of the extension apart', () => {
     const [token] = parse({
       spring: {
@@ -88,7 +114,11 @@ describe('parseDocument', () => {
       { a: { $type: 'number', $value: 1, $deprecated: true } },
       /\$deprecated is not supported/,
     ],
-    ['an unknown type', { a: { $type: 'shadow', $value: 1 } }, /\$type "shadow" is not supported/],
+    [
+      'an unknown type',
+      { a: { $type: 'gradient', $value: 1 } },
+      /\$type "gradient" is not supported/,
+    ],
     ['a token with no type anywhere', { a: { $value: 1 } }, /no \$type/],
     ['a value on the root', { $type: 'number', $value: 1 }, /root cannot be a token/],
     [
@@ -121,6 +151,29 @@ describe('parseDocument', () => {
       'a colour lightness over 1',
       { a: { $type: 'color', $value: { colorSpace: 'oklch', components: [1.2, 0, 0] } } },
       /lightness is 0 to 1/,
+    ],
+    ['a shadow with no layers', { a: { $type: 'shadow', $value: [] } }, /at least one layer/],
+    [
+      'a shadow layer that is not an object',
+      { a: { $type: 'shadow', $value: [1] } },
+      /must be an object/,
+    ],
+    [
+      'a shadow layer with a non-boolean inset',
+      {
+        a: {
+          $type: 'shadow',
+          $value: {
+            color: '{b}',
+            offsetX: { value: 0, unit: 'px' },
+            offsetY: { value: 1, unit: 'px' },
+            blur: { value: 0, unit: 'px' },
+            spread: { value: 0, unit: 'px' },
+            inset: 'yes',
+          },
+        },
+      },
+      /inset must be true or false/,
     ],
     [
       'an empty font family list',

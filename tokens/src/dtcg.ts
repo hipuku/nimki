@@ -11,7 +11,8 @@
 
 export const EXTENSION = 'dev.hipuku.nimki'
 
-export type TokenType = 'duration' | 'cubicBezier' | 'number' | 'dimension' | 'color' | 'fontFamily'
+export type TokenType =
+  'duration' | 'cubicBezier' | 'number' | 'dimension' | 'color' | 'fontFamily' | 'shadow'
 const TYPES: readonly TokenType[] = [
   'duration',
   'cubicBezier',
@@ -19,6 +20,7 @@ const TYPES: readonly TokenType[] = [
   'dimension',
   'color',
   'fontFamily',
+  'shadow',
 ]
 
 export type CubicBezier = [number, number, number, number]
@@ -35,7 +37,17 @@ export interface Oklch {
  * A literal value after units are normalised: durations in ms, dimensions in
  * px, colours as OKLCH, font families as a list of names.
  */
-export type Literal = number | CubicBezier | Oklch | string[]
+export type Literal = number | CubicBezier | Oklch | string[] | ShadowLayer[]
+
+/** One layer of a shadow. Its colour is a value or an alias of a color token. */
+export interface ShadowLayer {
+  color: Oklch | { alias: string }
+  x: number
+  y: number
+  blur: number
+  spread: number
+  inset: boolean
+}
 
 export interface Token {
   /** Dot path, as an alias writes it: "duration.fast". */
@@ -97,6 +109,30 @@ function readLiteral(raw: unknown, type: TokenType, where: string): Literal {
       throw new TokenError(
         `${where}: a color token needs { colorSpace: "oklch", components: [l, c, h], alpha? }`,
       )
+    }
+    case 'shadow': {
+      const layers: unknown[] = Array.isArray(raw) ? raw : [raw]
+      if (layers.length === 0) throw new TokenError(`${where}: a shadow needs at least one layer`)
+      return layers.map((layer, i) => {
+        const at = `${where} (layer ${i + 1})`
+        if (!isObject(layer)) throw new TokenError(`${at}: a shadow layer must be an object`)
+        const px = (key: string) => readLiteral(layer[key], 'dimension', `${at} ${key}`) as number
+        const color: ShadowLayer['color'] =
+          typeof layer.color === 'string'
+            ? (readEntry(layer.color, 'color', `${at} color`) as { alias: string })
+            : (readLiteral(layer.color, 'color', `${at} color`) as Oklch)
+        if (layer.inset !== undefined && typeof layer.inset !== 'boolean') {
+          throw new TokenError(`${at}: inset must be true or false`)
+        }
+        return {
+          color,
+          x: px('offsetX'),
+          y: px('offsetY'),
+          blur: px('blur'),
+          spread: px('spread'),
+          inset: layer.inset === true,
+        }
+      })
     }
     case 'fontFamily': {
       const names = typeof raw === 'string' ? [raw] : raw

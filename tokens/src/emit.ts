@@ -233,7 +233,8 @@ const seconds = (ms: number) => ms / 1000
 
 /**
  * tokens/generated/figma-variables.json, in the shape of the body of Figma's
- * POST /v1/files/:key/variables. Ids are temporary ids that tie the entries
+ * POST /v1/files/:key/variables, plus effectStyles for the elevations, which
+ * that endpoint does not cover. Ids are temporary ids that tie the entries
  * together; the Figma build reads this file and creates the variables.
  *
  * Durations are TIMING variables and easings are EASING variables, Figma's
@@ -426,12 +427,29 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
     set(id, t, Number((amount.value * 100).toFixed(4)))
   }
 
+  // Shadows cannot be variables, so each elevation is an effect style whose
+  // layer colours are bound to colour variables, and switches with the mode.
+  const effectStyles = theme.shadows.map(shadow => ({
+    name: shadow.token.slice('nk.'.length).replace('-', '/'),
+    codeSyntax: `var(${shadow.cssVar})`,
+    layers: shadow.layers.map(layer => ({
+      type: layer.inset ? 'INNER_SHADOW' : 'DROP_SHADOW',
+      offset: { x: layer.x, y: layer.y },
+      radius: layer.blur,
+      spread: layer.spread,
+      ...('alias' in layer.color
+        ? { colorVariableId: `variable:${layer.color.alias.split('.').join('/')}` }
+        : { color: toSrgb(layer.color) }),
+    })),
+  }))
+
   return JSON.stringify(
     {
       variableCollections: collections,
       variableModes: modes,
       variables,
       variableModeValues: values,
+      effectStyles,
     },
     null,
     2,
@@ -489,14 +507,17 @@ export function extensionsCss(theme: Theme): string {
       ...theme.amounts.map(
         amount => `${amount.cssVar}: ${Number((amount.value * 100).toFixed(4))}%;`,
       ),
+      // One shape in both modes: the dark block changes the layer colours, not the layers.
+      ...theme.shadows.map(shadow => `${shadow.cssVar}: ${shadow.css};`),
     ]),
     '',
-    themeBlock(
-      '.dark',
-      nk
-        .filter(colour => colour.css.dark !== colour.css.light)
-        .map(colour => `${colour.cssVar}: ${colour.css.dark};`),
-    ),
+    // Every colour and shadow again, even where the text is the same: a var()
+    // is worked out where it is declared, so a .dark subtree has to redeclare
+    // --nk-highlight: var(--accent) to pick up its own --accent.
+    themeBlock('.dark', [
+      ...nk.map(colour => `${colour.cssVar}: ${colour.css.dark};`),
+      ...theme.shadows.map(shadow => `${shadow.cssVar}: ${shadow.css};`),
+    ]),
     '',
   ].join('\n')
 }

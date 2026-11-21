@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument --
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment --
    These tests edit the raw colour JSON one field at a time to break one rule. */
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { TokenSet, parseDocument } from './dtcg.ts'
 import { RuleError, render } from './generate.ts'
-import { fontCss, themeVar } from './theme.ts'
+import { fontCss, shadowCss, themeVar } from './theme.ts'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Json = Record<string, any>
@@ -57,6 +57,48 @@ describe('contrast (FR-V9)', () => {
   it('fails a focus ring under 3:1 (FR-V10)', () => {
     const found = problems(c => (dark(c.color.ring).dark = oklch(0.25, 0.01, 260)))
     expect(found.some(p => p.startsWith('color.ring on color.background (dark):'))).toBe(true)
+  })
+})
+
+describe('fields and elevation', () => {
+  it('fails an input border under 3:1 on any surface a field sits on (WCAG 2.2, 1.4.11)', () => {
+    const found = problems(c => (dark(c.color.input).dark = oklch(0.4, 0.006, 260)))
+    expect(found.some(p => p.startsWith('color.input on color.popover (dark):'))).toBe(true)
+  })
+
+  it('keeps one shadow shape in both modes', () => {
+    const found = problems(c => {
+      c.nk['elevation-1'].$extensions = {
+        'dev.hipuku.nimki': { modes: { dark: c.nk['elevation-2'].$value } },
+      }
+    })
+    expect(found).toContain(
+      'nk.elevation-1 takes no modes; give its layer colours a dark mode instead',
+    )
+  })
+
+  it('needs a shadow layer colour to point at a colour', () => {
+    const found = problems(c => (c.nk['elevation-2'].$value[0].color = '{radius}'))
+    expect(found).toContain('nk.elevation-2: {radius} is not a color token')
+  })
+
+  it('needs a mix amount for both modes', () => {
+    const found = problems(c => delete c.nk.edge.$extensions['dev.hipuku.nimki'].mix.dark)
+    expect(found).toContain('nk.edge has no dark recipe')
+  })
+
+  it('refuses a mix amount that is not a number', () => {
+    expect(() =>
+      renderWith(c => (c.nk.edge.$extensions['dev.hipuku.nimki'].mix.dark = 'some')),
+    ).toThrow(/nk.edge: mix needs a dark amount/)
+  })
+
+  it('fades the edge by mixing --foreground with transparent', () => {
+    const { extensionsCss } = renderWith(() => {})
+    expect(extensionsCss).toContain(
+      '--nk-edge: color-mix(in oklch, var(--foreground) 6%, transparent);',
+    )
+    expect(extensionsCss).toContain('inset 0px 1px 0px 0px var(--nk-edge)')
   })
 })
 
@@ -141,10 +183,11 @@ describe('outputs', () => {
     expect(out.extensionsCss).toContain('--nk-hover-amount: 8%;')
   })
 
-  it('leaves out of the dark block what does not change in dark mode', () => {
+  it('redeclares every derived colour and shadow in the dark block, so a .dark subtree recomputes them', () => {
     const darkBlock = out.extensionsCss.slice(out.extensionsCss.indexOf('.dark'))
-    expect(darkBlock).not.toContain('--nk-highlight')
+    expect(darkBlock).toContain('--nk-highlight: var(--accent);')
     expect(darkBlock).toContain('--nk-scrim: oklch(0 0 0 / 60%);')
+    expect(darkBlock).toContain('--nk-elevation-1:')
   })
 })
 
@@ -153,6 +196,18 @@ describe('helpers', () => {
     expect(themeVar('color.card-foreground')).toBe('--card-foreground')
     expect(themeVar('nk.success')).toBe('--nk-success')
     expect(themeVar('font.sans')).toBe('--font-sans')
+  })
+
+  it('writes a shadow layer colour given as a value as oklch()', () => {
+    const layer = {
+      color: { l: 0, c: 0, h: 0, alpha: 0.1 },
+      x: 0,
+      y: 2,
+      blur: 4,
+      spread: 0,
+      inset: false,
+    }
+    expect(shadowCss([layer])).toBe('0px 2px 4px 0px oklch(0 0 0 / 10%)')
   })
 
   it('quotes only family names with spaces', () => {

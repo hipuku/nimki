@@ -47,6 +47,7 @@ Generation stops, listing every problem, if the source breaks a rule from the PR
 - No bounce over 0.2, offset over 12 px or scale under 0.92 (FR-M13).
 - Reduced motion has no springs, movement, scale or stagger, and nothing over 120 ms (FR-M9).
 - Compact is never larger than comfortable, and no control or item is under 24 px (FR-V5).
-- Every text pairing reaches 4.5:1 and the focus ring 3:1 against the background, in both modes, and every opaque colour fits in sRGB (FR-V9, FR-V10).
+- Every text pairing reaches 4.5:1, and the focus ring and the input border 3:1, in both modes; every opaque colour fits in sRGB (FR-V9, FR-V10, WCAG 2.2 1.4.11).
+- A shadow keeps one shape in both modes. Its layer colours carry the dark mode, so the Figma effect style can switch with the mode too.
 
 The parser reads only the DTCG features the source uses and refuses the rest by name, so a feature added to the source without parser support fails rather than being ignored.
