@@ -1,0 +1,1218 @@
+{
+  "collections": {
+    "nimki/primitives": ["Value"],
+    "nimki/motion": ["Subtle", "Expressive", "Reduced"],
+    "nimki/density": ["Comfortable", "Compact"],
+    "nimki/colour": ["Light", "Dark"],
+    "nimki/theme": ["Linear"]
+  },
+  "variables": {
+    "duration/fast": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-duration-fast)",
+      "scopes": null,
+      "values": {
+        "Value": 0.12
+      }
+    },
+    "duration/base": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-duration-base)",
+      "scopes": null,
+      "values": {
+        "Value": 0.18
+      }
+    },
+    "duration/moderate": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-duration-moderate)",
+      "scopes": null,
+      "values": {
+        "Value": 0.24
+      }
+    },
+    "duration/slow": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-duration-slow)",
+      "scopes": null,
+      "values": {
+        "Value": 0.32
+      }
+    },
+    "duration/slower": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-duration-slower)",
+      "scopes": null,
+      "values": {
+        "Value": 0.4
+      }
+    },
+    "ease/enter": {
+      "collection": "nimki/primitives",
+      "type": "EASING",
+      "web": "var(--nk-ease-enter)",
+      "scopes": null,
+      "values": {
+        "Value": {
+          "easingFunctionCubicBezier": {
+            "x1": 0.16,
+            "x2": 0.3,
+            "y1": 1,
+            "y2": 1
+          },
+          "type": "CUSTOM_CUBIC_BEZIER"
+        }
+      }
+    },
+    "ease/exit": {
+      "collection": "nimki/primitives",
+      "type": "EASING",
+      "web": "var(--nk-ease-exit)",
+      "scopes": null,
+      "values": {
+        "Value": {
+          "easingFunctionCubicBezier": {
+            "x1": 0.4,
+            "x2": 1,
+            "y1": 0,
+            "y2": 1
+          },
+          "type": "CUSTOM_CUBIC_BEZIER"
+        }
+      }
+    },
+    "ease/move": {
+      "collection": "nimki/primitives",
+      "type": "EASING",
+      "web": "var(--nk-ease-move)",
+      "scopes": null,
+      "values": {
+        "Value": {
+          "easingFunctionCubicBezier": {
+            "x1": 0.65,
+            "x2": 0.35,
+            "y1": 0,
+            "y2": 1
+          },
+          "type": "CUSTOM_CUBIC_BEZIER"
+        }
+      }
+    },
+    "spring/snappy/duration": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": null,
+      "scopes": null,
+      "values": {
+        "Value": 0.2
+      }
+    },
+    "spring/snappy/easing": {
+      "collection": "nimki/primitives",
+      "type": "EASING",
+      "web": "var(--nk-spring-snappy-easing)",
+      "scopes": null,
+      "values": {
+        "Value": {
+          "easingFunctionSpring": {
+            "bounce": 0
+          },
+          "type": "CUSTOM_SPRING"
+        }
+      }
+    },
+    "spring/smooth/duration": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": null,
+      "scopes": null,
+      "values": {
+        "Value": 0.3
+      }
+    },
+    "spring/smooth/easing": {
+      "collection": "nimki/primitives",
+      "type": "EASING",
+      "web": "var(--nk-spring-smooth-easing)",
+      "scopes": null,
+      "values": {
+        "Value": {
+          "easingFunctionSpring": {
+            "bounce": 0
+          },
+          "type": "CUSTOM_SPRING"
+        }
+      }
+    },
+    "spring/snappy-bounce/duration": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": null,
+      "scopes": null,
+      "values": {
+        "Value": 0.2
+      }
+    },
+    "spring/snappy-bounce/easing": {
+      "collection": "nimki/primitives",
+      "type": "EASING",
+      "web": "var(--nk-spring-snappy-bounce-easing)",
+      "scopes": null,
+      "values": {
+        "Value": {
+          "easingFunctionSpring": {
+            "bounce": 0.15
+          },
+          "type": "CUSTOM_SPRING"
+        }
+      }
+    },
+    "spring/smooth-bounce/duration": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": null,
+      "scopes": null,
+      "values": {
+        "Value": 0.32
+      }
+    },
+    "spring/smooth-bounce/easing": {
+      "collection": "nimki/primitives",
+      "type": "EASING",
+      "web": "var(--nk-spring-smooth-bounce-easing)",
+      "scopes": null,
+      "values": {
+        "Value": {
+          "easingFunctionSpring": {
+            "bounce": 0.1
+          },
+          "type": "CUSTOM_SPRING"
+        }
+      }
+    },
+    "offset/sm": {
+      "collection": "nimki/primitives",
+      "type": "FLOAT",
+      "web": "var(--nk-offset-sm)",
+      "scopes": [],
+      "values": {
+        "Value": 4
+      }
+    },
+    "offset/md": {
+      "collection": "nimki/primitives",
+      "type": "FLOAT",
+      "web": "var(--nk-offset-md)",
+      "scopes": [],
+      "values": {
+        "Value": 8
+      }
+    },
+    "scale/sm": {
+      "collection": "nimki/primitives",
+      "type": "FLOAT",
+      "web": "var(--nk-scale-sm)",
+      "scopes": [],
+      "values": {
+        "Value": 0.96
+      }
+    },
+    "scale/md": {
+      "collection": "nimki/primitives",
+      "type": "FLOAT",
+      "web": "var(--nk-scale-md)",
+      "scopes": [],
+      "values": {
+        "Value": 0.94
+      }
+    },
+    "stagger/sm/step": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-stagger-sm-step)",
+      "scopes": null,
+      "values": {
+        "Value": 0.02
+      }
+    },
+    "stagger/sm/max": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-stagger-sm-max)",
+      "scopes": null,
+      "values": {
+        "Value": 0.12
+      }
+    },
+    "stagger/md/step": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-stagger-md-step)",
+      "scopes": null,
+      "values": {
+        "Value": 0.03
+      }
+    },
+    "stagger/md/max": {
+      "collection": "nimki/primitives",
+      "type": "TIMING",
+      "web": "var(--nk-stagger-md-max)",
+      "scopes": null,
+      "values": {
+        "Value": 0.18
+      }
+    },
+    "scale/xs": {
+      "collection": "nimki/primitives",
+      "type": "FLOAT",
+      "web": "var(--nk-scale-xs)",
+      "scopes": [],
+      "values": {
+        "Value": 0.98
+      }
+    },
+    "press/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-press-duration)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "duration/fast"
+        },
+        "Expressive": {
+          "alias": "duration/base"
+        },
+        "Reduced": {
+          "alias": "duration/fast"
+        }
+      }
+    },
+    "press/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-press-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "ease/move"
+        },
+        "Expressive": {
+          "alias": "ease/move"
+        },
+        "Reduced": {
+          "alias": "ease/move"
+        }
+      }
+    },
+    "highlight/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": null,
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "spring/snappy/duration"
+        },
+        "Expressive": {
+          "alias": "spring/snappy-bounce/duration"
+        },
+        "Reduced": 0
+      }
+    },
+    "highlight/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-highlight-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "spring/snappy/easing"
+        },
+        "Expressive": {
+          "alias": "spring/snappy-bounce/easing"
+        },
+        "Reduced": {
+          "type": "LINEAR"
+        }
+      }
+    },
+    "feedback/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": null,
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "spring/snappy/duration"
+        },
+        "Expressive": {
+          "alias": "spring/snappy-bounce/duration"
+        },
+        "Reduced": 0
+      }
+    },
+    "feedback/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-feedback-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "spring/snappy/easing"
+        },
+        "Expressive": {
+          "alias": "spring/snappy-bounce/easing"
+        },
+        "Reduced": {
+          "type": "LINEAR"
+        }
+      }
+    },
+    "layout/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": null,
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "spring/smooth/duration"
+        },
+        "Expressive": {
+          "alias": "spring/smooth-bounce/duration"
+        },
+        "Reduced": 0
+      }
+    },
+    "layout/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-layout-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "spring/smooth/easing"
+        },
+        "Expressive": {
+          "alias": "spring/smooth-bounce/easing"
+        },
+        "Reduced": {
+          "type": "LINEAR"
+        }
+      }
+    },
+    "popover-enter/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-popover-enter-duration)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "duration/base"
+        },
+        "Expressive": {
+          "alias": "duration/moderate"
+        },
+        "Reduced": {
+          "alias": "duration/fast"
+        }
+      }
+    },
+    "popover-enter/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-popover-enter-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "ease/enter"
+        },
+        "Expressive": {
+          "alias": "ease/enter"
+        },
+        "Reduced": {
+          "alias": "ease/move"
+        }
+      }
+    },
+    "popover-enter/offset": {
+      "collection": "nimki/motion",
+      "type": "FLOAT",
+      "web": "var(--nk-popover-enter-offset)",
+      "scopes": [],
+      "values": {
+        "Subtle": {
+          "alias": "offset/sm"
+        },
+        "Expressive": {
+          "alias": "offset/md"
+        },
+        "Reduced": 0
+      }
+    },
+    "popover-enter/scale": {
+      "collection": "nimki/motion",
+      "type": "FLOAT",
+      "web": "var(--nk-popover-enter-scale)",
+      "scopes": [],
+      "values": {
+        "Subtle": {
+          "alias": "scale/sm"
+        },
+        "Expressive": {
+          "alias": "scale/md"
+        },
+        "Reduced": 1
+      }
+    },
+    "popover-exit/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-popover-exit-duration)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "duration/fast"
+        },
+        "Expressive": {
+          "alias": "duration/base"
+        },
+        "Reduced": {
+          "alias": "duration/fast"
+        }
+      }
+    },
+    "popover-exit/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-popover-exit-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "ease/exit"
+        },
+        "Expressive": {
+          "alias": "ease/exit"
+        },
+        "Reduced": {
+          "alias": "ease/move"
+        }
+      }
+    },
+    "dialog-enter/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-dialog-enter-duration)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "duration/moderate"
+        },
+        "Expressive": {
+          "alias": "duration/slow"
+        },
+        "Reduced": {
+          "alias": "duration/fast"
+        }
+      }
+    },
+    "dialog-enter/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-dialog-enter-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "ease/enter"
+        },
+        "Expressive": {
+          "alias": "ease/enter"
+        },
+        "Reduced": {
+          "alias": "ease/move"
+        }
+      }
+    },
+    "dialog-enter/offset": {
+      "collection": "nimki/motion",
+      "type": "FLOAT",
+      "web": "var(--nk-dialog-enter-offset)",
+      "scopes": [],
+      "values": {
+        "Subtle": {
+          "alias": "offset/sm"
+        },
+        "Expressive": {
+          "alias": "offset/md"
+        },
+        "Reduced": 0
+      }
+    },
+    "dialog-enter/scale": {
+      "collection": "nimki/motion",
+      "type": "FLOAT",
+      "web": "var(--nk-dialog-enter-scale)",
+      "scopes": [],
+      "values": {
+        "Subtle": {
+          "alias": "scale/sm"
+        },
+        "Expressive": {
+          "alias": "scale/md"
+        },
+        "Reduced": 1
+      }
+    },
+    "dialog-exit/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-dialog-exit-duration)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "duration/base"
+        },
+        "Expressive": {
+          "alias": "duration/moderate"
+        },
+        "Reduced": {
+          "alias": "duration/fast"
+        }
+      }
+    },
+    "dialog-exit/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-dialog-exit-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "ease/exit"
+        },
+        "Expressive": {
+          "alias": "ease/exit"
+        },
+        "Reduced": {
+          "alias": "ease/move"
+        }
+      }
+    },
+    "sheet-enter/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-sheet-enter-duration)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "duration/slow"
+        },
+        "Expressive": {
+          "alias": "duration/slower"
+        },
+        "Reduced": {
+          "alias": "duration/fast"
+        }
+      }
+    },
+    "sheet-enter/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-sheet-enter-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "ease/enter"
+        },
+        "Expressive": {
+          "alias": "ease/enter"
+        },
+        "Reduced": {
+          "alias": "ease/move"
+        }
+      }
+    },
+    "sheet-enter/offset": {
+      "collection": "nimki/motion",
+      "type": "FLOAT",
+      "web": "var(--nk-sheet-enter-offset)",
+      "scopes": [],
+      "values": {
+        "Subtle": {
+          "alias": "offset/sm"
+        },
+        "Expressive": {
+          "alias": "offset/md"
+        },
+        "Reduced": 0
+      }
+    },
+    "sheet-enter/scale": {
+      "collection": "nimki/motion",
+      "type": "FLOAT",
+      "web": "var(--nk-sheet-enter-scale)",
+      "scopes": [],
+      "values": {
+        "Subtle": {
+          "alias": "scale/sm"
+        },
+        "Expressive": {
+          "alias": "scale/md"
+        },
+        "Reduced": 1
+      }
+    },
+    "sheet-exit/duration": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-sheet-exit-duration)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "duration/moderate"
+        },
+        "Expressive": {
+          "alias": "duration/slow"
+        },
+        "Reduced": {
+          "alias": "duration/fast"
+        }
+      }
+    },
+    "sheet-exit/easing": {
+      "collection": "nimki/motion",
+      "type": "EASING",
+      "web": "var(--nk-sheet-exit-easing)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "ease/exit"
+        },
+        "Expressive": {
+          "alias": "ease/exit"
+        },
+        "Reduced": {
+          "alias": "ease/move"
+        }
+      }
+    },
+    "stagger/step": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-stagger-step)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "stagger/sm/step"
+        },
+        "Expressive": {
+          "alias": "stagger/md/step"
+        },
+        "Reduced": 0
+      }
+    },
+    "stagger/max": {
+      "collection": "nimki/motion",
+      "type": "TIMING",
+      "web": "var(--nk-stagger-max)",
+      "scopes": null,
+      "values": {
+        "Subtle": {
+          "alias": "stagger/sm/max"
+        },
+        "Expressive": {
+          "alias": "stagger/md/max"
+        },
+        "Reduced": 0
+      }
+    },
+    "press/scale": {
+      "collection": "nimki/motion",
+      "type": "FLOAT",
+      "web": "var(--nk-press-scale)",
+      "scopes": [],
+      "values": {
+        "Subtle": {
+          "alias": "scale/xs"
+        },
+        "Expressive": {
+          "alias": "scale/sm"
+        },
+        "Reduced": 1
+      }
+    },
+    "control-sm": {
+      "collection": "nimki/density",
+      "type": "FLOAT",
+      "web": "var(--nk-control-sm)",
+      "scopes": ["WIDTH_HEIGHT"],
+      "values": {
+        "Comfortable": 32,
+        "Compact": 28
+      }
+    },
+    "control-md": {
+      "collection": "nimki/density",
+      "type": "FLOAT",
+      "web": "var(--nk-control-md)",
+      "scopes": ["WIDTH_HEIGHT"],
+      "values": {
+        "Comfortable": 36,
+        "Compact": 32
+      }
+    },
+    "control-lg": {
+      "collection": "nimki/density",
+      "type": "FLOAT",
+      "web": "var(--nk-control-lg)",
+      "scopes": ["WIDTH_HEIGHT"],
+      "values": {
+        "Comfortable": 40,
+        "Compact": 36
+      }
+    },
+    "item": {
+      "collection": "nimki/density",
+      "type": "FLOAT",
+      "web": "var(--nk-item)",
+      "scopes": ["WIDTH_HEIGHT"],
+      "values": {
+        "Comfortable": 32,
+        "Compact": 28
+      }
+    },
+    "control-px": {
+      "collection": "nimki/density",
+      "type": "FLOAT",
+      "web": "var(--nk-control-px)",
+      "scopes": ["GAP"],
+      "values": {
+        "Comfortable": 16,
+        "Compact": 12
+      }
+    },
+    "gap": {
+      "collection": "nimki/density",
+      "type": "FLOAT",
+      "web": "var(--nk-gap)",
+      "scopes": ["GAP"],
+      "values": {
+        "Comfortable": 8,
+        "Compact": 6
+      }
+    },
+    "background": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--background)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.984, 0.987, 0.993, 1],
+        "Dark": [0.047, 0.052, 0.061, 1]
+      }
+    },
+    "foreground": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": {
+        "Light": [0.08, 0.087, 0.097, 1],
+        "Dark": [0.943, 0.948, 0.956, 1]
+      }
+    },
+    "card": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--card)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.984, 0.987, 0.993, 1],
+        "Dark": [0.072, 0.078, 0.086, 1]
+      }
+    },
+    "card-foreground": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--card-foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": {
+        "Light": {
+          "alias": "foreground"
+        },
+        "Dark": {
+          "alias": "foreground"
+        }
+      }
+    },
+    "popover": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--popover)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [1, 1, 1, 1],
+        "Dark": [0.089, 0.096, 0.106, 1]
+      }
+    },
+    "popover-foreground": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--popover-foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": {
+        "Light": {
+          "alias": "foreground"
+        },
+        "Dark": {
+          "alias": "foreground"
+        }
+      }
+    },
+    "primary": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--primary)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.089, 0.096, 0.106, 1],
+        "Dark": [0.943, 0.948, 0.956, 1]
+      }
+    },
+    "primary-foreground": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--primary-foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": {
+        "Light": [0.977, 0.981, 0.986, 1],
+        "Dark": [0.047, 0.052, 0.061, 1]
+      }
+    },
+    "secondary": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--secondary)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.942, 0.948, 0.959, 1],
+        "Dark": [0.125, 0.132, 0.143, 1]
+      }
+    },
+    "secondary-foreground": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--secondary-foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": {
+        "Light": {
+          "alias": "foreground"
+        },
+        "Dark": {
+          "alias": "foreground"
+        }
+      }
+    },
+    "muted": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--muted)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": {
+          "alias": "secondary"
+        },
+        "Dark": {
+          "alias": "secondary"
+        }
+      }
+    },
+    "muted-foreground": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--muted-foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": {
+        "Light": [0.354, 0.368, 0.39, 1],
+        "Dark": [0.607, 0.622, 0.646, 1]
+      }
+    },
+    "accent": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--accent)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": {
+          "alias": "secondary"
+        },
+        "Dark": {
+          "alias": "secondary"
+        }
+      }
+    },
+    "accent-foreground": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--accent-foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": {
+        "Light": {
+          "alias": "foreground"
+        },
+        "Dark": {
+          "alias": "foreground"
+        }
+      }
+    },
+    "destructive": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--destructive)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR", "TEXT_FILL"],
+      "values": {
+        "Light": [0.874, 0.133, 0.147, 1],
+        "Dark": [0.944, 0.304, 0.299, 1]
+      }
+    },
+    "border": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--border)",
+      "scopes": ["STROKE_COLOR"],
+      "values": {
+        "Light": [0.903, 0.909, 0.92, 1],
+        "Dark": [1, 1, 1, 0.08]
+      }
+    },
+    "input": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--input)",
+      "scopes": ["STROKE_COLOR"],
+      "values": {
+        "Light": [0.544, 0.549, 0.559, 1],
+        "Dark": [0.403, 0.412, 0.425, 1]
+      }
+    },
+    "ring": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--ring)",
+      "scopes": ["STROKE_COLOR"],
+      "values": {
+        "Light": [0.432, 0.446, 0.469, 1],
+        "Dark": [0.489, 0.503, 0.527, 1]
+      }
+    },
+    "nk/success": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-success)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR", "TEXT_FILL"],
+      "values": {
+        "Light": [0.047, 0.521, 0.24, 1],
+        "Dark": [0.068, 0.672, 0.316, 1]
+      }
+    },
+    "nk/warning": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-warning)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR", "TEXT_FILL"],
+      "values": {
+        "Light": [0.576, 0.412, 0.051, 1],
+        "Dark": [0.907, 0.656, 0.094, 1]
+      }
+    },
+    "nk/highlight": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-highlight)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": {
+          "alias": "accent"
+        },
+        "Dark": {
+          "alias": "accent"
+        }
+      }
+    },
+    "nk/highlight-foreground": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-highlight-foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": {
+        "Light": {
+          "alias": "accent-foreground"
+        },
+        "Dark": {
+          "alias": "accent-foreground"
+        }
+      }
+    },
+    "nk/scrim": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-scrim)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0, 0, 0, 0.5],
+        "Dark": [0, 0, 0, 0.6]
+      }
+    },
+    "nk/shadow-soft": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-shadow-soft)",
+      "scopes": ["EFFECT_COLOR"],
+      "values": {
+        "Light": [0, 0, 0, 0.06],
+        "Dark": [0, 0, 0, 0.24]
+      }
+    },
+    "nk/shadow-strong": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-shadow-strong)",
+      "scopes": ["EFFECT_COLOR"],
+      "values": {
+        "Light": [0, 0, 0, 0.12],
+        "Dark": [0, 0, 0, 0.48]
+      }
+    },
+    "nk/edge": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-edge)",
+      "scopes": ["EFFECT_COLOR"],
+      "values": {
+        "Light": [0.08, 0.087, 0.097, 0],
+        "Dark": [0.943, 0.948, 0.956, 0.06]
+      }
+    },
+    "radius": {
+      "collection": "nimki/theme",
+      "type": "FLOAT",
+      "web": "var(--radius)",
+      "scopes": ["CORNER_RADIUS"],
+      "values": {
+        "Linear": 6
+      }
+    },
+    "font/sans": {
+      "collection": "nimki/theme",
+      "type": "STRING",
+      "web": "var(--font-sans)",
+      "scopes": ["FONT_FAMILY"],
+      "values": {
+        "Linear": "DM Sans"
+      }
+    },
+    "font/mono": {
+      "collection": "nimki/theme",
+      "type": "STRING",
+      "web": "var(--font-mono)",
+      "scopes": ["FONT_FAMILY"],
+      "values": {
+        "Linear": "DM Mono"
+      }
+    },
+    "font/serif": {
+      "collection": "nimki/theme",
+      "type": "STRING",
+      "web": "var(--font-serif)",
+      "scopes": ["FONT_FAMILY"],
+      "values": {
+        "Linear": "DM Serif Text"
+      }
+    },
+    "font/display": {
+      "collection": "nimki/theme",
+      "type": "STRING",
+      "web": "var(--font-display)",
+      "scopes": ["FONT_FAMILY"],
+      "values": {
+        "Linear": "DM Serif Display"
+      }
+    },
+    "nk/hover-amount": {
+      "collection": "nimki/theme",
+      "type": "FLOAT",
+      "web": "var(--nk-hover-amount)",
+      "scopes": [],
+      "values": {
+        "Linear": 8
+      }
+    },
+    "nk/pressed-amount": {
+      "collection": "nimki/theme",
+      "type": "FLOAT",
+      "web": "var(--nk-pressed-amount)",
+      "scopes": [],
+      "values": {
+        "Linear": 12
+      }
+    }
+  },
+  "effectStyles": {
+    "elevation/1": [
+      {
+        "color": "nk/shadow-soft",
+        "radius": 2,
+        "spread": 0,
+        "type": "DROP_SHADOW",
+        "x": 0,
+        "y": 1
+      },
+      {
+        "color": "nk/shadow-soft",
+        "radius": 12,
+        "spread": 0,
+        "type": "DROP_SHADOW",
+        "x": 0,
+        "y": 4
+      },
+      {
+        "color": "nk/edge",
+        "radius": 0,
+        "spread": 0,
+        "type": "INNER_SHADOW",
+        "x": 0,
+        "y": 1
+      }
+    ],
+    "elevation/2": [
+      {
+        "color": "nk/shadow-soft",
+        "radius": 4,
+        "spread": 0,
+        "type": "DROP_SHADOW",
+        "x": 0,
+        "y": 2
+      },
+      {
+        "color": "nk/shadow-strong",
+        "radius": 40,
+        "spread": 0,
+        "type": "DROP_SHADOW",
+        "x": 0,
+        "y": 16
+      },
+      {
+        "color": "nk/edge",
+        "radius": 0,
+        "spread": 0,
+        "type": "INNER_SHADOW",
+        "x": 0,
+        "y": 1
+      }
+    ]
+  }
+}

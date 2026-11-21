@@ -6,8 +6,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],
-      // The CLI is a thin wrapper over generate(), which the tests call directly.
-      exclude: ['src/**/*.test.ts', 'src/cli.ts'],
+      // The CLIs are thin wrappers over generate() and compare(), which the tests call directly.
+      exclude: ['src/**/*.test.ts', 'src/cli.ts', 'src/figma-cli.ts'],
       // Under 100 for statements and branches only: the rest are guards on states
       // the parser already refuses, such as a tween role turning into a spring.
       thresholds: { lines: 100, functions: 100, branches: 95, statements: 99 },

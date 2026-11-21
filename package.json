@@ -22,7 +22,10 @@
     "prepare": "git config core.hooksPath .githooks",
     "build:engine": "pnpm --filter @hipuku/nimki run build",
     "tokens:write": "pnpm --filter tokens run write",
-    "tokens:check": "pnpm --filter tokens run check"
+    "tokens:check": "pnpm --filter tokens run check",
+    "figma:check": "pnpm --filter tokens run figma:check",
+    "figma:script": "pnpm --silent --filter tokens run figma:script",
+    "figma:save": "pnpm --filter tokens run figma:save"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

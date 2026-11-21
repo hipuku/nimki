@@ -1,0 +1,34 @@
+# The Figma file and tokens/source hold the same values. Compares the saved
+# snapshot of the Figma file (figma/snapshot/nimki.json) with the variables the
+# source generates. Offline: Figma's variables API needs an Enterprise plan, so
+# the snapshot is exported from inside Figma and committed (tokens/README.md,
+# "Figma parity"). Component pages join the check when they exist.
+name: Figma parity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  figma-parity:
+    name: Figma parity
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Variables and effect styles
+        run: pnpm run figma:check

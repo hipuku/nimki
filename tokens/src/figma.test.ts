@@ -1,0 +1,134 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { describe, expect, it } from 'vitest'
+import { close, compare, fromGenerated, normaliseSnapshot, type Snapshot } from './figma.ts'
+
+const root = join(import.meta.dirname, '../..')
+const generated = fromGenerated(
+  JSON.parse(
+    readFileSync(join(root, 'tokens/generated/figma-variables.json'), 'utf8'),
+  ) as Parameters<typeof fromGenerated>[0],
+)
+const snapshot = () =>
+  normaliseSnapshot(
+    JSON.parse(readFileSync(join(root, 'figma/snapshot/nimki.json'), 'utf8')) as Snapshot,
+  )
+
+describe('the committed snapshot', () => {
+  it('matches the generated variables', () => {
+    expect(compare(generated, snapshot())).toEqual([])
+  })
+})
+
+describe('compare', () => {
+  it('reports a value changed in Figma', () => {
+    const actual = snapshot()
+    ;(actual.variables['duration/fast'] as Snapshot['variables'][string]).values.Value = 0.15
+    expect(compare(generated, actual)).toEqual([
+      'variable duration/fast (Value): 0.15, expected 0.12',
+    ])
+  })
+
+  it('reports an alias pointed somewhere else', () => {
+    const actual = snapshot()
+    const press = actual.variables['press/duration'] as Snapshot['variables'][string]
+    press.values.Subtle = { alias: 'duration/base' }
+    expect(compare(generated, actual)[0]).toMatch(/^variable press\/duration \(Subtle\)/)
+  })
+
+  it('reports variables, collections and styles missing on either side', () => {
+    const actual = snapshot()
+    delete actual.variables.gap
+    actual.variables.extra = {
+      collection: 'nimki/theme',
+      type: 'FLOAT',
+      web: null,
+      scopes: [],
+      values: {},
+    }
+    delete actual.collections['nimki/theme']
+    actual.collections['nimki/other'] = ['Value']
+    delete actual.effectStyles['elevation/2']
+    actual.effectStyles['elevation/3'] = []
+    expect(compare(generated, actual)).toEqual(
+      expect.arrayContaining([
+        'variable gap is missing from Figma',
+        'variable extra is in Figma but not in the source',
+        'collection nimki/theme is missing from Figma',
+        'collection nimki/other is in Figma but not in the source',
+        'effect style elevation/2 is missing from Figma',
+        'effect style elevation/3 is in Figma but not in the source',
+      ]),
+    )
+  })
+
+  it('reports changed modes, code syntax, scopes and shadow layers', () => {
+    const actual = snapshot()
+    actual.collections['nimki/colour'] = ['Light']
+    const ring = actual.variables.ring as Snapshot['variables'][string]
+    ring.web = 'var(--focus)'
+    ring.scopes = ['ALL_SCOPES']
+    ;(actual.effectStyles['elevation/1'] as Snapshot['effectStyles'][string])[0]!.radius = 8
+    expect(compare(generated, actual)).toEqual(
+      expect.arrayContaining([
+        'collection nimki/colour: modes Light, expected Light, Dark',
+        'variable ring: web is "var(--focus)", expected "var(--ring)"',
+        'variable ring: scopes is ["ALL_SCOPES"], expected ["STROKE_COLOR"]',
+        'effect style elevation/1: layers differ from the source',
+      ]),
+    )
+  })
+})
+
+describe('close', () => {
+  it('allows the difference between a 32-bit float and the source rounding', () => {
+    expect(close(0.0865, 0.08649999)).toBe(true)
+    expect(close([0.072, 0.078, 0.086, 1], [0.072, 0.078, 0.087, 1])).toBe(true)
+  })
+
+  it('refuses a real change, a different shape or a different string', () => {
+    expect(close(0.12, 0.15)).toBe(false)
+    expect(close([1, 2], [1, 2, 3])).toBe(false)
+    expect(close({ a: 1 }, { a: 1, b: 2 })).toBe(false)
+    expect(close('DM Sans', 'Inter')).toBe(false)
+  })
+})
+
+describe('normaliseSnapshot', () => {
+  it('rounds Figma floats and keeps LINEAR without its implied curve', () => {
+    const raw: Snapshot = {
+      collections: { c: ['A'] },
+      variables: {
+        e: {
+          collection: 'c',
+          type: 'EASING',
+          web: null,
+          scopes: null,
+          values: {
+            A: { type: 'LINEAR', easingFunctionCubicBezier: { x1: 0, y1: 0, x2: 1, y2: 1 } },
+          },
+        },
+        t: {
+          collection: 'c',
+          type: 'TIMING',
+          web: null,
+          scopes: null,
+          values: { A: 0.11999999731779099 },
+        },
+        f: {
+          collection: 'c',
+          type: 'FLOAT',
+          web: null,
+          scopes: ['GAP', 'CORNER_RADIUS'],
+          values: { A: { r: 1, g: 0.5, b: 0, a: 1 } },
+        },
+      },
+      effectStyles: {},
+    }
+    const out = normaliseSnapshot(raw)
+    expect(out.variables.e?.values.A).toEqual({ type: 'LINEAR' })
+    expect(out.variables.t?.values.A).toBe(0.12)
+    expect(out.variables.f?.values.A).toEqual([1, 0.5, 0, 1])
+    expect(out.variables.f?.scopes).toEqual(['CORNER_RADIUS', 'GAP'])
+  })
+})

@@ -51,3 +51,15 @@ Generation stops, listing every problem, if the source breaks a rule from the PR
 - A shadow keeps one shape in both modes. Its layer colours carry the dark mode, so the Figma effect style can switch with the mode too.
 
 The parser reads only the DTCG features the source uses and refuses the rest by name, so a feature added to the source without parser support fails rather than being ignored.
+
+## Figma parity
+
+The [Figma file](https://www.figma.com/design/7EoZah6GtSPR9XQlYWbzAO/nimki) holds the same values as the source. Figma's variables API needs an Enterprise plan, so the file is read by a script run inside Figma, and its output is committed as `figma/snapshot/nimki.json`. The `Figma parity` workflow compares that snapshot with `generated/figma-variables.json` on every pull request: variables by name, with their collection, type, code syntax, scopes and values in every mode, and the elevation effect styles layer by layer. Numbers match within 0.002, because Figma stores 32-bit floats.
+
+```bash
+pnpm figma:check
+pnpm figma:script
+pnpm figma:save /absolute/path/to/export.json
+```
+
+To refresh the snapshot after a change in Figma: run the output of `figma:script` in the file through the Figma MCP's `use_figma` tool, save the JSON it returns, run `figma:save` with that file, and commit the snapshot.
