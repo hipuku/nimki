@@ -1,0 +1,29 @@
+name: Feature request
+description: Something nimki should do that it does not.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you are trying to build, and what gets in the way.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you propose
+    validations:
+      required: true
+  - type: dropdown
+    id: shadcn
+    attributes:
+      label: Relation to shadcn/ui
+      options:
+        - shadcn has this and nimki does not match it
+        - shadcn does not have this
+        - Not about a shadcn component
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: Components for marketing sites and API changes away from shadcn's are out of scope; see CONTRIBUTING.md.
