@@ -2,7 +2,15 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { format, resolveConfig } from 'prettier'
 import { TokenSet, parseDocument } from './dtcg.ts'
-import { densityCss, engineTs, extensionsCss, figmaVariables, motionCss, themeCss } from './emit.ts'
+import {
+  densityCss,
+  engineTs,
+  extensionsCss,
+  figmaVariables,
+  motionCss,
+  tailwindCss,
+  themeCss,
+} from './emit.ts'
 import { readDensity, readMotion } from './model.ts'
 import { checkDensity, checkMotion, checkShape } from './rules.ts'
 import { checkTheme, checkThemeShape, readTheme } from './theme.ts'
@@ -13,6 +21,7 @@ export const OUTPUTS = {
   densityCss: 'registry/styles/density.css',
   themeCss: 'registry/styles/theme-linear.css',
   extensionsCss: 'registry/styles/extensions.css',
+  tailwindCss: 'registry/styles/tailwind.css',
   engine: 'packages/engine/src/tokens.generated.ts',
   figma: 'tokens/generated/figma-variables.json',
 } as const
@@ -52,6 +61,7 @@ export function render(set: TokenSet): Record<keyof typeof OUTPUTS, string> {
     densityCss: densityCss(density),
     themeCss: themeCss(theme),
     extensionsCss: extensionsCss(theme),
+    tailwindCss: tailwindCss(theme),
     engine: engineTs(motion),
     figma: figmaVariables(motion, density, theme),
   }

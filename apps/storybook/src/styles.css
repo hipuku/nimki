@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import '../../../registry/styles/theme-linear.css';
 @import '../../../registry/styles/extensions.css';
+@import '../../../registry/styles/tailwind.css';
 @import '../../../registry/styles/motion.css';
 @import '../../../registry/styles/density.css';
 

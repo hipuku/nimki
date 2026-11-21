@@ -522,3 +522,26 @@ export function extensionsCss(theme: Theme): string {
     '',
   ].join('\n')
 }
+
+/**
+ * registry/styles/tailwind.css: maps the theme's variables to Tailwind v4
+ * utilities (bg-background, border-input, text-nk-success, rounded-md), as a
+ * shadcn project's own CSS does. inline makes each utility read the variable
+ * where it is used, so .dark and a project's own theme still apply. The fonts
+ * are left out: --font-sans already names the theme's font, and mapping it to
+ * itself would make it refer to itself.
+ */
+export function tailwindCss(theme: Theme): string {
+  return [
+    `/* ${NOTICE} */`,
+    '',
+    block('@theme inline', [
+      ...theme.colours.map(colour => `--color-${colour.cssVar.slice(2)}: var(${colour.cssVar});`),
+      '--radius-sm: calc(var(--radius) - 4px);',
+      '--radius-md: calc(var(--radius) - 2px);',
+      '--radius-lg: var(--radius);',
+      '--radius-xl: calc(var(--radius) + 4px);',
+    ]),
+    '',
+  ].join('\n')
+}
