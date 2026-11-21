@@ -619,7 +619,7 @@
       "codeSyntax": {
         "WEB": "var(--nk-control-sm)"
       },
-      "description": "shadcn size=\"sm\", h-8"
+      "description": "shadcn sm size, h-8"
     },
     {
       "action": "CREATE",
@@ -643,7 +643,7 @@
       "codeSyntax": {
         "WEB": "var(--nk-control-lg)"
       },
-      "description": "shadcn size=\"lg\", h-10"
+      "description": "shadcn lg size, h-10"
     },
     {
       "action": "CREATE",
