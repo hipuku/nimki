@@ -457,6 +457,8 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
 }
 
 function colourScopes(name: string): string[] {
+  // Primitives: aliased by the semantic variables, never picked directly.
+  if (name.startsWith('ramp/')) return []
   if (/(^|-)foreground$/.test(name)) return ['TEXT_FILL', 'SHAPE_FILL']
   if (/^(border|input|ring)$/.test(name)) return ['STROKE_COLOR']
   if (/^nk\/(shadow-soft|shadow-strong|edge)$/.test(name)) return ['EFFECT_COLOR']
@@ -471,12 +473,15 @@ function themeBlock(selector: string, lines: string[]): string {
 }
 
 /**
- * registry/styles/theme-linear.css: the Linear theme's values for shadcn's
- * variables, the radius and nimki's own fonts. Optional: a project that sets
+ * registry/styles/theme-linear.css: the Linear theme's neutral ramp, its values
+ * for shadcn's variables, the radius and nimki's own fonts. Optional: a project that sets
  * these variables itself keeps its own (FR-V2).
  */
 export function themeCss(theme: Theme): string {
-  const shadcn = theme.colours.filter(colour => colour.token.startsWith('color.'))
+  // The ramp first: the shadcn variables can alias its steps.
+  const shadcn = theme.colours.filter(
+    colour => colour.token.startsWith('ramp.') || colour.token.startsWith('color.'),
+  )
   const lines = (mode: (typeof COLOUR_MODES)[number]) =>
     shadcn.map(colour => `${colour.cssVar}: ${colour.css[mode]};`)
   return [
@@ -536,7 +541,10 @@ export function tailwindCss(theme: Theme): string {
     `/* ${NOTICE} */`,
     '',
     block('@theme inline', [
-      ...theme.colours.map(colour => `--color-${colour.cssVar.slice(2)}: var(${colour.cssVar});`),
+      // Not the ramp: it is the theme's primitives, which components never read.
+      ...theme.colours
+        .filter(colour => !colour.token.startsWith('ramp.'))
+        .map(colour => `--color-${colour.cssVar.slice(2)}: var(${colour.cssVar});`),
       '--radius-sm: calc(var(--radius) - 4px);',
       '--radius-md: calc(var(--radius) - 2px);',
       '--radius-lg: var(--radius);',

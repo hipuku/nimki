@@ -4,8 +4,8 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { TokenSet, parseDocument } from './dtcg.ts'
-import { RuleError, render } from './generate.ts'
-import { fontCss, shadowCss, themeVar } from './theme.ts'
+import { RuleError, loadSource, render } from './generate.ts'
+import { checkTheme, fontCss, readTheme, shadowCss, themeVar } from './theme.ts'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Json = Record<string, any>
@@ -40,7 +40,8 @@ describe('the colour source as committed', () => {
 
 describe('contrast (FR-V9)', () => {
   it('fails body text under 4.5:1', () => {
-    const found = problems(c => (c.color.foreground.$value = oklch(0.7, 0.006, 260)))
+    // foreground is ramp step 12 in the Linear theme, so the step is what breaks.
+    const found = problems(c => (c.ramp.neutral['12'].$value = oklch(0.7, 0.006, 260)))
     expect(found.some(p => p.startsWith('color.foreground on color.background (light):'))).toBe(
       true,
     )
@@ -55,14 +56,14 @@ describe('contrast (FR-V9)', () => {
   })
 
   it('fails a focus ring under 3:1 (FR-V10)', () => {
-    const found = problems(c => (dark(c.color.ring).dark = oklch(0.25, 0.01, 260)))
+    const found = problems(c => (dark(c.ramp.neutral['10']).dark = oklch(0.25, 0.01, 260)))
     expect(found.some(p => p.startsWith('color.ring on color.background (dark):'))).toBe(true)
   })
 })
 
 describe('fields and elevation', () => {
   it('fails an input border under 3:1 on any surface a field sits on (WCAG 2.2, 1.4.11)', () => {
-    const found = problems(c => (dark(c.color.input).dark = oklch(0.4, 0.006, 260)))
+    const found = problems(c => (dark(c.ramp.neutral['9']).dark = oklch(0.4, 0.006, 260)))
     expect(found.some(p => p.startsWith('color.input on color.popover (dark):'))).toBe(true)
   })
 
@@ -125,8 +126,8 @@ describe('gamut', () => {
 
 describe('shape', () => {
   it('needs a dark value on every colour that is not an alias', () => {
-    expect(problems(c => delete c.color.border.$extensions)).toContain(
-      'color.border has modes []; it needs [dark]',
+    expect(problems(c => delete c.color.destructive.$extensions)).toContain(
+      'color.destructive has modes []; it needs [dark]',
     )
   })
 
@@ -166,16 +167,17 @@ describe('outputs', () => {
   const out = renderWith(() => {})
 
   it('writes shadcn variables under their own names, aliases as var()', () => {
-    expect(out.themeCss).toContain('--background: oklch(0.99 0.002 260);')
+    expect(out.themeCss).toContain('--nk-neutral-1: oklch(0.99 0.002 260);')
+    expect(out.themeCss).toContain('--background: var(--nk-neutral-1);')
     expect(out.themeCss).toContain('--card-foreground: var(--foreground);')
-    expect(out.themeCss).toContain('--border: oklch(1 0 0 / 8%);')
+    expect(out.themeCss).toContain('--popover: oklch(1 0 0);')
     expect(out.themeCss).toContain('--radius: 0.375rem;')
     expect(out.themeCss).toContain('--font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;')
   })
 
   it('derives status colours from the project destructive, per mode', () => {
     expect(out.extensionsCss).toContain(
-      '--nk-success: oklch(from var(--destructive) 0.54 min(c, 0.145) 150);',
+      '--nk-success: oklch(from var(--destructive) 0.53 min(c, 0.145) 150);',
     )
     expect(out.extensionsCss).toContain(
       '--nk-warning: oklch(from var(--destructive) calc(l + 0.12) min(c, 0.155) 80);',
@@ -221,5 +223,101 @@ describe('helpers', () => {
 
   it('quotes only family names with spaces', () => {
     expect(fontCss(['DM Sans', 'system-ui'])).toBe('"DM Sans", system-ui')
+  })
+})
+
+describe('the neutral ramp (step 1.3c)', () => {
+  const step = (c: Json, n: number): Json => c.ramp.neutral[String(n)] as Json
+
+  it('writes its steps into the Linear theme as --nk-neutral-N, with a dark mode', () => {
+    const { themeCss } = renderWith(() => {})
+    expect(themeCss).toContain('--nk-neutral-1: oklch(0.99 0.002 260);')
+    expect(themeCss.slice(themeCss.indexOf('.dark'))).toContain(
+      '--nk-neutral-1: oklch(0.16 0.005 260);',
+    )
+    expect(themeVar('ramp.neutral.12')).toBe('--nk-neutral-12')
+  })
+
+  it('stays out of the Tailwind mapping, which only offers the semantic colours', () => {
+    const { tailwindCss } = renderWith(() => {})
+    expect(tailwindCss).not.toContain('neutral')
+    expect(tailwindCss).toContain('--color-nk-secondary-hover: var(--nk-secondary-hover);')
+  })
+
+  it('fails a step that runs the wrong way', () => {
+    const found = problems(c => (step(c, 5).$value = oklch(0.97, 0.006, 260)))
+    expect(found).toContain('ramp.neutral.5 (light): must be darker than step 4')
+  })
+
+  it('fails a ramp with a step missing', () => {
+    const found = problems(c => delete c.ramp.neutral['7'])
+    expect(found).toContain('ramp.neutral.7 (light): a step is missing')
+  })
+
+  it('checks nothing when a theme has no ramp', () => {
+    // A theme whose colours are its own values, with the ramp left out.
+    const theme = readTheme(loadSource(sourceDir))
+    expect(
+      checkTheme({ ...theme, colours: theme.colours.filter(c => !c.token.startsWith('ramp.')) }),
+    ).toEqual([])
+  })
+
+  it('fails text steps that do not read on the surface steps', () => {
+    const found = problems(c => (dark(step(c, 11)).dark = oklch(0.4, 0.01, 260)))
+    expect(found.some(p => p.startsWith('ramp.neutral.11 on ramp.neutral.1 (dark):'))).toBe(true)
+  })
+})
+
+describe('state colours (step 1.3c)', () => {
+  const relative = (c: Json, name: string): Json =>
+    c.nk[name].$extensions['dev.hipuku.nimki'].relative as Json
+
+  it('derives hover and pressed from the project variable, keeping chroma and hue', () => {
+    const { extensionsCss } = renderWith(() => {})
+    expect(extensionsCss).toContain(
+      '--nk-primary-hover: oklch(from var(--primary) calc(l + 0.07) c h);',
+    )
+    expect(extensionsCss).toContain(
+      '--nk-secondary-active: oklch(from var(--secondary) calc(l - 0.033) c h);',
+    )
+  })
+
+  it('fails a state too close to its rest colour to see', () => {
+    const found = problems(
+      c => (relative(c, 'secondary-hover').light.lightness = { offset: -0.002 }),
+    )
+    expect(
+      found.some(
+        p => p.startsWith('nk.secondary-hover (light):') && p.endsWith('too close to see'),
+      ),
+    ).toBe(true)
+  })
+
+  it('fails a pressed state that moves less than hovered', () => {
+    const found = problems(c => (relative(c, 'primary-active').light.lightness = { offset: 0.07 }))
+    expect(found).toContain(
+      'nk.primary-active (light): pressed must move further from rest than hovered',
+    )
+  })
+
+  it('fails text that no longer reads on a hovered fill', () => {
+    const found = problems(c => (relative(c, 'primary-hover').light.lightness = { offset: 0.5 }))
+    expect(
+      found.some(p => p.startsWith('color.primary-foreground on nk.primary-hover (light):')),
+    ).toBe(true)
+  })
+
+  it('fails a state with no rest colour to belong to', () => {
+    const found = problems(c => {
+      c.nk['ghost-hover'] = { ...c.nk['secondary-hover'] }
+    })
+    expect(found).toContain('nk.ghost-hover: there is no color.ghost for it to be a state of')
+  })
+
+  it('caps chroma where a darker red would leave sRGB', () => {
+    const found = problems(c => (relative(c, 'destructive-active').light.chromaMax = 'keep'))
+    expect(
+      found.some(p => p.startsWith('nk.destructive-active (light):') && p.includes('outside sRGB')),
+    ).toBe(true)
   })
 })

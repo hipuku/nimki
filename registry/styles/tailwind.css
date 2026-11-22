@@ -24,6 +24,18 @@
   --color-nk-highlight: var(--nk-highlight);
   --color-nk-highlight-foreground: var(--nk-highlight-foreground);
   --color-nk-scrim: var(--nk-scrim);
+  --color-nk-primary-hover: var(--nk-primary-hover);
+  --color-nk-primary-active: var(--nk-primary-active);
+  --color-nk-secondary-hover: var(--nk-secondary-hover);
+  --color-nk-secondary-active: var(--nk-secondary-active);
+  --color-nk-accent-hover: var(--nk-accent-hover);
+  --color-nk-accent-active: var(--nk-accent-active);
+  --color-nk-card-hover: var(--nk-card-hover);
+  --color-nk-card-active: var(--nk-card-active);
+  --color-nk-popover-hover: var(--nk-popover-hover);
+  --color-nk-popover-active: var(--nk-popover-active);
+  --color-nk-destructive-hover: var(--nk-destructive-hover);
+  --color-nk-destructive-active: var(--nk-destructive-active);
   --color-nk-shadow-soft: var(--nk-shadow-soft);
   --color-nk-shadow-strong: var(--nk-shadow-strong);
   --color-nk-edge: var(--nk-edge);
