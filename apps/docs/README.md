@@ -41,6 +41,6 @@ Every component page uses the parts in `components/component-page.tsx`, in this 
 
 ## Buttons and motion
 
-`components/styles.ts` holds the one button rule: filled, never outlined, with a hover fill and the press role's scale. Text only for most actions; icon and text when the icon adds meaning at a glance (Play, Copy); icon only for small utilities in a fixed place, always with an `aria-label` and a `title`.
+`components/styles.ts` holds the one button rule: filled, never outlined; hover and press use the role's own state colours (`hover:bg-nk-secondary-hover`, `active:bg-nk-secondary-active`), with the press role's scale. Text only for most actions; icon and text when the icon adds meaning at a glance (Play, Copy); icon only for small utilities in a fixed place, always with an `aria-label` and a `title`.
 
 The docs move on nimki's own role variables (`.nk-press`, `.nk-pop-in`, `.nk-popover`, `.nk-slide` in `app/globals.css`), so they follow the Motion and Reduced motion controls. The docs default to Subtle, as the library does.

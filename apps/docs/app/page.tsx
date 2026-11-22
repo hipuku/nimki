@@ -32,7 +32,7 @@ export default function Home() {
             <li key={href}>
               <Link
                 href={href}
-                className="nk-state flex h-full gap-4 rounded-xl border border-border bg-card p-6"
+                className="nk-press flex h-full gap-4 rounded-xl border border-border bg-card p-6 hover:bg-nk-card-hover active:bg-nk-card-active"
               >
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-foreground">
                   <Icon aria-hidden="true" size={16} strokeWidth={1.5} />
