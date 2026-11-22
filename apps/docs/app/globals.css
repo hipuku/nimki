@@ -75,18 +75,53 @@
   .prose > h3 + * {
     margin-top: 0.75rem;
   }
+  /*
+   * Inline links: a 1.5 px line in --input at rest; on hover a wash of the
+   * text colour at --nk-hover-amount rises from the line to fill the word.
+   * A wash of the text colour suits every surface a link sits on, as the
+   * colour model's rule for transparent surfaces says, mixed in sRGB to match
+   * Figma. The rise is on the press role; with reduced motion it appears.
+   */
   .prose > p a,
   .prose > ul a,
   .prose > ol a {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: var(--input);
-    transition: text-decoration-color var(--nk-duration-fast) var(--nk-ease-move);
+    padding: 0 0.125rem;
+    margin: 0 -0.125rem;
+    border-radius: 2px;
+    text-decoration: none;
+    background-image:
+      linear-gradient(
+        color-mix(in srgb, currentColor var(--nk-hover-amount), transparent),
+        color-mix(in srgb, currentColor var(--nk-hover-amount), transparent)
+      ),
+      linear-gradient(var(--input), var(--input));
+    background-repeat: no-repeat;
+    background-position:
+      0 100%,
+      0 100%;
+    background-size:
+      100% 0,
+      100% 1.5px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    transition: background-size var(--nk-press-duration) var(--nk-press-easing);
   }
-  .prose > p a:hover,
-  .prose > ul a:hover,
-  .prose > ol a:hover {
-    text-decoration-color: currentColor;
+  @media (hover: hover) {
+    .prose > p a:hover,
+    .prose > ul a:hover,
+    .prose > ol a:hover {
+      background-size:
+        100% 100%,
+        100% 1.5px;
+    }
+  }
+  [data-motion-reduce] .prose a {
+    transition: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .prose a {
+      transition: none;
+    }
   }
   .prose > ul {
     padding-left: 1.25rem;
