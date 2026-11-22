@@ -6,6 +6,6 @@ In short: be considerate, assume good intent, criticise work rather than people,
 
 ## Reporting
 
-<!-- Owner: add the reporting address before this file is merged. -->
+<!-- Owner: the reporting address goes in the paragraph below. -->
 
 Report a concern privately to the maintainer at the address to be added here. Reports are read by the maintainer only and handled in confidence. The maintainer may remove comments, close threads or block an account, as the Covenant's enforcement guidelines describe.
