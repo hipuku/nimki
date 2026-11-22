@@ -38,3 +38,9 @@ Every component page uses the parts in `components/component-page.tsx`, in this 
 10. `## Changelog` with `<Changelog />`
 
 `content/docs/components/select.mdx` is the first. A part with nothing real to show says so.
+
+## Buttons and motion
+
+`components/styles.ts` holds the one button rule: filled, never outlined, with a hover fill and the press role's scale. Text only for most actions; icon and text when the icon adds meaning at a glance (Play, Copy); icon only for small utilities in a fixed place, always with an `aria-label` and a `title`.
+
+The docs move on nimki's own role variables (`.nk-press`, `.nk-pop-in`, `.nk-popover`, `.nk-slide` in `app/globals.css`), so they follow the Motion and Reduced motion controls. The docs default to Subtle, as the library does.
