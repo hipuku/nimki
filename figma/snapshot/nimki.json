@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-22T05:27:06.561Z",
+  "exportedAt": "2026-11-22T05:54:28.958Z",
   "collections": {
     "nimki/primitives": ["Value"],
     "nimki/motion": ["Subtle", "Expressive", "Reduced"],
@@ -1012,7 +1012,7 @@
       "type": "COLOR",
       "web": "var(--nk-destructive-hover)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": { "Light": [0.788, 0.06, 0.101, 1], "Dark": [0.873, 0.232, 0.24, 1] }
+      "values": { "Light": [0.788, 0.06, 0.101, 1], "Dark": [0.732, 0.025, 0.119, 1] }
     },
     "nk/destructive-active": {
       "id": "VariableID:31:25",
@@ -1020,7 +1020,23 @@
       "type": "COLOR",
       "web": "var(--nk-destructive-active)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": { "Light": [0.711, 0.042, 0.084, 1], "Dark": [0.816, 0.169, 0.193, 1] }
+      "values": { "Light": [0.711, 0.042, 0.084, 1], "Dark": [0.655, 0.012, 0.1, 1] }
+    },
+    "nk/destructive-fill": {
+      "id": "VariableID:54:2",
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-destructive-fill)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": { "Light": [0.874, 0.133, 0.147, 1], "Dark": [0.802, 0.151, 0.181, 1] }
+    },
+    "nk/destructive-foreground": {
+      "id": "VariableID:54:3",
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-destructive-foreground)",
+      "scopes": ["SHAPE_FILL", "TEXT_FILL"],
+      "values": { "Light": [1, 1, 1, 1], "Dark": [1, 1, 1, 1] }
     },
     "radius": {
       "id": "VariableID:7:27",

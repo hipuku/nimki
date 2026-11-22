@@ -17,7 +17,8 @@
     "figma:plugin": "node src/figma-cli.ts plugin",
     "figma:pull": "node src/figma-cli.ts pull",
     "figma:out": "node src/figma-cli.ts out",
-    "figma:in": "node src/figma-cli.ts in"
+    "figma:in": "node src/figma-cli.ts in",
+    "figma:swatches": "node src/figma-cli.ts swatches"
   },
   "devDependencies": {
     "@hipuku/nimki": "workspace:^",

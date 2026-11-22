@@ -33,7 +33,8 @@
     "figma:fresh": "pnpm --filter tokens run figma:fresh",
     "figma:sync": "pnpm --silent --filter tokens run figma:sync",
     "figma:pull": "pnpm --filter tokens run figma:pull",
-    "figma:plugin": "pnpm --filter tokens run figma:plugin"
+    "figma:plugin": "pnpm --filter tokens run figma:plugin",
+    "figma:swatches": "pnpm --silent --filter tokens run figma:swatches"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",

@@ -320,4 +320,18 @@ describe('state colours (step 1.3c)', () => {
       found.some(p => p.startsWith('nk.destructive-active (light):') && p.includes('outside sRGB')),
     ).toBe(true)
   })
+
+  it('checks white on the destructive fill, which shadcn has no foreground for', () => {
+    const found = problems(c => (relative(c, 'destructive-fill').dark.lightness = 'keep'))
+    expect(found).toContain(
+      'nk.destructive-foreground on nk.destructive-fill (dark): 3.56:1 is under 4.5:1',
+    )
+  })
+
+  it('moves destructive states from the fill', () => {
+    const found = problems(c => (relative(c, 'destructive-hover').dark.lightness = 0.55))
+    expect(found).toContain(
+      'nk.destructive-hover (dark): 1.000:1 from nk.destructive-fill is under 1.04:1, too close to see',
+    )
+  })
 })

@@ -647,10 +647,49 @@
         }
       }
     },
+    "destructive-fill": {
+      "$type": "color",
+      "$value": "{color.destructive}",
+      "$description": "Behind white text, as on a destructive button. The same as --destructive in light; darker in dark, where --destructive stays light enough to read as text on the page",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": "keep",
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": 0.55,
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "destructive-foreground": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [1, 0, 0]
+      },
+      "$description": "Text on the destructive fill and its states. shadcn has no destructive foreground, so nimki adds one for the rules to check",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "modes": {
+            "dark": {
+              "colorSpace": "oklch",
+              "components": [1, 0, 0]
+            }
+          }
+        }
+      }
+    },
     "destructive-hover": {
       "$type": "color",
       "$value": "{color.destructive}",
-      "$description": "Destructive hovered: a lightness step from the project's --destructive, chroma and hue kept; light caps chroma at 0.21 to stay inside sRGB",
+      "$description": "Destructive hovered: a lightness step from --destructive in light, and below the destructive fill in dark, chroma and hue kept; light caps chroma at 0.21 to stay inside sRGB",
       "$extensions": {
         "dev.hipuku.nimki": {
           "relative": {
@@ -662,9 +701,7 @@
               "hue": "keep"
             },
             "dark": {
-              "lightness": {
-                "offset": -0.05
-              },
+              "lightness": 0.5,
               "chromaMax": "keep",
               "hue": "keep"
             }
@@ -675,7 +712,7 @@
     "destructive-active": {
       "$type": "color",
       "$value": "{color.destructive}",
-      "$description": "Destructive pressed: a lightness step from the project's --destructive, chroma and hue kept; light caps chroma at 0.195 to stay inside sRGB",
+      "$description": "Destructive pressed: a lightness step from --destructive in light, and below the destructive fill in dark, chroma and hue kept; light caps chroma at 0.195 and dark at 0.185 to stay inside sRGB",
       "$extensions": {
         "dev.hipuku.nimki": {
           "relative": {
@@ -687,10 +724,8 @@
               "hue": "keep"
             },
             "dark": {
-              "lightness": {
-                "offset": -0.09
-              },
-              "chromaMax": "keep",
+              "lightness": 0.46,
+              "chromaMax": 0.185,
               "hue": "keep"
             }
           }

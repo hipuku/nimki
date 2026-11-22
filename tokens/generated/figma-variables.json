@@ -1230,6 +1230,28 @@
     },
     {
       "action": "CREATE",
+      "id": "variable:nk/destructive-fill",
+      "name": "nk/destructive-fill",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--nk-destructive-fill)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:nk/destructive-foreground",
+      "name": "nk/destructive-foreground",
+      "variableCollectionId": "collection:colour",
+      "resolvedType": "COLOR",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"],
+      "codeSyntax": {
+        "WEB": "var(--nk-destructive-foreground)"
+      }
+    },
+    {
+      "action": "CREATE",
       "id": "variable:nk/destructive-hover",
       "name": "nk/destructive-hover",
       "variableCollectionId": "collection:colour",
@@ -3077,6 +3099,46 @@
       }
     },
     {
+      "variableId": "variable:nk/destructive-fill",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 0.8742,
+        "g": 0.1327,
+        "b": 0.1467,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:nk/destructive-fill",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 0.8018,
+        "g": 0.1512,
+        "b": 0.1813,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:nk/destructive-foreground",
+      "modeId": "mode:colour:light",
+      "value": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "variableId": "variable:nk/destructive-foreground",
+      "modeId": "mode:colour:dark",
+      "value": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
       "variableId": "variable:nk/destructive-hover",
       "modeId": "mode:colour:light",
       "value": {
@@ -3090,9 +3152,9 @@
       "variableId": "variable:nk/destructive-hover",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.8725,
-        "g": 0.2322,
-        "b": 0.2404,
+        "r": 0.7315,
+        "g": 0.0253,
+        "b": 0.1194,
         "a": 1
       }
     },
@@ -3110,9 +3172,9 @@
       "variableId": "variable:nk/destructive-active",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.8159,
-        "g": 0.1687,
-        "b": 0.1932,
+        "r": 0.6551,
+        "g": 0.0118,
+        "b": 0.1,
         "a": 1
       }
     },
