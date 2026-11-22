@@ -223,3 +223,89 @@ describe('helpers', () => {
     expect(fontCss(['DM Sans', 'system-ui'])).toBe('"DM Sans", system-ui')
   })
 })
+
+describe('the neutral ramp (step 1.3c)', () => {
+  const step = (c: Json, n: number): Json => c.ramp.neutral[String(n)] as Json
+
+  it('writes its steps into the Linear theme as --nk-neutral-N, with a dark mode', () => {
+    const { themeCss } = renderWith(() => {})
+    expect(themeCss).toContain('--nk-neutral-1: oklch(0.99 0.002 260);')
+    expect(themeCss.slice(themeCss.indexOf('.dark'))).toContain(
+      '--nk-neutral-1: oklch(0.16 0.005 260);',
+    )
+    expect(themeVar('ramp.neutral.12')).toBe('--nk-neutral-12')
+  })
+
+  it('fails a step that runs the wrong way', () => {
+    const found = problems(c => (step(c, 5).$value = oklch(0.97, 0.006, 260)))
+    expect(found).toContain('ramp.neutral.5 (light): must be darker than step 4')
+  })
+
+  it('fails a ramp with a step missing', () => {
+    const found = problems(c => delete c.ramp.neutral['7'])
+    expect(found).toContain('ramp.neutral.7 (light): a step is missing')
+  })
+
+  it('checks nothing when a theme has no ramp', () => {
+    expect(problems(c => delete c.ramp)).toEqual([])
+  })
+
+  it('fails text steps that do not read on the surface steps', () => {
+    const found = problems(c => (dark(step(c, 11)).dark = oklch(0.4, 0.01, 260)))
+    expect(found.some(p => p.startsWith('ramp.neutral.11 on ramp.neutral.1 (dark):'))).toBe(true)
+  })
+})
+
+describe('state colours (step 1.3c)', () => {
+  const relative = (c: Json, name: string): Json =>
+    c.nk[name].$extensions['dev.hipuku.nimki'].relative as Json
+
+  it('derives hover and pressed from the project variable, keeping chroma and hue', () => {
+    const { extensionsCss } = renderWith(() => {})
+    expect(extensionsCss).toContain(
+      '--nk-primary-hover: oklch(from var(--primary) calc(l + 0.07) c h);',
+    )
+    expect(extensionsCss).toContain(
+      '--nk-secondary-active: oklch(from var(--secondary) calc(l - 0.033) c h);',
+    )
+  })
+
+  it('fails a state too close to its rest colour to see', () => {
+    const found = problems(
+      c => (relative(c, 'secondary-hover').light.lightness = { offset: -0.002 }),
+    )
+    expect(
+      found.some(
+        p => p.startsWith('nk.secondary-hover (light):') && p.endsWith('too close to see'),
+      ),
+    ).toBe(true)
+  })
+
+  it('fails a pressed state that moves less than hovered', () => {
+    const found = problems(c => (relative(c, 'primary-active').light.lightness = { offset: 0.07 }))
+    expect(found).toContain(
+      'nk.primary-active (light): pressed must move further from rest than hovered',
+    )
+  })
+
+  it('fails text that no longer reads on a hovered fill', () => {
+    const found = problems(c => (relative(c, 'primary-hover').light.lightness = { offset: 0.5 }))
+    expect(
+      found.some(p => p.startsWith('color.primary-foreground on nk.primary-hover (light):')),
+    ).toBe(true)
+  })
+
+  it('fails a state with no rest colour to belong to', () => {
+    const found = problems(c => {
+      c.nk['ghost-hover'] = { ...c.nk['secondary-hover'] }
+    })
+    expect(found).toContain('nk.ghost-hover: there is no color.ghost for it to be a state of')
+  })
+
+  it('caps chroma where a darker red would leave sRGB', () => {
+    const found = problems(c => (relative(c, 'destructive-active').light.chromaMax = 'keep'))
+    expect(
+      found.some(p => p.startsWith('nk.destructive-active (light):') && p.includes('outside sRGB')),
+    ).toBe(true)
+  })
+})

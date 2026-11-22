@@ -216,6 +216,217 @@
       }
     }
   },
+  "ramp": {
+    "$description": "Colour primitives for the Linear theme. Components never read these; the shadcn variables alias them.",
+    "neutral": {
+      "$type": "color",
+      "$description": "Linear's neutral ramp: twelve steps per mode, each step's lightness set by a contrast target against step 1 (light 1.03 to 17.3:1, dark 1.07 to 16.6:1, larger at the dark end as dark surfaces need it). Step roles follow Radix's scale.",
+      "1": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.99, 0.002, 260]
+        },
+        "$description": "Page",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.16, 0.005, 260]
+              }
+            }
+          }
+        }
+      },
+      "2": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.98, 0.003, 260]
+        },
+        "$description": "Raised surface",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.199, 0.005, 260]
+              }
+            }
+          }
+        }
+      },
+      "3": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.964, 0.004, 260]
+        },
+        "$description": "Component fill",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.237, 0.006, 260]
+              }
+            }
+          }
+        }
+      },
+      "4": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.948, 0.005, 260]
+        },
+        "$description": "Component fill, hovered",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.265, 0.007, 260]
+              }
+            }
+          }
+        }
+      },
+      "5": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.931, 0.006, 260]
+        },
+        "$description": "Component fill, pressed",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.289, 0.008, 260]
+              }
+            }
+          }
+        }
+      },
+      "6": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.907, 0.007, 260]
+        },
+        "$description": "Subtle border",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.318, 0.009, 260]
+              }
+            }
+          }
+        }
+      },
+      "7": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.874, 0.008, 260]
+        },
+        "$description": "Border",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.355, 0.01, 260]
+              }
+            }
+          }
+        }
+      },
+      "8": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.802, 0.009, 260]
+        },
+        "$description": "Strong border, hovered border",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.421, 0.011, 260]
+              }
+            }
+          }
+        }
+      },
+      "9": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.645, 0.01, 260]
+        },
+        "$description": "Solid fill",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.512, 0.012, 260]
+              }
+            }
+          }
+        }
+      },
+      "10": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.609, 0.01, 260]
+        },
+        "$description": "Solid fill, hovered",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.544, 0.012, 260]
+              }
+            }
+          }
+        }
+      },
+      "11": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.486, 0.01, 260]
+        },
+        "$description": "Muted text",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.69, 0.01, 260]
+              }
+            }
+          }
+        }
+      },
+      "12": {
+        "$value": {
+          "colorSpace": "oklch",
+          "components": [0.208, 0.006, 260]
+        },
+        "$description": "Text",
+        "$extensions": {
+          "dev.hipuku.nimki": {
+            "modes": {
+              "dark": {
+                "colorSpace": "oklch",
+                "components": [0.947, 0.003, 260]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "radius": {
     "$type": "dimension",
     "$value": {
@@ -311,6 +522,306 @@
               "colorSpace": "oklch",
               "components": [0, 0, 0],
               "alpha": 0.6
+            }
+          }
+        }
+      }
+    },
+    "primary-hover": {
+      "$type": "color",
+      "$value": "{color.primary}",
+      "$description": "Primary hovered: a lightness step from the project's --primary, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": 0.07
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": -0.05
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "primary-active": {
+      "$type": "color",
+      "$value": "{color.primary}",
+      "$description": "Primary pressed: a lightness step from the project's --primary, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": 0.12
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": -0.09
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "secondary-hover": {
+      "$type": "color",
+      "$value": "{color.secondary}",
+      "$description": "Secondary hovered: a lightness step from the project's --secondary, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.016
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.028
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "secondary-active": {
+      "$type": "color",
+      "$value": "{color.secondary}",
+      "$description": "Secondary pressed: a lightness step from the project's --secondary, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.033
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.052
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "accent-hover": {
+      "$type": "color",
+      "$value": "{color.accent}",
+      "$description": "Accent hovered: a lightness step from the project's --accent, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.016
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.028
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "accent-active": {
+      "$type": "color",
+      "$value": "{color.accent}",
+      "$description": "Accent pressed: a lightness step from the project's --accent, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.033
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.052
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "card-hover": {
+      "$type": "color",
+      "$value": "{color.card}",
+      "$description": "Card hovered: a lightness step from the project's --card, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.016
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.028
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "card-active": {
+      "$type": "color",
+      "$value": "{color.card}",
+      "$description": "Card pressed: a lightness step from the project's --card, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.033
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.052
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "popover-hover": {
+      "$type": "color",
+      "$value": "{color.popover}",
+      "$description": "Popover hovered: a lightness step from the project's --popover, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.016
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.028
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "popover-active": {
+      "$type": "color",
+      "$value": "{color.popover}",
+      "$description": "Popover pressed: a lightness step from the project's --popover, chroma and hue kept",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.033
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": 0.052
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "destructive-hover": {
+      "$type": "color",
+      "$value": "{color.destructive}",
+      "$description": "Destructive hovered: a lightness step from the project's --destructive, chroma and hue kept; light caps chroma at 0.21 to stay inside sRGB",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.05
+              },
+              "chromaMax": 0.21,
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": -0.05
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
+            }
+          }
+        }
+      }
+    },
+    "destructive-active": {
+      "$type": "color",
+      "$value": "{color.destructive}",
+      "$description": "Destructive pressed: a lightness step from the project's --destructive, chroma and hue kept; light caps chroma at 0.195 to stay inside sRGB",
+      "$extensions": {
+        "dev.hipuku.nimki": {
+          "relative": {
+            "light": {
+              "lightness": {
+                "offset": -0.09
+              },
+              "chromaMax": 0.195,
+              "hue": "keep"
+            },
+            "dark": {
+              "lightness": {
+                "offset": -0.09
+              },
+              "chromaMax": "keep",
+              "hue": "keep"
             }
           }
         }

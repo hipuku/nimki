@@ -1159,6 +1159,246 @@
       "values": {
         "Linear": 12
       }
+    },
+    "ramp/neutral/1": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-1)",
+      "scopes": [],
+      "values": {
+        "Light": [0.984, 0.987, 0.993, 1],
+        "Dark": [0.047, 0.052, 0.061, 1]
+      }
+    },
+    "ramp/neutral/2": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-2)",
+      "scopes": [],
+      "values": {
+        "Light": [0.969, 0.974, 0.982, 1],
+        "Dark": [0.08, 0.086, 0.094, 1]
+      }
+    },
+    "ramp/neutral/3": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-3)",
+      "scopes": [],
+      "values": {
+        "Light": [0.947, 0.953, 0.964, 1],
+        "Dark": [0.113, 0.12, 0.131, 1]
+      }
+    },
+    "ramp/neutral/4": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-4)",
+      "scopes": [],
+      "values": {
+        "Light": [0.925, 0.933, 0.946, 1],
+        "Dark": [0.138, 0.146, 0.16, 1]
+      }
+    },
+    "ramp/neutral/5": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-5)",
+      "scopes": [],
+      "values": {
+        "Light": [0.901, 0.911, 0.926, 1],
+        "Dark": [0.16, 0.169, 0.185, 1]
+      }
+    },
+    "ramp/neutral/6": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-6)",
+      "scopes": [],
+      "values": {
+        "Light": [0.869, 0.88, 0.898, 1],
+        "Dark": [0.187, 0.198, 0.216, 1]
+      }
+    },
+    "ramp/neutral/7": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-7)",
+      "scopes": [],
+      "values": {
+        "Light": [0.825, 0.838, 0.858, 1],
+        "Dark": [0.223, 0.235, 0.256, 1]
+      }
+    },
+    "ramp/neutral/8": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-8)",
+      "scopes": [],
+      "values": {
+        "Light": [0.733, 0.747, 0.77, 1],
+        "Dark": [0.29, 0.304, 0.327, 1]
+      }
+    },
+    "ramp/neutral/9": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-9)",
+      "scopes": [],
+      "values": {
+        "Light": [0.541, 0.556, 0.58, 1],
+        "Dark": [0.387, 0.403, 0.43, 1]
+      }
+    },
+    "ramp/neutral/10": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-10)",
+      "scopes": [],
+      "values": {
+        "Light": [0.5, 0.514, 0.537, 1],
+        "Dark": [0.423, 0.44, 0.467, 1]
+      }
+    },
+    "ramp/neutral/11": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-11)",
+      "scopes": [],
+      "values": {
+        "Light": [0.361, 0.374, 0.396, 1],
+        "Dark": [0.595, 0.61, 0.634, 1]
+      }
+    },
+    "ramp/neutral/12": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-neutral-12)",
+      "scopes": [],
+      "values": {
+        "Light": [0.087, 0.094, 0.105, 1],
+        "Dark": [0.926, 0.931, 0.939, 1]
+      }
+    },
+    "nk/primary-hover": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-primary-hover)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.153, 0.161, 0.172, 1],
+        "Dark": [0.878, 0.883, 0.891, 1]
+      }
+    },
+    "nk/primary-active": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-primary-active)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.202, 0.21, 0.222, 1],
+        "Dark": [0.827, 0.832, 0.84, 1]
+      }
+    },
+    "nk/secondary-hover": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-secondary-hover)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.921, 0.927, 0.938, 1],
+        "Dark": [0.152, 0.159, 0.17, 1]
+      }
+    },
+    "nk/secondary-active": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-secondary-active)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.899, 0.905, 0.916, 1],
+        "Dark": [0.175, 0.182, 0.194, 1]
+      }
+    },
+    "nk/accent-hover": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-accent-hover)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.921, 0.927, 0.938, 1],
+        "Dark": [0.152, 0.159, 0.17, 1]
+      }
+    },
+    "nk/accent-active": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-accent-active)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.899, 0.905, 0.916, 1],
+        "Dark": [0.175, 0.182, 0.194, 1]
+      }
+    },
+    "nk/card-hover": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-card-hover)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.963, 0.966, 0.971, 1],
+        "Dark": [0.097, 0.103, 0.112, 1]
+      }
+    },
+    "nk/card-active": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-card-active)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.941, 0.944, 0.949, 1],
+        "Dark": [0.119, 0.125, 0.134, 1]
+      }
+    },
+    "nk/popover-hover": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-popover-hover)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.979, 0.979, 0.979, 1],
+        "Dark": [0.114, 0.121, 0.132, 1]
+      }
+    },
+    "nk/popover-active": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-popover-active)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.957, 0.957, 0.957, 1],
+        "Dark": [0.136, 0.143, 0.155, 1]
+      }
+    },
+    "nk/destructive-hover": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-destructive-hover)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.788, 0.06, 0.101, 1],
+        "Dark": [0.873, 0.232, 0.24, 1]
+      }
+    },
+    "nk/destructive-active": {
+      "collection": "nimki/colour",
+      "type": "COLOR",
+      "web": "var(--nk-destructive-active)",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light": [0.711, 0.042, 0.084, 1],
+        "Dark": [0.816, 0.169, 0.193, 1]
+      }
     }
   },
   "effectStyles": {
