@@ -47,7 +47,13 @@ interface Paint {
   visible?: boolean
 }
 
-const CORNERS = ['topLeftRadius', 'topRightRadius', 'bottomRightRadius', 'bottomLeftRadius']
+/** Each corner in rectangleCornerRadii's order, as the plugin API and the REST API name its binding. */
+const CORNERS = [
+  ['topLeftRadius', 'RECTANGLE_TOP_LEFT_CORNER_RADIUS'],
+  ['topRightRadius', 'RECTANGLE_TOP_RIGHT_CORNER_RADIUS'],
+  ['bottomRightRadius', 'RECTANGLE_BOTTOM_RIGHT_CORNER_RADIUS'],
+  ['bottomLeftRadius', 'RECTANGLE_BOTTOM_LEFT_CORNER_RADIUS'],
+] as const
 const PADDING = ['paddingLeft', 'paddingRight', 'paddingTop', 'paddingBottom'] as const
 
 /** Whether a page's tree holds a component. */
@@ -75,10 +81,16 @@ function nodeProblems(node: AuditNode): string[] {
   paints('fills')
   paints('strokes')
 
+  // The REST API reports corner bindings under rectangleCornerRadii, keyed
+  // RECTANGLE_TOP_LEFT_CORNER_RADIUS and so on; the plugin API under
+  // topLeftRadius. Either counts.
+  const cornerBindings = (bound.rectangleCornerRadii ?? {}) as Record<string, unknown>
   const corners = node.rectangleCornerRadii ?? Array<number>(4).fill(node.cornerRadius ?? 0)
   corners.forEach((radius, i) => {
-    const corner = CORNERS[i] as string
-    if (radius > 0 && !bound[corner]) problems.push(`an unbound corner radius (${radius})`)
+    const [plugin, rest] = CORNERS[i] as [string, string]
+    if (radius > 0 && !bound[plugin] && !cornerBindings[rest]) {
+      problems.push(`an unbound corner radius (${radius})`)
+    }
   })
 
   if (node.layoutMode === 'HORIZONTAL' || node.layoutMode === 'VERTICAL') {

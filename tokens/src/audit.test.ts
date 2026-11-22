@@ -103,6 +103,25 @@ describe('auditPage', () => {
     ])
   })
 
+  it('accepts corner bindings in the REST API’s shape', () => {
+    const rest = boundItem()
+    const bound = rest.boundVariables as Record<string, unknown>
+    for (const key of ['topLeftRadius', 'topRightRadius', 'bottomRightRadius', 'bottomLeftRadius'])
+      delete bound[key]
+    bound.rectangleCornerRadii = {
+      RECTANGLE_TOP_LEFT_CORNER_RADIUS: alias,
+      RECTANGLE_TOP_RIGHT_CORNER_RADIUS: alias,
+      RECTANGLE_BOTTOM_RIGHT_CORNER_RADIUS: alias,
+      RECTANGLE_BOTTOM_LEFT_CORNER_RADIUS: alias,
+    }
+    expect(auditPage(pageWith(rest))).toEqual([])
+    delete (bound.rectangleCornerRadii as Record<string, unknown>)
+      .RECTANGLE_BOTTOM_LEFT_CORNER_RADIUS
+    expect(auditPage(pageWith(rest))).toEqual([
+      'Select › Board › SelectItem › State=Default: an unbound corner radius (6)',
+    ])
+  })
+
   it('skips a space-between gap, which Figma works out, and zero values', () => {
     const spread = node('COMPONENT', 'Row', {
       layoutMode: 'HORIZONTAL',
