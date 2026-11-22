@@ -15,6 +15,8 @@ pnpm run check
 
 `pnpm install` points git at `.githooks`, which run `scripts/check-names.mjs` on staged files and commit messages. `pnpm run check` runs every CI check locally.
 
+[CONTRIBUTING.md](./CONTRIBUTING.md) covers what is wanted, what is out of scope and how a change lands.
+
 | Path              | Contents                                                       |
 | ----------------- | -------------------------------------------------------------- |
 | `packages/engine` | `@hipuku/nimki` on npm: motion maths and hooks                 |
