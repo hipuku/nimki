@@ -76,37 +76,37 @@
     margin-top: 0.75rem;
   }
   /*
-   * Inline links: a 1 px underline in --input, 4 px below the text. On hover
-   * it tightens: darkens to the text colour, thickens to 2 px and lifts to
-   * 2 px, on the press role. With reduced motion it changes without moving.
+   * Inline links: a faint 1 px line in --input at rest. On hover a 1.5 px line
+   * in the text colour draws across it from left to right, and retracts on
+   * the way out. It moves on the highlight role, whose reduced setting is a
+   * jump, so under reduced motion the line appears whole. Drawn as
+   * backgrounds so it wraps line by line.
    */
   .prose > p a,
   .prose > ul a,
   .prose > ol a {
-    text-decoration: underline;
-    text-decoration-color: var(--input);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-    transition:
-      text-decoration-color var(--nk-press-duration) var(--nk-press-easing),
-      text-decoration-thickness var(--nk-press-duration) var(--nk-press-easing),
-      text-underline-offset var(--nk-press-duration) var(--nk-press-easing);
+    padding-bottom: 0.125rem;
+    text-decoration: none;
+    background-image:
+      linear-gradient(currentColor, currentColor), linear-gradient(var(--input), var(--input));
+    background-repeat: no-repeat;
+    background-position:
+      0 100%,
+      0 100%;
+    background-size:
+      0 1.5px,
+      100% 1px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    transition: background-size var(--nk-highlight-duration) var(--nk-highlight-easing);
   }
   @media (hover: hover) {
     .prose > p a:hover,
     .prose > ul a:hover,
     .prose > ol a:hover {
-      text-decoration-color: currentColor;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 2px;
-    }
-  }
-  [data-motion-reduce] .prose a {
-    transition: none;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .prose a {
-      transition: none;
+      background-size:
+        100% 1.5px,
+        100% 1px;
     }
   }
   .prose > ul {
