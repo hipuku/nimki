@@ -15,7 +15,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { format, resolveConfig } from 'prettier'
-import { pull, type SourceFile } from './pull.ts'
+import { applyToText, pull, type SourceFile } from './pull.ts'
 import {
   FIGMA_EXPORT_SCRIPT,
   FIGMA_FILE_KEY,
@@ -46,10 +46,18 @@ async function main() {
     writeFileSync(pluginCodePath, pluginCode())
     console.log('wrote figma/plugin/code.js')
   } else if (mode === 'save' && arg) {
-    const text =
-      arg === '--clipboard'
-        ? execFileSync('pbpaste', { encoding: 'utf8' })
-        : readFileSync(resolve(arg), 'utf8')
+    // pnpm runs the script inside tokens/; INIT_CWD is where the command was typed.
+    const file = resolve(process.env.INIT_CWD ?? process.cwd(), arg)
+    let text: string
+    try {
+      text =
+        arg === '--clipboard'
+          ? execFileSync('pbpaste', { encoding: 'utf8' })
+          : readFileSync(file, 'utf8')
+    } catch {
+      console.error(`Cannot read ${arg === '--clipboard' ? 'the clipboard' : file}.`)
+      process.exit(1)
+    }
     let snapshot: Snapshot
     try {
       snapshot = readExport(JSON.parse(text))
@@ -75,16 +83,17 @@ async function main() {
       files.map(file => [file, readJson(sourcePath(file))]),
     ) as Parameters<typeof pull>[2]
     const actual = normaliseSnapshot(readJson(snapshotPath) as Snapshot)
-    const { written, manual } = pull(expected(), actual, sources)
+    const { written, manual, edits } = pull(expected(), actual, sources)
     const dry = arg === '--dry'
     if (!dry) {
+      // Edited in place, so each file keeps its own layout and key order.
       for (const file of files) {
+        const fileEdits = edits.filter(edit => edit.file === file)
+        if (fileEdits.length === 0) continue
         const path = sourcePath(file)
         const options = (await resolveConfig(path)) ?? {}
-        writeFileSync(
-          path,
-          await format(JSON.stringify(sources[file]), { ...options, filepath: path }),
-        )
+        const text = applyToText(readFileSync(path, 'utf8'), fileEdits)
+        writeFileSync(path, await format(text, { ...options, filepath: path }))
       }
     }
     if (written.length === 0 && manual.length === 0) {

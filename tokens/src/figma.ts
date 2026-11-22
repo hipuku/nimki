@@ -289,8 +289,17 @@ export function readExport(raw: unknown): Snapshot {
 }
 
 /**
- * Whether the snapshot still describes the file: nothing saved in Figma after
- * the export. Returns a problem, or null.
+ * How long after an export Figma may stamp the file before the snapshot counts
+ * as stale. Figma sets lastModified when its server saves, about a minute and
+ * a half after an edit (measured 2026-11-22: edit 04:35:38, lastModified
+ * 04:37:12), so an export taken right after an edit can look older than the
+ * file. Changed values are caught by content, not time, by the live check.
+ */
+export const FRESHNESS_GRACE_MINUTES = 10
+
+/**
+ * Whether the snapshot still describes the file: nothing saved in Figma more
+ * than the grace window after the export. Returns a problem, or null.
  */
 export function freshness(lastModified: string, exportedAt: string | undefined): string | null {
   if (!exportedAt) {
@@ -301,8 +310,8 @@ export function freshness(lastModified: string, exportedAt: string | undefined):
   if (Number.isNaN(modified) || Number.isNaN(exported)) {
     return `Cannot compare the times: lastModified ${lastModified}, exportedAt ${exportedAt}.`
   }
-  if (modified > exported) {
-    return `Figma has changes that are not in the snapshot: the file was saved at ${lastModified}, the snapshot exported at ${exportedAt}. Export the file and run pnpm figma:save; if a value changed in Figma, run pnpm figma:sync to put code's value back first.`
+  if (modified > exported + FRESHNESS_GRACE_MINUTES * 60_000) {
+    return `Figma has changes that are not in the snapshot: the file was saved at ${lastModified}, the snapshot exported at ${exportedAt}. Export the file and run pnpm figma:save; if a value changed in Figma, run pnpm figma:sync --apply to put code's value back first, or pnpm figma:pull to keep it.`
   }
   return null
 }
