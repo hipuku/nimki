@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import * as React from 'react'
 import { useState } from 'react'
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test'
+import { configure, expect, fn, userEvent, waitFor, within } from 'storybook/test'
 import { roleTimingProblems } from '../../../apps/storybook/src/motion'
 import {
   Select,
@@ -23,6 +23,16 @@ import {
  * the sidebar, where a play function replays its clicks each time the story
  * opens. select.stories.tsx holds the stories to look at.
  */
+
+/*
+ * WebKit on a CI runner starts the popup's enter transition late and moves
+ * focus into the list a frame or two after Chromium does, so the one-second
+ * default left the waits below racing the browser rather than the component.
+ * Every findBy and waitFor in this file gets the longer budget; a story that
+ * is genuinely broken still fails, only later.
+ */
+configure({ asyncUtilTimeout: 5000 })
+
 const meta = {
   title: 'Components/Select/Tests',
   component: Select,
@@ -39,12 +49,21 @@ const page = (element: HTMLElement) => within(element.ownerDocument.body)
  * Opens the list with the pointer and waits until it has finished appearing,
  * as a person would before choosing: Base UI ignores an option pressed in the
  * first moments after opening, so the press that opened it cannot choose.
+ *
+ * The wait reads the enter transition two ways, because neither alone holds in
+ * every engine: the popup has left its starting style, and its opacity has
+ * reached the top. Opacity is compared as a number, since a browser part way
+ * through the last frame reports 0.99 and WebKit rounds differently from
+ * Chromium.
  */
 async function openList(trigger: HTMLElement) {
   await userEvent.click(trigger)
   const list = await within(trigger.ownerDocument.body).findByRole('listbox')
   const popup = list.closest('[data-slot=select-content]') as HTMLElement
-  await waitFor(() => expect(getComputedStyle(popup).opacity).toBe('1'))
+  await waitFor(async () => {
+    await expect(popup).not.toHaveAttribute('data-starting-style')
+    await expect(Number(getComputedStyle(popup).opacity)).toBeGreaterThan(0.99)
+  })
   return list
 }
 
