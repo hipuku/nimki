@@ -9,12 +9,15 @@ The source for nimki's motion, density, colour and type tokens, and the script t
 | `source/motion.tokens.json`  | Primitives (durations, easings, springs, offsets, scales, staggers), the roles components read, and the limits every theme stays under  |
 | `source/colour.tokens.json`  | The Linear theme's values for shadcn's colour variables in light and dark, the radius, nimki's fonts, and the `--nk-` colour extensions |
 | `source/density.tokens.json` | Control, item, padding and gap sizes, and the 24 px hit-area floor                                                                      |
+| `source/layout.tokens.json`  | Tailwind's spacing steps and the text styles components use, mirrored so Figma can bind them; code emits no CSS for these               |
 
 A role token's `$value` is its Subtle mapping. Its Expressive and reduced-motion mappings are in `$extensions["dev.hipuku.nimki"].modes`. Density works the same way: the value is comfortable, and compact is a mode. So does colour: the value is light, and dark is a mode.
 
 Colours are OKLCH. A derived colour, such as `nk.success`, aliases its base and holds a recipe per mode in `$extensions["dev.hipuku.nimki"].relative`: a lightness (a number, `"keep"` or an offset), a chroma cap and a hue. The CSS writes it as a relative colour of the base's custom property, so it follows whatever `--destructive` a project sets.
 
 DTCG has no spring type. A spring is a `duration` token whose value is its visual duration, with its bounce in `$extensions["dev.hipuku.nimki"].bounce`.
+
+A text style is a DTCG `typography` token: its family aliases a font token, its size and letter spacing are in px, and its line height is a multiple of the size. Its Tailwind classes are in `$extensions["dev.hipuku.nimki"].tailwind`, such as `"text-sm font-medium"`.
 
 ## Outputs
 
@@ -25,7 +28,7 @@ DTCG has no spring type. A spring is a `duration` token whose value is its visua
 | `registry/styles/extensions.css`          | Components. The `--nk-` colours and amounts, derived from shadcn's variables, with dark mode on `.dark`: success, warning, highlight, the destructive fill and its text, the hover and pressed colour of each filled role, and the 8% and 12% layers for transparent surfaces |
 | `registry/styles/density.css`             | Components, through the size custom properties. Compact switches on `data-density`                                                                                                                                                                                            |
 | `packages/engine/src/tokens.generated.ts` | The engine: duration caps, every role resolved to values, and each role as a Motion transition                                                                                                                                                                                |
-| `generated/figma-variables.json`          | The Figma build, in the shape of the body of Figma's variables API                                                                                                                                                                                                            |
+| `generated/figma-variables.json`          | The Figma build, in the shape of the body of Figma's variables API, plus the effect styles and text styles                                                                                                                                                                    |
 
 A spring becomes two custom properties: a CSS `linear()` easing sampled from the spring, and the time it takes to settle. The engine's `springToLinear()` does the conversion, with the same formula Motion uses, so a CSS transition and a Motion spring with the same token follow the same curve.
 
@@ -52,6 +55,8 @@ Generation stops, listing every problem, if the source breaks a rule from the PR
 - `--nk-destructive-foreground` (white) passes 4.5:1 on `--nk-destructive-fill` and its hover and pressed colours. In dark mode one red cannot be both readable text on the page and a fill behind white text, so `--destructive` stays light enough for text (shadcn's `text-destructive`) and `--nk-destructive-fill` is darker; destructive hover and pressed move from the fill.
 - The neutral ramp runs one way per mode, and its text steps pass 4.5:1 (step 11) and 7:1 (step 12) on steps 1 to 3.
 - A shadow keeps one shape in both modes. Its layer colours carry the dark mode, so the Figma effect style can switch with the mode too.
+- Each spacing step is its name times Tailwind's 4 px (`spacing.1-5` is 6 px). The radius steps are worked out from `radius` as Tailwind's theme does (`sm` 4 px less, `md` 2 px less, `lg` equal, `xl` 4 px more), and none may fall below zero.
+- Each text style's size, line height, weight and family are what its Tailwind classes give, with no letter spacing; its family aliases a font token, so the Figma style binds the font variable.
 
 The parser reads only the DTCG features the source uses and refuses the rest by name, so a feature added to the source without parser support fails rather than being ignored.
 

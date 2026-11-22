@@ -33,6 +33,19 @@ export interface Snapshot {
     string,
     { type: string; x: number; y: number; radius: number; spread: number; color: string }[]
   >
+  /**
+   * Text styles: family is the font variable the style is bound to, or the
+   * family itself when unbound; sizes in px.
+   */
+  textStyles: Record<string, TextStyleValue>
+}
+
+export interface TextStyleValue {
+  family: string
+  style: string
+  size: number
+  lineHeight: number | 'AUTO'
+  letterSpacing: number
 }
 
 const round = (n: number) => Math.round(n * 1000) / 1000
@@ -88,6 +101,15 @@ interface Generated {
       colorVariableId?: string
     }[]
   }[]
+  textStyles: {
+    name: string
+    fontFamilyVariableId: string
+    fontFamily: string
+    fontStyle: string
+    fontSize: number
+    lineHeight: number
+    letterSpacing: number
+  }[]
 }
 
 /** tokens/generated/figma-variables.json in the snapshot's shape. */
@@ -132,11 +154,23 @@ export function fromGenerated(generated: Generated): Snapshot {
       color: variableName.get(layer.colorVariableId ?? '') ?? '',
     }))
   }
-  return { collections, variables, effectStyles }
+  const textStyles: Snapshot['textStyles'] = {}
+  for (const style of generated.textStyles) {
+    textStyles[style.name] = {
+      family: variableName.get(style.fontFamilyVariableId) ?? style.fontFamily,
+      style: style.fontStyle,
+      size: round(style.fontSize),
+      lineHeight: round(style.lineHeight),
+      letterSpacing: round(style.letterSpacing),
+    }
+  }
+  return { collections, variables, effectStyles, textStyles }
 }
 
 /** Brings a saved Figma export to the same rounding and ordering. */
-export function normaliseSnapshot(raw: Snapshot): Snapshot {
+export function normaliseSnapshot(
+  raw: Omit<Snapshot, 'textStyles'> & { textStyles?: Snapshot['textStyles'] },
+): Snapshot {
   const variables: Snapshot['variables'] = {}
   for (const [name, v] of Object.entries(raw.variables)) {
     variables[name] = {
@@ -152,6 +186,8 @@ export function normaliseSnapshot(raw: Snapshot): Snapshot {
     collections: raw.collections,
     variables,
     effectStyles: roundDeep(raw.effectStyles) as Snapshot['effectStyles'],
+    // An export from before text styles were compared has none.
+    textStyles: roundDeep(raw.textStyles ?? {}) as Snapshot['textStyles'],
   }
 }
 
@@ -226,6 +262,16 @@ export function compare(expected: Snapshot, actual: Snapshot): string[] {
     if (!expected.effectStyles[name])
       problems.push(`effect style ${name} is in Figma but not in the source`)
   }
+  for (const [name, want] of Object.entries(expected.textStyles)) {
+    const got = actual.textStyles[name]
+    if (!got) problems.push(`text style ${name} is missing from Figma`)
+    else if (!same(got, want))
+      problems.push(`text style ${name}: ${JSON.stringify(got)}, expected ${JSON.stringify(want)}`)
+  }
+  for (const name of Object.keys(actual.textStyles)) {
+    if (!expected.textStyles[name])
+      problems.push(`text style ${name} is in Figma but not in the source`)
+  }
   return problems
 }
 
@@ -281,9 +327,11 @@ export function readExport(raw: unknown): Snapshot {
       `The export's checksum does not match (${String(value.checksum)}, expected ${expected}): it changed on the way here. Export again; do not edit it.`,
     )
   }
-  const { collections, variables, effectStyles } = value.snapshot
-  if (!collections || !variables || !effectStyles) {
-    throw new Error('The export has no collections, variables or effect styles.')
+  const { collections, variables, effectStyles, textStyles } = value.snapshot
+  if (!collections || !variables || !effectStyles || !textStyles) {
+    throw new Error(
+      'The export has no collections, variables, effect styles or text styles: it is from an older plugin. Run pnpm figma:plugin, reload the plugin and export again.',
+    )
   }
   return normaliseSnapshot({ ...value.snapshot, exportedAt: value.exportedAt })
 }
@@ -311,7 +359,7 @@ export function freshness(lastModified: string, exportedAt: string | undefined):
     return `Cannot compare the times: lastModified ${lastModified}, exportedAt ${exportedAt}.`
   }
   if (modified > exported + FRESHNESS_GRACE_MINUTES * 60_000) {
-    return `Figma has changes that are not in the snapshot: the file was saved at ${lastModified}, the snapshot exported at ${exportedAt}. Export in Figma and run pnpm figma:in; to put code's values back first, pnpm figma:out and Sync from code.`
+    return `Figma has changes that are not in the snapshot: the file was saved at ${lastModified}, the snapshot exported at ${exportedAt}. Publishing the library counts as a save. Export in Figma and run pnpm figma:in; to put code's values back first, pnpm figma:out and Sync from code.`
   }
   return null
 }
@@ -327,6 +375,17 @@ const value = val => {
 };`
 
 /**
+ * Shared by the export and the sync script: a text style in the snapshot's
+ * shape. Line height and letter spacing come back in px whatever unit Figma
+ * holds them in.
+ */
+const TEXT_STYLE_SOURCE = `const textStyle = s => {
+  const px = v => v.unit === 'PIXELS' ? r(v.value) : v.unit === 'PERCENT' ? r(v.value * s.fontSize / 100) : 'AUTO';
+  const bound = s.boundVariables?.fontFamily;
+  return { family: bound ? byId.get(bound.id)?.name ?? s.fontName.family : s.fontName.family, style: s.fontName.style, size: r(s.fontSize), lineHeight: px(s.lineHeight), letterSpacing: px(s.letterSpacing) };
+};`
+
+/**
  * Run inside Figma (the dev plugin in figma/plugin, or use_figma); returns an
  * Export as JSON. Kept as a string because it runs in Figma's plugin sandbox,
  * not in Node.
@@ -335,8 +394,9 @@ export const FIGMA_EXPORT_SCRIPT = `const collections = await figma.variables.ge
 const all = await figma.variables.getLocalVariablesAsync();
 const byId = new Map(all.map(v => [v.id, v]));
 ${VALUE_SOURCE}
+${TEXT_STYLE_SOURCE}
 ${CHECKSUM_SOURCE}
-const snapshot = { collections: {}, variables: {}, effectStyles: {} };
+const snapshot = { collections: {}, variables: {}, effectStyles: {}, textStyles: {} };
 for (const c of collections) {
   snapshot.collections[c.name] = c.modes.map(m => m.name);
   for (const id of c.variableIds) {
@@ -350,13 +410,15 @@ for (const c of collections) {
 for (const s of await figma.getLocalEffectStylesAsync()) {
   snapshot.effectStyles[s.name] = s.effects.map(e => ({ type: e.type, x: r(e.offset.x), y: r(e.offset.y), radius: r(e.radius), spread: r(e.spread ?? 0), color: e.boundVariables?.color ? byId.get(e.boundVariables.color.id).name : '' }));
 }
+for (const s of await figma.getLocalTextStylesAsync()) snapshot.textStyles[s.name] = textStyle(s);
 const body = { exportedAt: new Date().toISOString(), snapshot };
 return JSON.stringify({ ...body, checksum: checksum(JSON.stringify(body)) });`
 
 /**
- * The script that makes the Figma file's variables and effect styles match
- * code: creates what is missing, sets what differs, and removes variables,
- * modes and collections under nimki/ that code no longer has. With dryRun it
+ * The script that makes the Figma file's variables, effect styles and text
+ * styles match code: creates what is missing, sets what differs, and removes
+ * variables, modes and collections under nimki/, and styles, that code no
+ * longer has. With dryRun it
  * changes nothing and only lists what it would do. Values are written at the
  * snapshot's precision (three decimals), inside the parity tolerance.
  */
@@ -371,6 +433,7 @@ export function syncData(expected: Snapshot) {
       ]),
     ),
     effectStyles: expected.effectStyles,
+    textStyles: expected.textStyles,
   }
 }
 
@@ -385,6 +448,7 @@ const close = (a, b) => {
 let all = await figma.variables.getLocalVariablesAsync();
 let byId = new Map(all.map(v => [v.id, v]));
 ${VALUE_SOURCE}
+${TEXT_STYLE_SOURCE}
 const owned = name => name.startsWith('nimki/');
 let collections = await figma.variables.getLocalVariableCollectionsAsync();
 const collectionByName = new Map(collections.map(c => [c.name, c]));
@@ -452,6 +516,25 @@ for (const [name, layers] of Object.entries(expected.effectStyles)) {
   });
 }
 for (const s of styles) if (!(s.name in expected.effectStyles)) { changes.push('remove effect style ' + s.name); if (!dryRun) s.remove(); }
+all = await figma.variables.getLocalVariablesAsync();
+byId = new Map(all.map(v => [v.id, v]));
+const textStyles = await figma.getLocalTextStylesAsync();
+for (const [name, want] of Object.entries(expected.textStyles)) {
+  let s = textStyles.find(x => x.name === name);
+  if (s && close(textStyle(s), want)) continue;
+  changes.push((s ? 'set text style ' : 'create text style ') + name);
+  if (dryRun) continue;
+  const bound = varByName.get(want.family);
+  const family = expected.variables[want.family] ? Object.values(expected.variables[want.family].values)[0] : want.family;
+  await figma.loadFontAsync({ family, style: want.style });
+  if (!s) { s = figma.createTextStyle(); s.name = name; }
+  s.fontName = { family, style: want.style };
+  s.fontSize = want.size;
+  s.lineHeight = want.lineHeight === 'AUTO' ? { unit: 'AUTO' } : { unit: 'PIXELS', value: want.lineHeight };
+  s.letterSpacing = { unit: 'PIXELS', value: want.letterSpacing };
+  if (bound) s.setBoundVariable('fontFamily', bound);
+}
+for (const s of textStyles) if (!(s.name in expected.textStyles)) { changes.push('remove text style ' + s.name); if (!dryRun) s.remove(); }
 return { dryRun, changes };`
 
 export function figmaSyncScript(expected: Snapshot, dryRun: boolean): string {

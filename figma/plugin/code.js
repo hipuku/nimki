@@ -12,12 +12,17 @@ const exportFile = async () => {
     if (typeof val === 'number') return r(val);
     return val;
   };
+  const textStyle = s => {
+    const px = v => v.unit === 'PIXELS' ? r(v.value) : v.unit === 'PERCENT' ? r(v.value * s.fontSize / 100) : 'AUTO';
+    const bound = s.boundVariables?.fontFamily;
+    return { family: bound ? byId.get(bound.id)?.name ?? s.fontName.family : s.fontName.family, style: s.fontName.style, size: r(s.fontSize), lineHeight: px(s.lineHeight), letterSpacing: px(s.letterSpacing) };
+  };
   const checksum = text => {
     let hash = 0x811c9dc5;
     for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 0x01000193); }
     return (hash >>> 0).toString(16).padStart(8, '0');
   };
-  const snapshot = { collections: {}, variables: {}, effectStyles: {} };
+  const snapshot = { collections: {}, variables: {}, effectStyles: {}, textStyles: {} };
   for (const c of collections) {
     snapshot.collections[c.name] = c.modes.map(m => m.name);
     for (const id of c.variableIds) {
@@ -31,6 +36,7 @@ const exportFile = async () => {
   for (const s of await figma.getLocalEffectStylesAsync()) {
     snapshot.effectStyles[s.name] = s.effects.map(e => ({ type: e.type, x: r(e.offset.x), y: r(e.offset.y), radius: r(e.radius), spread: r(e.spread ?? 0), color: e.boundVariables?.color ? byId.get(e.boundVariables.color.id).name : '' }));
   }
+  for (const s of await figma.getLocalTextStylesAsync()) snapshot.textStyles[s.name] = textStyle(s);
   const body = { exportedAt: new Date().toISOString(), snapshot };
   return JSON.stringify({ ...body, checksum: checksum(JSON.stringify(body)) });
 }
@@ -52,6 +58,11 @@ const syncFile = async (expected, dryRun) => {
     if (val && typeof val === 'object' && val.type === 'LINEAR') return { type: 'LINEAR' };
     if (typeof val === 'number') return r(val);
     return val;
+  };
+  const textStyle = s => {
+    const px = v => v.unit === 'PIXELS' ? r(v.value) : v.unit === 'PERCENT' ? r(v.value * s.fontSize / 100) : 'AUTO';
+    const bound = s.boundVariables?.fontFamily;
+    return { family: bound ? byId.get(bound.id)?.name ?? s.fontName.family : s.fontName.family, style: s.fontName.style, size: r(s.fontSize), lineHeight: px(s.lineHeight), letterSpacing: px(s.letterSpacing) };
   };
   const owned = name => name.startsWith('nimki/');
   let collections = await figma.variables.getLocalVariableCollectionsAsync();
@@ -120,6 +131,25 @@ const syncFile = async (expected, dryRun) => {
     });
   }
   for (const s of styles) if (!(s.name in expected.effectStyles)) { changes.push('remove effect style ' + s.name); if (!dryRun) s.remove(); }
+  all = await figma.variables.getLocalVariablesAsync();
+  byId = new Map(all.map(v => [v.id, v]));
+  const textStyles = await figma.getLocalTextStylesAsync();
+  for (const [name, want] of Object.entries(expected.textStyles)) {
+    let s = textStyles.find(x => x.name === name);
+    if (s && close(textStyle(s), want)) continue;
+    changes.push((s ? 'set text style ' : 'create text style ') + name);
+    if (dryRun) continue;
+    const bound = varByName.get(want.family);
+    const family = expected.variables[want.family] ? Object.values(expected.variables[want.family].values)[0] : want.family;
+    await figma.loadFontAsync({ family, style: want.style });
+    if (!s) { s = figma.createTextStyle(); s.name = name; }
+    s.fontName = { family, style: want.style };
+    s.fontSize = want.size;
+    s.lineHeight = want.lineHeight === 'AUTO' ? { unit: 'AUTO' } : { unit: 'PIXELS', value: want.lineHeight };
+    s.letterSpacing = { unit: 'PIXELS', value: want.letterSpacing };
+    if (bound) s.setBoundVariable('fontFamily', bound);
+  }
+  for (const s of textStyles) if (!(s.name in expected.textStyles)) { changes.push('remove text style ' + s.name); if (!dryRun) s.remove(); }
   return { dryRun, changes };
 }
 

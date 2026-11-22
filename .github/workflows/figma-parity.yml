@@ -56,12 +56,23 @@ jobs:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           FIGMA_PARITY_REQUIRED: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && '1' || '0' }}
 
-      # What the Parity page's swatches show, read through the REST API rather
-      # than the export, against code: a second, independent read of every colour.
-      - name: Swatches
-        id: swatches
+      # The Parity page read through the REST API rather than the export, against
+      # code: a second, independent read of every variable a node can bind, in
+      # every mode, and every text and effect style.
+      - name: Live values
+        id: live
         continue-on-error: true
-        run: pnpm run figma:swatches
+        run: pnpm run figma:live
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_PARITY_REQUIRED: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && '1' || '0' }}
+
+      # Every colour, corner, gap, padding, text and effect inside a component
+      # is bound to a variable or style.
+      - name: Component audit
+        id: audit
+        continue-on-error: true
+        run: pnpm run figma:audit
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           FIGMA_PARITY_REQUIRED: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && '1' || '0' }}
@@ -78,7 +89,8 @@ jobs:
           TOKENS: ${{ steps.tokens.outcome }}
           VALUES: ${{ steps.values.outcome }}
           FRESH: ${{ steps.fresh.outcome }}
-          SWATCHES: ${{ steps.swatches.outcome }}
+          LIVE: ${{ steps.live.outcome }}
+          AUDIT: ${{ steps.audit.outcome }}
           PLUGIN: ${{ steps.plugin.outcome }}
         run: |
           mark() { [ "$1" = success ] && echo pass || echo "**$1**"; }
@@ -90,12 +102,13 @@ jobs:
             echo "| Generated tokens match tokens/source | $(mark "$TOKENS") |"
             echo "| Figma snapshot matches code | $(mark "$VALUES") |"
             echo "| Nothing in Figma newer than the snapshot | $(mark "$FRESH") |"
-            echo "| Every swatch in Figma shows code's colour | $(mark "$SWATCHES") |"
+            echo "| The Parity page shows code's values, read live | $(mark "$LIVE") |"
+            echo "| Every value in a component comes from a token | $(mark "$AUDIT") |"
             echo "| Plugin code is current | $(mark "$PLUGIN") |"
             echo
             echo "How to fix a failure: figma/README.md, When a check fails."
           } >> "$GITHUB_STEP_SUMMARY"
-          for outcome in "$TOKENS" "$VALUES" "$FRESH" "$SWATCHES" "$PLUGIN"; do
+          for outcome in "$TOKENS" "$VALUES" "$FRESH" "$LIVE" "$AUDIT" "$PLUGIN"; do
             [ "$outcome" = success ] || { echo "A parity check failed; see the summary."; exit 1; }
           done
           echo "Every parity check passed."

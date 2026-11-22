@@ -43,7 +43,40 @@ function fakeFigma() {
   const collections: Any[] = []
   const variables: Any[] = []
   const styles: Any[] = []
+  const textStyles: Any[] = []
+  const fonts = new Set<string>()
   const figma = {
+    async loadFontAsync(font: Any) {
+      fonts.add(`${font.family} ${font.style}`)
+    },
+    getLocalTextStylesAsync: async () => textStyles.slice(),
+    createTextStyle() {
+      const s: Any = {
+        name: '',
+        boundVariables: {},
+        remove() {
+          textStyles.splice(textStyles.indexOf(s), 1)
+        },
+        setBoundVariable(field: string, v: Any) {
+          s.boundVariables[field] = { type: 'VARIABLE_ALIAS', id: v.id }
+        },
+      }
+      // Figma refuses a font that was not loaded first.
+      let fontName: Any = { family: 'Inter', style: 'Regular' }
+      Object.defineProperty(s, 'fontName', {
+        get: () => fontName,
+        set(value: Any) {
+          if (!fonts.has(`${value.family} ${value.style}`))
+            throw new Error(`font ${value.family} ${value.style} was not loaded`)
+          fontName = value
+        },
+      })
+      s.fontSize = f32(12)
+      s.lineHeight = { unit: 'AUTO' }
+      s.letterSpacing = { unit: 'PERCENT', value: 0 }
+      textStyles.push(s)
+      return s
+    },
     variables: {
       getLocalVariableCollectionsAsync: async () => collections.slice(),
       getLocalVariablesAsync: async () => variables.slice(),
@@ -115,7 +148,7 @@ function fakeFigma() {
       return s
     },
   }
-  return { figma, variables, collections, styles }
+  return { figma, variables, collections, styles, textStyles }
 }
 
 const run = (figma: Any, source: string): Promise<Any> =>
@@ -150,6 +183,23 @@ describe('the sync and export scripts, against a stand-in Figma file', () => {
     expect(fast.valuesByMode[mode]).toBeCloseTo(0.12)
   })
 
+  it('build text styles with the font loaded and the family bound to its variable', async () => {
+    const { figma, textStyles, variables } = fakeFigma()
+    await run(figma, figmaSyncScript(code, false))
+    const lg = textStyles.find(s => s.name === 'text/lg')
+    expect(lg.fontName).toEqual({ family: 'DM Sans', style: 'SemiBold' })
+    expect(lg.lineHeight).toEqual({ unit: 'PIXELS', value: 28 })
+    const sans = variables.find(v => v.name === 'font/sans')
+    expect(lg.boundVariables.fontFamily.id).toBe(sans.id)
+    // A style held in percent reads back in px, so it is not rewritten.
+    lg.letterSpacing = { unit: 'PERCENT', value: 0 }
+    expect((await run(figma, figmaSyncScript(code, true))).changes).toEqual([])
+    lg.fontSize = 19
+    expect((await run(figma, figmaSyncScript(code, true))).changes).toEqual([
+      'set text style text/lg',
+    ])
+  })
+
   it('remove what code no longer has, and only under nimki/', async () => {
     const { figma, variables, collections, styles } = fakeFigma()
     await run(figma, figmaSyncScript(code, false))
@@ -158,9 +208,14 @@ describe('the sync and export scripts, against a stand-in Figma file', () => {
     const other = figma.variables.createVariableCollection('someone else')
     figma.variables.createVariable('kept', other, 'FLOAT')
     figma.createEffectStyle().name = 'elevation/9'
+    figma.createTextStyle().name = 'text/stray'
     const { changes } = await run(figma, figmaSyncScript(code, false))
     expect(changes).toEqual(
-      expect.arrayContaining(['remove variable nk/stray', 'remove effect style elevation/9']),
+      expect.arrayContaining([
+        'remove variable nk/stray',
+        'remove effect style elevation/9',
+        'remove text style text/stray',
+      ]),
     )
     expect(variables.some(v => v.name === 'nk/stray')).toBe(false)
     expect(variables.some(v => v.name === 'kept')).toBe(true)

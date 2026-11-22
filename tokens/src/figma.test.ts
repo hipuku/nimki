@@ -62,6 +62,9 @@ describe('compare', () => {
     actual.collections['nimki/other'] = ['Value']
     delete actual.effectStyles['elevation/2']
     actual.effectStyles['elevation/3'] = []
+    delete actual.textStyles['mono/sm']
+    actual.textStyles['text/gone'] = { ...actual.textStyles['text/xs']! }
+    actual.textStyles['text/lg']!.size = 19
     expect(compare(generated, actual)).toEqual(
       expect.arrayContaining([
         'variable gap is missing from Figma',
@@ -70,6 +73,9 @@ describe('compare', () => {
         'collection nimki/other is in Figma but not in the source',
         'effect style elevation/2 is missing from Figma',
         'effect style elevation/3 is in Figma but not in the source',
+        'text style mono/sm is missing from Figma',
+        'text style text/gone is in Figma but not in the source',
+        expect.stringMatching(/^text style text\/lg: \{.*"size":19.*expected/),
       ]),
     )
   })
@@ -108,7 +114,7 @@ describe('close', () => {
 
 describe('normaliseSnapshot', () => {
   it('rounds Figma floats and keeps LINEAR without its implied curve', () => {
-    const raw: Snapshot = {
+    const raw = {
       collections: { c: ['A'] },
       variables: {
         e: {
@@ -142,6 +148,8 @@ describe('normaliseSnapshot', () => {
     expect(out.variables.t?.values.A).toBe(0.12)
     expect(out.variables.f?.values.A).toEqual([1, 0.5, 0, 1])
     expect(out.variables.f?.scopes).toEqual(['CORNER_RADIUS', 'GAP'])
+    // An export from before text styles were compared reads as having none.
+    expect(out.textStyles).toEqual({})
   })
 })
 

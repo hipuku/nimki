@@ -353,6 +353,160 @@
     },
     {
       "action": "CREATE",
+      "id": "variable:spacing/0-5",
+      "name": "spacing/0-5",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 0.5)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/1",
+      "name": "spacing/1",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 1)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/1-5",
+      "name": "spacing/1-5",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 1.5)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/2",
+      "name": "spacing/2",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 2)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/2-5",
+      "name": "spacing/2-5",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 2.5)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/3",
+      "name": "spacing/3",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 3)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/3-5",
+      "name": "spacing/3-5",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 3.5)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/4",
+      "name": "spacing/4",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 4)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/5",
+      "name": "spacing/5",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 5)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/6",
+      "name": "spacing/6",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 6)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/8",
+      "name": "spacing/8",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 8)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/10",
+      "name": "spacing/10",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 10)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/12",
+      "name": "spacing/12",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 12)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:spacing/16",
+      "name": "spacing/16",
+      "variableCollectionId": "collection:primitives",
+      "resolvedType": "FLOAT",
+      "scopes": ["GAP"],
+      "codeSyntax": {
+        "WEB": "calc(var(--spacing) * 16)"
+      }
+    },
+    {
+      "action": "CREATE",
       "id": "variable:press/duration",
       "name": "press/duration",
       "variableCollectionId": "collection:motion",
@@ -1318,6 +1472,50 @@
     },
     {
       "action": "CREATE",
+      "id": "variable:radius-sm",
+      "name": "radius-sm",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "FLOAT",
+      "scopes": ["CORNER_RADIUS"],
+      "codeSyntax": {
+        "WEB": "var(--radius-sm)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:radius-md",
+      "name": "radius-md",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "FLOAT",
+      "scopes": ["CORNER_RADIUS"],
+      "codeSyntax": {
+        "WEB": "var(--radius-md)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:radius-lg",
+      "name": "radius-lg",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "FLOAT",
+      "scopes": ["CORNER_RADIUS"],
+      "codeSyntax": {
+        "WEB": "var(--radius-lg)"
+      }
+    },
+    {
+      "action": "CREATE",
+      "id": "variable:radius-xl",
+      "name": "radius-xl",
+      "variableCollectionId": "collection:theme",
+      "resolvedType": "FLOAT",
+      "scopes": ["CORNER_RADIUS"],
+      "codeSyntax": {
+        "WEB": "var(--radius-xl)"
+      }
+    },
+    {
+      "action": "CREATE",
       "id": "variable:font/sans",
       "name": "font/sans",
       "variableCollectionId": "collection:theme",
@@ -1552,6 +1750,76 @@
       "variableId": "variable:stagger/md/max",
       "modeId": "mode:primitives:value",
       "value": 0.18
+    },
+    {
+      "variableId": "variable:spacing/0-5",
+      "modeId": "mode:primitives:value",
+      "value": 2
+    },
+    {
+      "variableId": "variable:spacing/1",
+      "modeId": "mode:primitives:value",
+      "value": 4
+    },
+    {
+      "variableId": "variable:spacing/1-5",
+      "modeId": "mode:primitives:value",
+      "value": 6
+    },
+    {
+      "variableId": "variable:spacing/2",
+      "modeId": "mode:primitives:value",
+      "value": 8
+    },
+    {
+      "variableId": "variable:spacing/2-5",
+      "modeId": "mode:primitives:value",
+      "value": 10
+    },
+    {
+      "variableId": "variable:spacing/3",
+      "modeId": "mode:primitives:value",
+      "value": 12
+    },
+    {
+      "variableId": "variable:spacing/3-5",
+      "modeId": "mode:primitives:value",
+      "value": 14
+    },
+    {
+      "variableId": "variable:spacing/4",
+      "modeId": "mode:primitives:value",
+      "value": 16
+    },
+    {
+      "variableId": "variable:spacing/5",
+      "modeId": "mode:primitives:value",
+      "value": 20
+    },
+    {
+      "variableId": "variable:spacing/6",
+      "modeId": "mode:primitives:value",
+      "value": 24
+    },
+    {
+      "variableId": "variable:spacing/8",
+      "modeId": "mode:primitives:value",
+      "value": 32
+    },
+    {
+      "variableId": "variable:spacing/10",
+      "modeId": "mode:primitives:value",
+      "value": 40
+    },
+    {
+      "variableId": "variable:spacing/12",
+      "modeId": "mode:primitives:value",
+      "value": 48
+    },
+    {
+      "variableId": "variable:spacing/16",
+      "modeId": "mode:primitives:value",
+      "value": 64
     },
     {
       "variableId": "variable:press/duration",
@@ -3244,6 +3512,26 @@
       "value": 6
     },
     {
+      "variableId": "variable:radius-sm",
+      "modeId": "mode:theme:linear",
+      "value": 2
+    },
+    {
+      "variableId": "variable:radius-md",
+      "modeId": "mode:theme:linear",
+      "value": 4
+    },
+    {
+      "variableId": "variable:radius-lg",
+      "modeId": "mode:theme:linear",
+      "value": 6
+    },
+    {
+      "variableId": "variable:radius-xl",
+      "modeId": "mode:theme:linear",
+      "value": 10
+    },
+    {
       "variableId": "variable:font/sans",
       "modeId": "mode:theme:linear",
       "value": "DM Sans"
@@ -3346,6 +3634,71 @@
           "colorVariableId": "variable:nk/edge"
         }
       ]
+    }
+  ],
+  "textStyles": [
+    {
+      "name": "text/xs",
+      "fontFamilyVariableId": "variable:font/sans",
+      "fontFamily": "DM Sans",
+      "fontStyle": "Regular",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "letterSpacing": 0
+    },
+    {
+      "name": "text/sm",
+      "fontFamilyVariableId": "variable:font/sans",
+      "fontFamily": "DM Sans",
+      "fontStyle": "Regular",
+      "fontSize": 14,
+      "lineHeight": 20,
+      "letterSpacing": 0
+    },
+    {
+      "name": "text/sm-medium",
+      "fontFamilyVariableId": "variable:font/sans",
+      "fontFamily": "DM Sans",
+      "fontStyle": "Medium",
+      "fontSize": 14,
+      "lineHeight": 20,
+      "letterSpacing": 0
+    },
+    {
+      "name": "text/base",
+      "fontFamilyVariableId": "variable:font/sans",
+      "fontFamily": "DM Sans",
+      "fontStyle": "Regular",
+      "fontSize": 16,
+      "lineHeight": 24,
+      "letterSpacing": 0
+    },
+    {
+      "name": "text/lg",
+      "fontFamilyVariableId": "variable:font/sans",
+      "fontFamily": "DM Sans",
+      "fontStyle": "SemiBold",
+      "fontSize": 18,
+      "lineHeight": 28,
+      "letterSpacing": 0
+    },
+    {
+      "name": "mono/sm",
+      "fontFamilyVariableId": "variable:font/mono",
+      "fontFamily": "DM Mono",
+      "fontStyle": "Regular",
+      "fontSize": 14,
+      "lineHeight": 20,
+      "letterSpacing": 0
+    },
+    {
+      "name": "display/lg",
+      "fontFamilyVariableId": "variable:font/display",
+      "fontFamily": "DM Serif Display",
+      "fontStyle": "Regular",
+      "fontSize": 36,
+      "lineHeight": 40,
+      "letterSpacing": 0
     }
   ]
 }
