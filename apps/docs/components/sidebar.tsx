@@ -33,7 +33,7 @@ function NavNode({ node, pathname }: { node: Node; pathname: string }) {
       <Link
         href={node.url}
         aria-current={current ? 'page' : undefined}
-        className={`block rounded-md px-2 py-1.5 text-sm transition-colors ${current ? 'bg-accent font-medium text-accent-foreground' : 'text-foreground/80 hover:bg-accent/60 hover:text-foreground'}`}
+        className={`nk-press block rounded-md px-3 py-2 text-sm ${current ? 'bg-accent font-medium text-accent-foreground' : 'text-foreground/80 hover:bg-accent/60 hover:text-foreground'}`}
       >
         {node.name}
       </Link>

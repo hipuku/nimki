@@ -4,24 +4,22 @@ import Link from 'next/link'
 import { GlobalControls } from './global-controls'
 import { Search } from './search'
 import { Sidebar } from './sidebar'
-
-const iconButton =
-  'inline-flex size-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+import { iconButton, surface } from './styles'
 
 /**
  * The bar on every page: the name, search and a Display button that opens the
- * global controls (PRD FR-D1) in a popover. The popover is the browser's own
- * (the popover attribute): it closes on Escape or a click outside and needs no
- * script. Below the large breakpoint a Menu button holds the page list.
+ * global controls (PRD FR-D1). The popovers are the browser's own (the popover
+ * attribute): they close on Escape or a click outside, and move on the
+ * popover roles. Below the large breakpoint a Pages button holds the list.
  */
 export function SiteHeader({ tree }: { tree: Root }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4">
-        <Link href="/" className="mr-auto font-display text-xl leading-none">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-6">
+        <Link href="/" className="mr-auto font-display text-2xl leading-none">
           nimki
         </Link>
-        <div className="w-40 sm:w-64">
+        <div className="w-44 sm:w-72">
           <Search />
         </div>
         <button
@@ -47,11 +45,11 @@ export function SiteHeader({ tree }: { tree: Root }) {
         id="display-settings"
         popover="auto"
         aria-label="Display settings"
-        className="fixed inset-auto top-16 right-4 m-0 w-72 rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-[var(--nk-elevation-1)]"
+        className={`nk-popover fixed inset-auto top-[4.5rem] right-6 m-0 w-80 p-5 ${surface}`}
       >
-        <p className="mb-3 text-sm font-medium">Display</p>
+        <p className="mb-4 text-sm font-medium">Display</p>
         <GlobalControls />
-        <p className="mt-4 text-xs text-muted-foreground">
+        <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
           Every demo follows these. Kept in this browser.
         </p>
       </div>
@@ -59,7 +57,7 @@ export function SiteHeader({ tree }: { tree: Root }) {
         id="docs-menu"
         popover="auto"
         aria-label="Pages"
-        className="fixed inset-auto top-16 right-4 m-0 max-h-[calc(100dvh-5rem)] w-64 overflow-y-auto rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-[var(--nk-elevation-1)]"
+        className={`nk-popover fixed inset-auto top-[4.5rem] right-6 m-0 max-h-[calc(100dvh-6rem)] w-72 overflow-y-auto p-4 ${surface}`}
       >
         <Sidebar tree={tree} />
       </div>

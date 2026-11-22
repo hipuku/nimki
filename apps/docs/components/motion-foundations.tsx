@@ -11,6 +11,7 @@ import { Play } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { curvePath, sampleEasing } from '../lib/curves'
 import { useSettings } from './settings-provider'
+import { button } from './styles'
 
 /**
  * The motion foundations page's live parts (PRD FR-D3). Every value comes from
@@ -106,7 +107,7 @@ function play(element: HTMLElement, kind: Kind, token: RoleToken, forward: boole
   const timing = { duration: token.durationMs, easing: token.easing, fill: 'forwards' as const }
   if (kind === 'move') {
     const track = element.parentElement
-    const distance = track ? track.clientWidth - element.offsetWidth - 8 : 0
+    const distance = track ? track.clientWidth - element.offsetWidth - 16 : 0
     const [from, to] = forward ? [0, distance] : [distance, 0]
     element.animate(
       [{ transform: `translateX(${from}px)` }, { transform: `translateX(${to}px)` }],
@@ -171,10 +172,10 @@ export function RoleCard({ role }: { role: MotionRole }) {
     <section
       id={role}
       aria-labelledby={`${role}-name`}
-      className="scroll-mt-20 rounded-lg border border-border bg-card p-5 text-card-foreground"
+      className="scroll-mt-24 rounded-xl border border-border bg-card p-6 text-card-foreground"
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="grid gap-1">
+      <div className="flex items-center justify-between gap-6">
+        <div className="grid gap-1.5">
           <h3 id={`${role}-name`} className="font-mono text-sm font-medium">
             {role}
           </h3>
@@ -186,18 +187,18 @@ export function RoleCard({ role }: { role: MotionRole }) {
           type="button"
           onClick={run}
           aria-label={`Play ${role} in every theme`}
-          className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-input px-3 text-sm hover:bg-accent hover:text-accent-foreground"
+          className={button}
         >
           <Play aria-hidden="true" size={14} strokeWidth={1.5} />
           Play
         </button>
       </div>
-      <div className="mt-5 grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3">
+      <div className="mt-6 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-3">
         {MODES.map(mode => {
           const token = MOTION_TOKENS[mode][role]
           const still = reducedMotion && mode !== 'reduced'
           return (
-            <div key={mode} className="grid content-start gap-3 bg-card p-4">
+            <div key={mode} className="grid content-start gap-4 bg-card p-5">
               <p className="flex h-5 items-center justify-between text-xs">
                 <span className="font-medium">{MODE_NAMES[mode]}</span>
                 {mode === current ? (
@@ -207,12 +208,12 @@ export function RoleCard({ role }: { role: MotionRole }) {
                 ) : null}
               </p>
               <Curve easing={token.easing} durationMs={token.durationMs} />
-              <ul className="flex min-h-8 flex-wrap content-start gap-x-3 gap-y-1 text-xs text-muted-foreground tabular-nums">
+              <ul className="flex min-h-10 flex-wrap content-start gap-x-4 gap-y-1.5 text-xs text-muted-foreground tabular-nums">
                 {facts(token).map(fact => (
                   <li key={fact}>{fact}</li>
                 ))}
               </ul>
-              <div className="flex h-12 items-center rounded-md bg-muted p-1">
+              <div className="flex h-14 items-center rounded-md bg-muted p-2">
                 <div
                   ref={element => {
                     boxes.current[mode] = element
@@ -251,7 +252,7 @@ export function LiveCss() {
     { role: 'layout', vars: 'var(--nk-layout-duration) var(--nk-layout-easing)' },
   ]
   return (
-    <div className="grid gap-3 rounded-lg border border-border bg-card p-4">
+    <div className="grid gap-4 rounded-xl border border-border bg-card p-6">
       {rows.map(row => (
         <div key={row.role} className="grid gap-1">
           <p className="font-mono text-xs text-muted-foreground">{row.role}</p>
@@ -267,11 +268,7 @@ export function LiveCss() {
           </div>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={() => setMoved(value => !value)}
-        className="h-8 w-fit rounded-md border border-input px-3 text-sm hover:bg-accent hover:text-accent-foreground"
-      >
+      <button type="button" onClick={() => setMoved(value => !value)} className={`${button} w-fit`}>
         {moved ? 'Move back' : 'Move'}
       </button>
     </div>

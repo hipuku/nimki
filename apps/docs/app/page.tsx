@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <SiteHeader tree={source.getPageTree()} />
-      <main className="mx-auto max-w-3xl px-4 py-20">
+      <main className="mx-auto max-w-3xl px-6 py-24">
         <h1 className="font-display text-5xl leading-tight">nimki</h1>
         <p className="mt-4 text-lg text-muted-foreground">
           React components for product interfaces: a drop-in superset of shadcn/ui with designed
@@ -17,7 +17,7 @@ export default function Home() {
           Nothing is released yet. Version 0 is Button, Input with Label, Select, Switch, Tabs and
           Dialog.
         </p>
-        <ul className="mt-10 grid gap-3 sm:grid-cols-2">
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2">
           {(
             [
               ['/docs', 'Introduction', 'What nimki is and how these docs work.', BookOpen],
@@ -32,7 +32,7 @@ export default function Home() {
             <li key={href}>
               <Link
                 href={href}
-                className="flex h-full gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-input"
+                className="nk-press flex h-full gap-4 rounded-xl border border-border bg-card p-6 hover:bg-accent/40"
               >
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-foreground">
                   <Icon aria-hidden="true" size={16} strokeWidth={1.5} />

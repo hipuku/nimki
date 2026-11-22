@@ -22,9 +22,9 @@ const STAGE_TEXT: Record<Stage, string> = {
 export function Status({ stage, weight }: { stage: Stage; weight?: string }) {
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs">
-      <span className="rounded-full border border-border px-2.5 py-1">{STAGE_TEXT[stage]}</span>
+      <span className="rounded-full bg-muted px-3 py-1.5">{STAGE_TEXT[stage]}</span>
       <span
-        className="rounded-full border border-border px-2.5 py-1 text-muted-foreground"
+        className="rounded-full bg-muted px-3 py-1.5 text-muted-foreground"
         title="Runtime weight, minified and compressed, measured by size-limit"
       >
         Weight: {weight ?? 'measured once built'}
@@ -36,7 +36,7 @@ export function Status({ stage, weight }: { stage: Stage; weight?: string }) {
 /** The live example. Until the component exists it states what will be here. */
 export function Demo({ children }: { children?: ReactNode }) {
   return (
-    <div className="flex min-h-48 items-center justify-center rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
+    <div className="flex min-h-64 items-center justify-center rounded-xl border border-border bg-card p-10 text-sm text-muted-foreground">
       {children ?? 'The live demo lands with the code, under the global controls above.'}
     </div>
   )
@@ -92,7 +92,9 @@ export function KeyboardMap({ keys }: { keys: [string, string][] }) {
           {keys.map(([key, does]) => (
             <tr key={key}>
               <td>
-                <kbd className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">{key}</kbd>
+                <kbd className="inline-block rounded-md bg-muted px-2 py-1 font-mono text-xs leading-none">
+                  {key}
+                </kbd>
               </td>
               <td>{does}</td>
             </tr>

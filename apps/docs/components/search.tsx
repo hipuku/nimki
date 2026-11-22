@@ -3,6 +3,7 @@
 import { useFetchSearch, type SearchResultRecord } from 'fumadocs-core/search/client'
 import Link from 'next/link'
 import { useId } from 'react'
+import { surface } from './styles'
 
 /**
  * Search over every page, from the index Fumadocs builds at /api/search
@@ -28,19 +29,19 @@ export function Search() {
         onChange={event => onSearchChange(event.target.value)}
         placeholder="Search"
         autoComplete="off"
-        className="h-8 w-full rounded-md border border-input bg-transparent px-3 text-sm placeholder:text-muted-foreground"
+        className="h-9 w-full rounded-md bg-muted px-3.5 text-sm transition-colors duration-[var(--nk-duration-fast)] placeholder:text-muted-foreground hover:bg-accent focus:bg-background"
       />
       {search.length > 0 && (
         <div
           role="region"
           aria-live="polite"
           aria-label="Search results"
-          className="absolute top-full right-0 left-0 z-50 mt-1 max-h-80 overflow-y-auto rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-[var(--nk-elevation-1)]"
+          className={`nk-pop-in absolute top-full right-0 left-0 z-50 mt-2 max-h-96 overflow-y-auto p-1.5 ${surface}`}
         >
           {isLoading && results.length === 0 ? (
-            <p className="px-2 py-1.5 text-sm text-muted-foreground">Searching</p>
+            <p className="px-3 py-2.5 text-sm text-muted-foreground">Searching</p>
           ) : results.length === 0 ? (
-            <p className="px-2 py-1.5 text-sm text-muted-foreground">No results</p>
+            <p className="px-3 py-2.5 text-sm text-muted-foreground">No results</p>
           ) : (
             <ul>
               {results.map(result => (
@@ -48,7 +49,7 @@ export function Search() {
                   <Link
                     href={result.url}
                     onClick={() => onSearchChange('')}
-                    className={`block rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground ${result.type === 'page' ? 'font-medium' : 'pl-4 text-muted-foreground'}`}
+                    className={`nk-press block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground ${result.type === 'page' ? 'font-medium' : 'pl-5 text-muted-foreground'}`}
                   >
                     {result.content}
                   </Link>

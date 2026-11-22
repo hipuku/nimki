@@ -12,7 +12,7 @@ describe('parseSettings', () => {
     const saved = JSON.stringify({ mode: 'dark', motion: 'bouncy', density: 'compact', x: 1 })
     expect(parseSettings(saved, false)).toEqual({
       mode: 'dark',
-      motion: 'subtle',
+      motion: 'expressive',
       density: 'compact',
       reduced: 'off',
     })

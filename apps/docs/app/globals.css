@@ -45,64 +45,76 @@
   }
 }
 
-/* Page text from MDX. */
+/*
+ * Page text from MDX. Headings, paragraphs and lists are styled only as direct
+ * children of .prose, which is how MDX writes them, so the components placed
+ * on a page (role cards, tables, the template parts) keep their own layout.
+ */
 @layer components {
   .prose {
     font-size: 0.9375rem;
-    line-height: 1.7;
+    line-height: 1.75;
   }
   .prose > * + * {
-    margin-top: 1rem;
+    margin-top: 1.25rem;
   }
-  .prose h2 {
-    margin-top: 2.5rem;
-    padding-top: 0.25rem;
+  .prose > h2 {
+    margin-top: 3.5rem;
     font-size: 1.25rem;
     font-weight: 600;
     letter-spacing: -0.01em;
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 6rem;
   }
-  .prose h3 {
-    margin-top: 1.75rem;
+  .prose > h3 {
+    margin-top: 2.25rem;
     font-size: 1rem;
     font-weight: 600;
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 6rem;
   }
-  .prose a {
+  .prose > h2 + *,
+  .prose > h3 + * {
+    margin-top: 0.75rem;
+  }
+  .prose > p a,
+  .prose > ul a,
+  .prose > ol a {
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-color: var(--input);
+    transition: text-decoration-color var(--nk-duration-fast) var(--nk-ease-move);
   }
-  .prose a:hover {
+  .prose > p a:hover,
+  .prose > ul a:hover,
+  .prose > ol a:hover {
     text-decoration-color: currentColor;
   }
-  .prose ul {
+  .prose > ul {
     padding-left: 1.25rem;
     list-style: disc;
   }
-  .prose ol {
+  .prose > ol {
     padding-left: 1.25rem;
     list-style: decimal;
   }
-  .prose li + li {
-    margin-top: 0.25rem;
+  .prose > ul > li + li,
+  .prose > ol > li + li {
+    margin-top: 0.5rem;
   }
   .prose :not(pre) > code {
-    padding: 0.125rem 0.3rem;
+    padding: 0.25rem 0.5rem;
     border-radius: calc(var(--radius) - 2px);
     background: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.85em;
+    font-size: 0.8125em;
   }
   .prose pre {
     overflow-x: auto;
-    padding: 1rem 3rem 1rem 1rem;
-    border: 1px solid var(--border);
+    padding: 1.25rem 3.5rem 1.25rem 1.25rem;
     border-radius: var(--radius);
     background: var(--card);
     font-family: var(--font-mono);
     font-size: 0.8125rem;
-    line-height: 1.6;
+    line-height: 1.7;
   }
   /* One grid for every table: a fixed first column, the rest share the width. */
   .prose table {
@@ -121,12 +133,73 @@
   }
   .prose th,
   .prose td {
-    padding: 0.5rem 0.75rem 0.5rem 0;
+    padding: 0.875rem 1rem 0.875rem 0;
     border-bottom: 1px solid var(--border);
-    vertical-align: top;
+    vertical-align: middle;
   }
   .prose .table-wrap {
     overflow-x: auto;
+  }
+}
+
+/*
+ * Motion, from nimki's own role variables, so the docs move the way the
+ * components will and follow the Motion and Reduced motion controls.
+ */
+@layer components {
+  /* Pressable things: a fill change on hover, the press role's scale on press. */
+  .nk-press {
+    transition:
+      scale var(--nk-press-duration) var(--nk-press-easing),
+      background-color var(--nk-duration-fast) var(--nk-ease-move),
+      color var(--nk-duration-fast) var(--nk-ease-move);
+  }
+  .nk-press:active {
+    scale: var(--nk-press-scale);
+  }
+
+  /* Anything that appears: fades in from the popover-enter offset and scale. */
+  .nk-pop-in {
+    transition:
+      opacity var(--nk-popover-enter-duration) var(--nk-popover-enter-easing),
+      translate var(--nk-popover-enter-duration) var(--nk-popover-enter-easing),
+      scale var(--nk-popover-enter-duration) var(--nk-popover-enter-easing);
+    @starting-style {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--nk-popover-enter-offset));
+      scale: var(--nk-popover-enter-scale);
+    }
+  }
+
+  /* The browser's popovers: popover-enter in, popover-exit out. */
+  .nk-popover {
+    opacity: 0;
+    translate: 0 calc(-1 * var(--nk-popover-enter-offset));
+    scale: var(--nk-popover-enter-scale);
+    transform-origin: top right;
+    transition:
+      opacity var(--nk-popover-exit-duration) var(--nk-popover-exit-easing),
+      translate var(--nk-popover-exit-duration) var(--nk-popover-exit-easing),
+      scale var(--nk-popover-exit-duration) var(--nk-popover-exit-easing),
+      overlay var(--nk-popover-exit-duration) allow-discrete,
+      display var(--nk-popover-exit-duration) allow-discrete;
+  }
+  .nk-popover:popover-open {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    transition-duration: var(--nk-popover-enter-duration);
+    transition-timing-function: var(--nk-popover-enter-easing);
+    @starting-style {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--nk-popover-enter-offset));
+      scale: var(--nk-popover-enter-scale);
+    }
+  }
+
+  /* One indicator that slides between options, on the highlight role. */
+  .nk-slide {
+    transition: translate var(--nk-highlight-duration) var(--nk-highlight-easing);
   }
 }
 

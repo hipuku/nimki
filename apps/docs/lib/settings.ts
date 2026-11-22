@@ -27,11 +27,11 @@ export const SETTING_LABELS: Record<SettingName, string> = {
   reduced: 'Reduced motion',
 }
 
-/** Defaults; mode follows the operating system until a reader picks one. */
+/** Defaults: Expressive motion; mode follows the operating system until a reader picks one. */
 export function defaultSettings(prefersDark: boolean): Settings {
   return {
     mode: prefersDark ? 'dark' : 'light',
-    motion: 'subtle',
+    motion: 'expressive',
     density: 'comfortable',
     reduced: 'off',
   }
@@ -86,7 +86,7 @@ export function bootSettings(key: string): void {
     (saved.mode !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
   root.classList.toggle('dark', dark)
   root.style.colorScheme = dark ? 'dark' : 'light'
-  root.dataset.motion = saved.motion === 'expressive' ? 'expressive' : 'subtle'
+  root.dataset.motion = saved.motion === 'subtle' ? 'subtle' : 'expressive'
   root.dataset.density = saved.density === 'compact' ? 'compact' : 'comfortable'
   if (saved.reduced === 'on') root.dataset.motionReduce = ''
 }
