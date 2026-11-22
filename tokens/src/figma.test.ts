@@ -1,7 +1,21 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { runInNewContext } from 'node:vm'
 import { describe, expect, it } from 'vitest'
-import { close, compare, fromGenerated, normaliseSnapshot, type Snapshot } from './figma.ts'
+import {
+  CHECKSUM_SOURCE,
+  FIGMA_EXPORT_SCRIPT,
+  checksum,
+  close,
+  compare,
+  figmaSyncScript,
+  freshness,
+  fromGenerated,
+  normaliseSnapshot,
+  pluginCode,
+  readExport,
+  type Snapshot,
+} from './figma.ts'
 
 const root = join(import.meta.dirname, '../..')
 const generated = fromGenerated(
@@ -130,5 +144,88 @@ describe('normaliseSnapshot', () => {
     expect(out.variables.t?.values.A).toBe(0.12)
     expect(out.variables.f?.values.A).toEqual([1, 0.5, 0, 1])
     expect(out.variables.f?.scopes).toEqual(['CORNER_RADIUS', 'GAP'])
+  })
+})
+
+describe('checksum', () => {
+  it('is FNV-1a over the text, as hex', () => {
+    expect(checksum('')).toBe('811c9dc5')
+    expect(checksum('nimki')).toMatch(/^[0-9a-f]{8}$/)
+    expect(checksum('nimki')).not.toBe(checksum('nimkj'))
+  })
+
+  it('matches the copy the export runs inside Figma', () => {
+    // Run as its own script, as Figma's plugin sandbox runs it.
+    const inFigma = runInNewContext(`${CHECKSUM_SOURCE} checksum`) as (text: string) => string
+    for (const text of ['', 'a', '{"x":[0.12,1]}', 'ünïcödé']) {
+      expect(inFigma(text)).toBe(checksum(text))
+    }
+  })
+})
+
+describe('readExport', () => {
+  const exported = () => {
+    const body = { exportedAt: '2026-11-23T10:00:00.000Z', snapshot: snapshot() }
+    return { ...body, checksum: checksum(JSON.stringify(body)) }
+  }
+
+  it('returns the snapshot stamped with its export time', () => {
+    const saved = readExport(exported())
+    expect(saved.exportedAt).toBe('2026-11-23T10:00:00.000Z')
+    expect(compare(generated, saved)).toEqual([])
+  })
+
+  it('refuses an export changed on the way', () => {
+    const changed = exported()
+    ;(changed.snapshot.variables['duration/fast'] as Snapshot['variables'][string]).values.Value =
+      0.15
+    expect(() => readExport(changed)).toThrow(/checksum does not match/)
+  })
+
+  it('refuses something that is not an export', () => {
+    expect(() => readExport(snapshot())).toThrow(/Not a nimki export/)
+    expect(() => readExport(null)).toThrow(/Not a nimki export/)
+    const empty = { exportedAt: 'x', snapshot: {} as Snapshot }
+    expect(() => readExport({ ...empty, checksum: checksum(JSON.stringify(empty)) })).toThrow(
+      /no collections/,
+    )
+  })
+})
+
+describe('freshness', () => {
+  it('passes when nothing was saved after the export', () => {
+    expect(freshness('2026-11-23T09:59:59Z', '2026-11-23T10:00:00Z')).toBeNull()
+    expect(freshness('2026-11-23T10:00:00Z', '2026-11-23T10:00:00Z')).toBeNull()
+  })
+
+  it('fails when Figma was saved after the export, naming the fix', () => {
+    expect(freshness('2026-11-23T10:00:01Z', '2026-11-23T10:00:00Z')).toMatch(
+      /changes that are not in the snapshot.*pnpm figma:save/,
+    )
+  })
+
+  it('fails without an export time, or with times it cannot read', () => {
+    expect(freshness('2026-11-23T10:00:00Z', undefined)).toMatch(/no export time/)
+    expect(freshness('later', '2026-11-23T10:00:00Z')).toMatch(/Cannot compare/)
+  })
+})
+
+describe('figmaSyncScript', () => {
+  it('carries the expected file and a dry-run switch', () => {
+    const dry = figmaSyncScript(generated, true)
+    expect(dry).toContain('const dryRun = true;')
+    expect(dry).toContain('"ramp/neutral/1"')
+    expect(figmaSyncScript(generated, false)).toContain('const dryRun = false;')
+  })
+
+  it('fits in one use_figma call', () => {
+    expect(figmaSyncScript(generated, false).length).toBeLessThan(50_000)
+  })
+})
+
+describe('the dev plugin', () => {
+  it('is the export script as generated', () => {
+    expect(readFileSync(join(root, 'figma/plugin/code.js'), 'utf8')).toBe(pluginCode())
+    expect(pluginCode()).toContain(FIGMA_EXPORT_SCRIPT.split('\n')[0])
   })
 })

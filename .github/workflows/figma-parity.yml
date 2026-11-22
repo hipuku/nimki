@@ -1,20 +1,28 @@
-# The Figma file and tokens/source hold the same values. Compares the saved
-# snapshot of the Figma file (figma/snapshot/nimki.json) with the variables the
-# source generates. Offline: Figma's variables API needs an Enterprise plan, so
-# the snapshot is exported from inside Figma and committed (tokens/README.md,
-# "Figma parity"). Component pages join the check when they exist.
+# Figma parity (master plan step 1.4c): code is the source of truth, and any
+# difference between the Figma file and tokens/source fails here.
+#
+# 1. Values: the committed snapshot of the file (figma/snapshot/nimki.json)
+#    against the variables and effect styles the source generates. Offline.
+# 2. Freshness: the file's lastModified, read through Figma's REST API, must not
+#    be later than the snapshot's export time, so the snapshot is never stale.
+#    Needs the FIGMA_TOKEN secret (read-only). Fork pull requests get no
+#    secrets, so it skips there with a notice; on main and our branches a
+#    missing or refused token fails. It stays dormant until the first export
+#    that carries a time.
+#
+# Runs on every push and pull request, and by hand from the Actions tab.
 name: Figma parity
 
 on:
   push:
-    branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -32,3 +40,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Variables and effect styles
         run: pnpm run figma:check
+      - name: Freshness
+        run: pnpm run figma:fresh
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_PARITY_REQUIRED: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && '1' || '0' }}
