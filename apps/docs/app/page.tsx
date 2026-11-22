@@ -1,3 +1,4 @@
+import { Activity, BookOpen, type LucideIcon } from 'lucide-react'
 import Link from 'next/link'
 import { SiteHeader } from '../components/site-header'
 import { source } from '../lib/source'
@@ -17,17 +18,29 @@ export default function Home() {
           Dialog.
         </p>
         <ul className="mt-10 grid gap-3 sm:grid-cols-2">
-          {[
-            ['/docs', 'Introduction', 'What nimki is and how these docs work.'],
-            ['/docs/foundations/motion', 'Motion', 'Every role in every theme, played live.'],
-          ].map(([href, title, text]) => (
+          {(
+            [
+              ['/docs', 'Introduction', 'What nimki is and how these docs work.', BookOpen],
+              [
+                '/docs/foundations/motion',
+                'Motion',
+                'Every role in every theme, played live.',
+                Activity,
+              ],
+            ] as [string, string, string, LucideIcon][]
+          ).map(([href, title, text, Icon]) => (
             <li key={href}>
               <Link
-                href={href as string}
-                className="block rounded-lg border border-border bg-card p-4 hover:border-input"
+                href={href}
+                className="flex h-full gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-input"
               >
-                <span className="font-medium">{title}</span>
-                <span className="mt-1 block text-sm text-muted-foreground">{text}</span>
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-foreground">
+                  <Icon aria-hidden="true" size={16} strokeWidth={1.5} />
+                </span>
+                <span>
+                  <span className="block font-medium">{title}</span>
+                  <span className="mt-1 block text-sm text-muted-foreground">{text}</span>
+                </span>
               </Link>
             </li>
           ))}

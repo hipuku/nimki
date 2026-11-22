@@ -1,4 +1,7 @@
+import { Info } from 'lucide-react'
+import Link from 'next/link'
 import type { ReactNode } from 'react'
+import { CodeBlock } from './code-block'
 
 /**
  * The parts of a component page (PRD FR-D2). Every component page uses them
@@ -43,9 +46,9 @@ export function Demo({ children }: { children?: ReactNode }) {
 export function Install({ name }: { name: string }) {
   return (
     <div className="grid gap-2">
-      <pre>
+      <CodeBlock>
         <code>{`npx shadcn add @nimki/${name}`}</code>
-      </pre>
+      </CodeBlock>
       <p className="text-sm text-muted-foreground">
         The registry is not published yet; this command works from the first release.
       </p>
@@ -89,9 +92,7 @@ export function KeyboardMap({ keys }: { keys: [string, string][] }) {
           {keys.map(([key, does]) => (
             <tr key={key}>
               <td>
-                <kbd className="rounded-sm border border-border bg-muted px-1.5 py-0.5 font-mono text-xs">
-                  {key}
-                </kbd>
+                <kbd className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">{key}</kbd>
               </td>
               <td>{does}</td>
             </tr>
@@ -119,9 +120,17 @@ export function MotionSpec({ moments }: { moments: [string, string, string][] })
             <tr key={moment}>
               <td>{moment}</td>
               <td>
-                <a href={`/docs/foundations/motion#${role}`}>
+                <span className="inline-flex items-center gap-1.5">
                   <code>{role}</code>
-                </a>
+                  <Link
+                    href={`/docs/foundations/motion#${role}`}
+                    aria-label={`About ${role}, on the motion page`}
+                    title={`About ${role}`}
+                    className="inline-flex text-muted-foreground no-underline hover:text-foreground"
+                  >
+                    <Info aria-hidden="true" size={14} strokeWidth={1.5} />
+                  </Link>
+                </span>
               </td>
               <td>{reduced}</td>
             </tr>

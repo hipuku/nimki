@@ -7,15 +7,17 @@ import { usePathname } from 'next/navigation'
 function NavNode({ node, pathname }: { node: Node; pathname: string }) {
   if (node.type === 'separator') {
     return (
-      <li className="mt-5 mb-1 px-2 text-xs font-medium text-muted-foreground first:mt-0">
+      <li className="mt-6 mb-1.5 px-2 text-[0.6875rem] font-medium tracking-wider text-muted-foreground uppercase first:mt-0">
         {node.name}
       </li>
     )
   }
   if (node.type === 'folder') {
     return (
-      <li className="mt-5 first:mt-0">
-        <p className="mb-1 px-2 text-xs font-medium text-muted-foreground">{node.name}</p>
+      <li className="mt-6 first:mt-0">
+        <p className="mb-1.5 px-2 text-[0.6875rem] font-medium tracking-wider text-muted-foreground uppercase">
+          {node.name}
+        </p>
         <ul>
           {node.index && <NavNode node={node.index} pathname={pathname} />}
           {node.children.map((child, i) => (
@@ -31,7 +33,7 @@ function NavNode({ node, pathname }: { node: Node; pathname: string }) {
       <Link
         href={node.url}
         aria-current={current ? 'page' : undefined}
-        className={`block rounded-sm px-2 py-1 text-sm ${current ? 'bg-accent font-medium text-accent-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+        className={`block rounded-md px-2 py-1.5 text-sm transition-colors ${current ? 'bg-accent font-medium text-accent-foreground' : 'text-foreground/80 hover:bg-accent/60 hover:text-foreground'}`}
       >
         {node.name}
       </Link>

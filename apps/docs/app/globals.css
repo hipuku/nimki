@@ -96,7 +96,7 @@
   }
   .prose pre {
     overflow-x: auto;
-    padding: 1rem;
+    padding: 1rem 3rem 1rem 1rem;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--card);
@@ -104,10 +104,15 @@
     font-size: 0.8125rem;
     line-height: 1.6;
   }
+  /* One grid for every table: a fixed first column, the rest share the width. */
   .prose table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     font-size: 0.875rem;
+  }
+  .prose thead th:first-child {
+    width: 35%;
   }
   .prose th {
     text-align: left;

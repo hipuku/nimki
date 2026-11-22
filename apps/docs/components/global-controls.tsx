@@ -16,34 +16,22 @@ const OPTION_LABELS: Record<string, string> = {
 }
 
 /**
- * The four switches every page carries (PRD FR-D1). Each is a radio group
- * drawn as a segmented control. They become nimki's own components as those
+ * The four switches (PRD FR-D1), each a labelled radio group drawn as a
+ * two-part segmented control. They become nimki's own components as those
  * ship; until then they are native inputs, which keep the keyboard and screen
  * reader behaviour for free.
  */
-export function GlobalControls({ layout = 'row' }: { layout?: 'row' | 'stack' }) {
+export function GlobalControls() {
   const { settings, set } = useSettings()
   const id = useId()
   return (
-    <div
-      className={layout === 'row' ? 'flex flex-wrap items-center gap-x-4 gap-y-2' : 'grid gap-3'}
-    >
+    <div className="grid gap-3">
       {(Object.keys(SETTING_OPTIONS) as SettingName[]).map(name => (
-        <fieldset
-          key={name}
-          className={layout === 'row' ? 'flex items-center gap-2' : 'grid gap-1.5'}
-        >
-          <legend
-            className={
-              layout === 'row' ? 'sr-only' : 'mb-1 text-xs font-medium text-muted-foreground'
-            }
-          >
+        <fieldset key={name} className="grid grid-cols-[6.5rem_1fr] items-center gap-2">
+          <legend className="float-left text-xs text-muted-foreground">
             {SETTING_LABELS[name]}
           </legend>
-          <div
-            className="inline-flex rounded-md border border-border bg-muted p-0.5"
-            title={SETTING_LABELS[name]}
-          >
+          <div className="grid grid-cols-2 rounded-md bg-muted p-0.5">
             {SETTING_OPTIONS[name].map(option => {
               const inputId = `${id}-${name}-${option}`
               return (
@@ -59,9 +47,8 @@ export function GlobalControls({ layout = 'row' }: { layout?: 'row' | 'stack' })
                   />
                   <label
                     htmlFor={inputId}
-                    className="pointer-events-none block rounded-sm px-2 py-1 text-xs whitespace-nowrap text-muted-foreground peer-checked:bg-background peer-checked:text-foreground peer-checked:shadow-[var(--nk-elevation-1)] peer-focus-visible:outline-2 peer-focus-visible:outline-ring"
+                    className="pointer-events-none block rounded-sm px-2 py-1 text-center text-xs text-muted-foreground peer-checked:bg-background peer-checked:text-foreground peer-checked:shadow-[var(--nk-elevation-1)] peer-focus-visible:outline-2 peer-focus-visible:outline-ring"
                   >
-                    {name === 'reduced' ? `${SETTING_LABELS[name]}: ` : ''}
                     {OPTION_LABELS[option]}
                   </label>
                 </span>

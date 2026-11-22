@@ -7,6 +7,7 @@ import {
   type MotionRole,
   type RoleToken,
 } from '@hipuku/nimki'
+import { Play } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { curvePath, sampleEasing } from '../lib/curves'
 import { useSettings } from './settings-provider'
@@ -40,12 +41,13 @@ const KIND_TEXT: Record<Kind, string> = {
   exit: 'Goes out: fade',
 }
 
+/** The easing drawn across the cell's width; 0 and 1 are the two guide lines. */
 function Curve({ easing, durationMs }: { easing: string; durationMs: number }) {
-  const width = 120
-  const height = 64
+  const width = 200
+  const height = 100
   if (durationMs === 0) {
     return (
-      <div className="flex h-16 w-[120px] items-center text-xs text-muted-foreground">
+      <div className="flex aspect-[2/1] w-full items-center justify-center rounded-md bg-muted text-xs text-muted-foreground">
         Jumps, no curve
       </div>
     )
@@ -54,29 +56,48 @@ function Curve({ easing, durationMs }: { easing: string; durationMs: number }) {
   const at = (y: number) => height - ((y + 0.15) / 1.3) * height
   return (
     <svg
-      width={width}
-      height={height}
       viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="none"
       role="img"
       aria-label={`Easing curve: ${easing.startsWith('linear(') ? 'spring' : easing}`}
-      className="overflow-visible"
+      className="aspect-[2/1] w-full overflow-visible rounded-md bg-muted"
     >
-      <line x1="0" x2={width} y1={at(0)} y2={at(0)} stroke="var(--border)" />
-      <line x1="0" x2={width} y1={at(1)} y2={at(1)} stroke="var(--border)" />
-      <path d={path} fill="none" stroke="currentColor" strokeWidth="1.5" />
+      {[0, 1].map(y => (
+        <line
+          key={y}
+          x1="0"
+          x2={width}
+          y1={at(y)}
+          y2={at(y)}
+          stroke="var(--border)"
+          vectorEffect="non-scaling-stroke"
+        />
+      ))}
+      <path
+        d={path}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
     </svg>
   )
 }
 
-function details(token: RoleToken): string[] {
-  const lines = [`${token.durationMs} ms`]
-  if (token.visualDurationMs !== undefined) {
-    lines[0] = `Spring: ${token.visualDurationMs} ms visual, settles in ${token.durationMs} ms`
-    lines.push(`Bounce ${token.bounce ?? 0}`)
-  }
-  if (token.scale !== undefined && token.scale !== 1) lines.push(`Scale ${token.scale}`)
-  if (token.offsetPx) lines.push(`Offset ${token.offsetPx} px`)
-  return lines
+/** The token's values as short facts, in a fixed order. */
+function facts(token: RoleToken): string[] {
+  const out =
+    token.visualDurationMs !== undefined
+      ? [
+          `${token.visualDurationMs} ms spring`,
+          `settles ${token.durationMs} ms`,
+          `bounce ${token.bounce ?? 0}`,
+        ]
+      : [token.durationMs === 0 ? 'instant' : `${token.durationMs} ms`]
+  if (token.scale !== undefined && token.scale !== 1) out.push(`scale ${token.scale}`)
+  if (token.offsetPx) out.push(`offset ${token.offsetPx} px`)
+  return out
 }
 
 const quiet = () => {}
@@ -150,46 +171,48 @@ export function RoleCard({ role }: { role: MotionRole }) {
     <section
       id={role}
       aria-labelledby={`${role}-name`}
-      className="scroll-mt-20 rounded-lg border border-border bg-card p-4 text-card-foreground"
+      className="scroll-mt-20 rounded-lg border border-border bg-card p-5 text-card-foreground"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <div>
+      <div className="flex items-start justify-between gap-4">
+        <div className="grid gap-1">
           <h3 id={`${role}-name`} className="font-mono text-sm font-medium">
             {role}
           </h3>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             {KIND_TEXT[kind]}. Cap {DURATION_CAPS_MS[role]} ms.
           </p>
         </div>
         <button
           type="button"
           onClick={run}
-          className="h-8 rounded-md border border-input px-3 text-sm hover:bg-accent hover:text-accent-foreground"
+          aria-label={`Play ${role} in every theme`}
+          className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-input px-3 text-sm hover:bg-accent hover:text-accent-foreground"
         >
-          Play {role}
+          <Play aria-hidden="true" size={14} strokeWidth={1.5} />
+          Play
         </button>
       </div>
-      <div className="mt-4 grid gap-4 sm:grid-cols-3">
+      <div className="mt-5 grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3">
         {MODES.map(mode => {
           const token = MOTION_TOKENS[mode][role]
           const still = reducedMotion && mode !== 'reduced'
           return (
-            <div key={mode} className="grid content-start gap-2">
-              <p className="flex items-center gap-2 text-xs font-medium">
-                {MODE_NAMES[mode]}
-                {mode === current && (
-                  <span className="rounded-full bg-accent px-1.5 py-0.5 text-[0.6875rem] font-normal text-accent-foreground">
-                    your setting
-                  </span>
-                )}
+            <div key={mode} className="grid content-start gap-3 bg-card p-4">
+              <p className="flex h-5 items-center justify-between text-xs">
+                <span className="font-medium">{MODE_NAMES[mode]}</span>
+                {mode === current ? (
+                  <span className="text-muted-foreground">Your setting</span>
+                ) : still ? (
+                  <span className="text-muted-foreground">Still</span>
+                ) : null}
               </p>
               <Curve easing={token.easing} durationMs={token.durationMs} />
-              <ul className="text-xs text-muted-foreground">
-                {details(token).map(line => (
-                  <li key={line}>{line}</li>
+              <ul className="flex min-h-8 flex-wrap content-start gap-x-3 gap-y-1 text-xs text-muted-foreground tabular-nums">
+                {facts(token).map(fact => (
+                  <li key={fact}>{fact}</li>
                 ))}
               </ul>
-              <div className="relative flex h-12 items-center rounded-md bg-muted p-1">
+              <div className="flex h-12 items-center rounded-md bg-muted p-1">
                 <div
                   ref={element => {
                     boxes.current[mode] = element
@@ -197,11 +220,6 @@ export function RoleCard({ role }: { role: MotionRole }) {
                   aria-hidden="true"
                   className={`size-10 rounded-sm bg-foreground ${kind === 'move' ? '' : 'mx-auto'}`}
                 />
-                {still && (
-                  <span className="absolute inset-x-0 -bottom-5 text-center text-[0.6875rem] text-muted-foreground">
-                    Still: reduced motion is on
-                  </span>
-                )}
               </div>
             </div>
           )
