@@ -76,43 +76,29 @@
     margin-top: 0.75rem;
   }
   /*
-   * Inline links: a 1.5 px line in --input at rest; on hover a wash of the
-   * text colour at --nk-hover-amount rises from the line to fill the word.
-   * A wash of the text colour suits every surface a link sits on, as the
-   * colour model's rule for transparent surfaces says, mixed in sRGB to match
-   * Figma. The rise is on the press role; with reduced motion it appears.
+   * Inline links: a 1 px underline in --input, 4 px below the text. On hover
+   * it tightens: darkens to the text colour, thickens to 2 px and lifts to
+   * 2 px, on the press role. With reduced motion it changes without moving.
    */
   .prose > p a,
   .prose > ul a,
   .prose > ol a {
-    padding: 0 0.125rem;
-    margin: 0 -0.125rem;
-    border-radius: 2px;
-    text-decoration: none;
-    background-image:
-      linear-gradient(
-        color-mix(in srgb, currentColor var(--nk-hover-amount), transparent),
-        color-mix(in srgb, currentColor var(--nk-hover-amount), transparent)
-      ),
-      linear-gradient(var(--input), var(--input));
-    background-repeat: no-repeat;
-    background-position:
-      0 100%,
-      0 100%;
-    background-size:
-      100% 0,
-      100% 1.5px;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-    transition: background-size var(--nk-press-duration) var(--nk-press-easing);
+    text-decoration: underline;
+    text-decoration-color: var(--input);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition:
+      text-decoration-color var(--nk-press-duration) var(--nk-press-easing),
+      text-decoration-thickness var(--nk-press-duration) var(--nk-press-easing),
+      text-underline-offset var(--nk-press-duration) var(--nk-press-easing);
   }
   @media (hover: hover) {
     .prose > p a:hover,
     .prose > ul a:hover,
     .prose > ol a:hover {
-      background-size:
-        100% 100%,
-        100% 1.5px;
+      text-decoration-color: currentColor;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
     }
   }
   [data-motion-reduce] .prose a {
