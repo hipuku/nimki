@@ -177,6 +177,12 @@
     box-shadow: inset 0 0 0 100vmax
       color-mix(in oklch, currentColor var(--nk-pressed-amount), transparent);
   }
+  /* A focused field shows focus only: no hover or press layer over it. */
+  input.nk-state:focus,
+  textarea.nk-state:focus {
+    box-shadow: none;
+    scale: 1;
+  }
 
   /* Anything that appears: fades in from the popover-enter offset and scale. */
   .nk-pop-in {
