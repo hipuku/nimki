@@ -3,17 +3,29 @@ title: Select
 description: A single value chosen from a list. On a phone it opens as a bottom sheet.
 ---
 
-<Status stage="in design" />
+<Status stage="in code" />
 
-<Demo />
+<Demo>
+  <SelectDemo />
+</Demo>
 
 ## Installation
 
 <Install name="select" />
 
+Select reads nimki's token CSS, which the command installs with it under `styles/nimki/`. Import those files in the project's global CSS after Tailwind:
+
+```css
+@import 'tailwindcss';
+@import './styles/nimki/extensions.css';
+@import './styles/nimki/tailwind.css';
+@import './styles/nimki/motion.css';
+@import './styles/nimki/density.css';
+```
+
 ## Usage
 
-The same API as shadcn's Select.
+The same API as shadcn's Select: the same parts, names and props.
 
 ```tsx
 import {
@@ -45,9 +57,45 @@ export function FruitSelect() {
 }
 ```
 
+It is built on Base UI, with a thin layer that keeps shadcn's Radix-style API: `asChild` on every part that takes it, `onValueChange` and `onOpenChange` with Radix's single argument, `position`, and `onEscapeKeyDown`, `onPointerDownOutside` and `onCloseAutoFocus` on the content.
+
+### Where it differs from shadcn's
+
+- **The list opens below the trigger.** `position` defaults to `"popper"`, as designed; `position="item-aligned"`, shadcn's default, lays the chosen option over the trigger instead.
+- **A disabled option can be highlighted.** The arrow keys move onto it, so a screen reader announces it, but it cannot be chosen. This follows the WAI-ARIA Authoring Practices; Radix skips it instead.
+- **A group with no options shows nothing,** its label included.
+
 ## Examples
 
-Each example runs live here once the code lands: sizes, a placeholder, a disabled item, an invalid trigger, groups with separators, a long list that scrolls, and the sheet on a phone.
+### Sizes
+
+`size="default"` and `size="sm"`. Both follow the Density control.
+
+<Demo>
+  <SelectSizes />
+</Demo>
+
+### Invalid
+
+`aria-invalid` on the trigger draws the destructive border.
+
+<Demo>
+  <SelectInvalid />
+</Demo>
+
+### Disabled
+
+<Demo>
+  <SelectDisabled />
+</Demo>
+
+### A long list
+
+The list scrolls, with a button at each end that has more.
+
+<Demo>
+  <SelectLongList />
+</Demo>
 
 ## API reference
 
@@ -76,20 +124,21 @@ Each example runs live here once the code lands: sizes, a placeholder, a disable
     ['Arrow up', 'Opens the list; moves the highlight to the previous option'],
     ['Home', 'Moves the highlight to the first option'],
     ['End', 'Moves the highlight to the last option'],
-    ['Page up', 'Moves the highlight up by a page'],
-    ['Page down', 'Moves the highlight down by a page'],
-    ['A letter', 'Moves the highlight to the next option starting with it'],
+    [
+      'A letter',
+      'Moves the highlight to the next option starting with it; on the closed trigger, chooses it',
+    ],
     ['Escape', 'Closes the list without changing the value'],
   ]}
 />
 
 ## Accessibility
 
-- The trigger is a combobox that names the list it opens and says whether it is open.
-- The list is a listbox; each option says whether it is selected.
+- The trigger is a combobox that says whether its list is open; the list is a listbox named after the trigger.
+- Each option says whether it is selected. A disabled option is announced but cannot be chosen.
 - Focus returns to the trigger when the list closes.
-- Name the trigger with a `Label`, as with any form field.
-- Disabled options stay in the list and are skipped by the arrow keys.
+- Name the trigger with a `Label`, or `aria-label` when there is no visible one.
+- Every state is checked with axe in light and dark, in Chromium, Firefox and WebKit.
 
 ## Motion
 
@@ -97,14 +146,13 @@ Each example runs live here once the code lands: sizes, a placeholder, a disable
   moments={[
     ['List opens', 'popover-enter', 'Fades in place'],
     ['List closes', 'popover-exit', 'Fades'],
-    ['Highlight moves', 'highlight', 'Jumps'],
-    ['Sheet opens', 'sheet-enter', 'Fades in place'],
-    ['Sheet closes', 'sheet-exit', 'Fades'],
-    ['Options on first open', 'stagger', 'All at once'],
+    ['Trigger pressed', 'press', 'Does not scale'],
   ]}
 />
 
-The list grows from the trigger's side. The highlight is one element that slides between options; it jumps for typeahead, Home, End, Page up and Page down, where a slide would cross many options.
+The list grows from the trigger's side. Closing it while it opens reverses from where it is.
+
+Still to come, in the next releases: the highlight as one element that slides between options (`highlight`), the options staggering on first open (`stagger`), and the bottom sheet on a phone (`sheet-enter`, `sheet-exit`).
 
 ## Quality bar
 

@@ -6,3 +6,9 @@
 @import '../../../registry/styles/density.css';
 
 @source '../../../registry/ui';
+
+/* The page takes the theme's colours, as a project's does; the switches are on <html>. */
+body {
+  background: var(--background);
+  color: var(--foreground);
+}

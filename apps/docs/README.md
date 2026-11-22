@@ -8,15 +8,16 @@ pnpm --filter docs dev
 
 ## Layout
 
-| Path                   | What                                                                      |
-| ---------------------- | ------------------------------------------------------------------------- |
-| `content/docs`         | The pages, as MDX. Folders and `meta.json` files set the navigation order |
-| `app/docs/[[...slug]]` | Renders a page with its table of contents                                 |
-| `app/api/search`       | The search index over every page and heading                              |
-| `components/`          | The site's UI: header, global controls, sidebar, search, page parts       |
-| `lib/settings.ts`      | The global controls: mode, motion theme, density, reduced motion          |
-| `lib/curves.ts`        | Samples a CSS easing into points, for the motion page                     |
-| `registry.json`        | The shadcn registry; `pnpm --filter docs build` writes it to `public/r/`  |
+| Path                   | What                                                                                                                         |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `content/docs`         | The pages, as MDX. Folders and `meta.json` files set the navigation order                                                    |
+| `app/docs/[[...slug]]` | Renders a page with its table of contents                                                                                    |
+| `app/api/search`       | The search index over every page and heading                                                                                 |
+| `components/`          | The site's UI: header, global controls, sidebar, search, page parts                                                          |
+| `components/demos/`    | Live examples, importing the registry's code through `@registry/*`                                                           |
+| `lib/settings.ts`      | The global controls: mode, motion theme, density, reduced motion                                                             |
+| `lib/curves.ts`        | Samples a CSS easing into points, for the motion page                                                                        |
+| `registry.json`        | The shadcn registry: the token CSS and each component, from `registry/`; `pnpm --filter docs build` writes it to `public/r/` |
 
 ## The global controls
 

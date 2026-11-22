@@ -11,6 +11,13 @@ import {
   QualityBar,
   Status,
 } from './component-page'
+import {
+  SelectDemo,
+  SelectDisabled,
+  SelectInvalid,
+  SelectLongList,
+  SelectSizes,
+} from './demos/select'
 import { LiveCss, RoleGallery } from './motion-foundations'
 import { LimitsTable, StaggerTable } from './motion-tables'
 
@@ -32,6 +39,11 @@ export const mdxComponents: MDXComponents = {
   MotionSpec,
   QualityBar,
   RoleGallery,
+  SelectDemo,
+  SelectDisabled,
+  SelectInvalid,
+  SelectLongList,
+  SelectSizes,
   StaggerTable,
   Status,
 }

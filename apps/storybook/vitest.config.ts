@@ -3,8 +3,8 @@ import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
 
 // Every story runs as a test in a real browser: it renders, its play function
-// runs, and axe checks it (PRD NFR-1, NFR-2, NFR-20). Chromium here; Firefox and
-// WebKit join once components exist (NFR-12).
+// runs, and axe checks it (PRD NFR-1, NFR-2, NFR-20), in Chromium, Firefox and
+// WebKit (NFR-12).
 export default defineConfig({
   plugins: [storybookTest({ configDir: '.storybook' })],
   test: {
@@ -13,16 +13,19 @@ export default defineConfig({
       enabled: true,
       headless: true,
       provider: playwright(),
-      instances: [{ browser: 'chromium' }],
+      instances: [{ browser: 'chromium' }, { browser: 'firefox' }, { browser: 'webkit' }],
     },
-    // V8 coverage read from Chromium, over the motion-timing helpers the stories'
-    // play functions call. The floors are where they stand today; the paths not
-    // yet taken (a spring role, a missing transition) are exercised once a
-    // component uses them, and the floors rise with it.
+    // Istanbul coverage, which instruments the code and so works in every
+    // browser (V8's reads Chromium only), over the components in registry/ui and
+    // the motion-timing helpers the play functions call. The floors sit just
+    // under where they stand, so a change that drops coverage fails.
     coverage: {
-      provider: 'v8',
-      include: ['src/**/*.ts'],
-      thresholds: { lines: 90, functions: 100, branches: 70, statements: 85 },
+      provider: 'istanbul',
+      // The components live in registry/, outside this app.
+      allowExternal: true,
+      include: ['src/**/*.ts', '../../registry/ui/**/*.tsx'],
+      exclude: ['../../registry/ui/**/*.stories.tsx'],
+      thresholds: { lines: 98, functions: 100, branches: 90, statements: 97 },
     },
   },
 })

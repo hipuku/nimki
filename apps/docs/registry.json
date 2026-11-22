@@ -2,5 +2,48 @@
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "nimki",
   "homepage": "https://nimki.dev",
-  "items": []
+  "items": [
+    {
+      "name": "tokens",
+      "type": "registry:style",
+      "title": "nimki tokens",
+      "description": "The token CSS every nimki component reads: motion roles, density sizes, the colour extensions and Tailwind's mapping of them. Import each file in the project's global CSS after Tailwind.",
+      "files": [
+        {
+          "path": "../../registry/styles/motion.css",
+          "type": "registry:file",
+          "target": "styles/nimki/motion.css"
+        },
+        {
+          "path": "../../registry/styles/density.css",
+          "type": "registry:file",
+          "target": "styles/nimki/density.css"
+        },
+        {
+          "path": "../../registry/styles/extensions.css",
+          "type": "registry:file",
+          "target": "styles/nimki/extensions.css"
+        },
+        {
+          "path": "../../registry/styles/tailwind.css",
+          "type": "registry:file",
+          "target": "styles/nimki/tailwind.css"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "A single value chosen from a list, with shadcn's Select API on Base UI.",
+      "dependencies": ["@base-ui/react@^1.9.0", "lucide-react"],
+      "registryDependencies": ["utils", "https://nimki.dev/r/tokens.json"],
+      "files": [
+        {
+          "path": "../../registry/ui/select/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
 }

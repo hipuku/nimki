@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true,
+    // shadcn's alias for the cn helper: the CLI rewrites it to the project's own on install.
+    "paths": { "@/lib/utils": ["./lib/utils.ts"] }
+  },
+  "include": ["lib", "ui"]
+}

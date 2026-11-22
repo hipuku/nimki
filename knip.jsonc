@@ -22,6 +22,11 @@
       "ignoreDependencies": ["tailwindcss"],
       "project": ["src/**/*.{ts,tsx}", ".storybook/*.{ts,tsx}"],
     },
+    "registry": {
+      // Components are entries: users copy them with the shadcn CLI.
+      "entry": ["ui/**/*.tsx"],
+      "project": ["ui/**/*.tsx", "lib/**/*.ts"],
+    },
     "apps/docs": {
       "entry": ["lib/**/*.test.ts", "scripts/*.mjs"],
       // Imported by app/globals.css (@import 'tailwindcss'), which knip does not read.
