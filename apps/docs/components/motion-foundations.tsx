@@ -18,7 +18,7 @@ import { button } from './styles'
  * the engine's generated tokens, so the page shows what the components run.
  */
 
-const MODES: MotionMode[] = ['subtle', 'expressive', 'reduced']
+const MODES: MotionMode[] = ['expressive', 'subtle', 'reduced']
 const MODE_NAMES: Record<MotionMode, string> = {
   subtle: 'Subtle',
   expressive: 'Expressive',

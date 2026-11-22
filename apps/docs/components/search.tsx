@@ -29,7 +29,7 @@ export function Search() {
         onChange={event => onSearchChange(event.target.value)}
         placeholder="Search"
         autoComplete="off"
-        className="h-9 w-full rounded-md bg-muted px-3.5 text-sm transition-colors duration-[var(--nk-duration-fast)] placeholder:text-muted-foreground hover:bg-accent focus:bg-background"
+        className="nk-state h-9 w-full rounded-md bg-muted px-3.5 text-sm placeholder:text-muted-foreground focus:bg-background active:scale-100"
       />
       {search.length > 0 && (
         <div

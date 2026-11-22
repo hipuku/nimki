@@ -11,7 +11,7 @@ export const SETTINGS_KEY = 'nimki-docs-settings'
 
 export const SETTING_OPTIONS = {
   mode: ['light', 'dark'],
-  motion: ['subtle', 'expressive'],
+  motion: ['expressive', 'subtle'],
   density: ['comfortable', 'compact'],
   reduced: ['off', 'on'],
 } as const

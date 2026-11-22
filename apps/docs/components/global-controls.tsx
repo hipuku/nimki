@@ -25,12 +25,12 @@ export function GlobalControls() {
   const { settings, set } = useSettings()
   const id = useId()
   return (
-    <div className="grid gap-3.5">
+    <div className="grid gap-4">
       {(Object.keys(SETTING_OPTIONS) as SettingName[]).map(name => {
         const selected = SETTING_OPTIONS[name].indexOf(settings[name] as never)
         return (
-          <fieldset key={name} className="grid grid-cols-[7rem_1fr] items-center gap-3">
-            <legend className="float-left text-[0.8125rem] text-muted-foreground">
+          <fieldset key={name} className="grid gap-1.5">
+            <legend className="float-left text-xs text-muted-foreground">
               {SETTING_LABELS[name]}
             </legend>
             <div className="relative grid grid-cols-2 rounded-md bg-muted p-1">
@@ -55,7 +55,7 @@ export function GlobalControls() {
                     />
                     <label
                       htmlFor={inputId}
-                      className="pointer-events-none relative block rounded-sm px-3 py-1.5 text-center text-[0.8125rem] whitespace-nowrap text-muted-foreground transition-colors duration-[var(--nk-duration-fast)] peer-checked:text-foreground peer-focus-visible:outline-2 peer-focus-visible:outline-ring"
+                      className="pointer-events-none relative block rounded-sm px-3 py-1.5 text-center text-[0.8125rem] whitespace-nowrap text-muted-foreground transition-[color] duration-[var(--nk-duration-fast)] peer-checked:text-foreground peer-focus-visible:outline-2 peer-focus-visible:outline-ring"
                     >
                       {OPTION_LABELS[option]}
                     </label>

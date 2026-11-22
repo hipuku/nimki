@@ -158,6 +158,26 @@
     scale: var(--nk-press-scale);
   }
 
+  /*
+   * State layers over a filled surface: the text colour at --nk-hover-amount
+   * on hover and --nk-pressed-amount on press, as in the Figma file. Drawn as
+   * an inset shadow so it fades instead of snapping, and works on any fill.
+   */
+  .nk-state {
+    transition:
+      scale var(--nk-press-duration) var(--nk-press-easing),
+      box-shadow var(--nk-duration-fast) var(--nk-ease-move);
+  }
+  .nk-state:hover {
+    box-shadow: inset 0 0 0 100vmax
+      color-mix(in oklch, currentColor var(--nk-hover-amount), transparent);
+  }
+  .nk-state:active {
+    scale: var(--nk-press-scale);
+    box-shadow: inset 0 0 0 100vmax
+      color-mix(in oklch, currentColor var(--nk-pressed-amount), transparent);
+  }
+
   /* Anything that appears: fades in from the popover-enter offset and scale. */
   .nk-pop-in {
     transition:
