@@ -149,6 +149,13 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      # The built docs as a reader meets them (PRD FR-D6): every page in light
+      # and dark, desktop and phone width, axe at WCAG 2.2 AA, no sideways scroll.
+      - name: Install Chromium
+        run: pnpm --filter docs exec playwright install --with-deps --only-shell chromium
+      - name: Docs pages
+        run: pnpm --filter docs run check:pages
+
       # What npm would receive: exports resolve, types match the JavaScript
       # under ESM and bundler resolution, and the tarball holds only dist/.
       - name: Package
