@@ -43,7 +43,7 @@ Issues labelled `good first issue` name the files to change and what done looks 
 
 1. For anything beyond a small fix, open an issue first, so the approach is agreed before the work.
 2. New components and visual changes are designed in the nimki Figma file before their code; the maintainer does that part.
-3. Open a pull request using the template. CI runs the same checks as `pnpm run check`, plus the Figma parity check and the visual tests.
+3. Open a pull request using the template. CI runs the same checks as `pnpm run check`, plus the Figma parity check. Chromatic publishes the stories for visual review, but is not a required check.
 4. If a consumer of `@hipuku/nimki` would notice the change, add a changeset (`pnpm changeset`).
 
 `pnpm install` turns on a git hook that checks staged files and commit messages for names that should not be in the repository.

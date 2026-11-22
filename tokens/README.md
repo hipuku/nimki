@@ -18,14 +18,14 @@ DTCG has no spring type. A spring is a `duration` token whose value is its visua
 
 ## Outputs
 
-| File                                      | What reads it                                                                                                               |
-| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `registry/styles/motion.css`              | Components, through the role custom properties. Themes switch on `data-motion`; reduced motion overrides both               |
-| `registry/styles/theme-linear.css`        | Optional. The Linear theme for shadcn's variables, the radius and the fonts; a project that sets these itself keeps its own |
-| `registry/styles/extensions.css`          | Components. The `--nk-` colours and amounts, derived from shadcn's variables, with dark mode on `.dark`                     |
-| `registry/styles/density.css`             | Components, through the size custom properties. Compact switches on `data-density`                                          |
-| `packages/engine/src/tokens.generated.ts` | The engine: duration caps, every role resolved to values, and each role as a Motion transition                              |
-| `generated/figma-variables.json`          | The Figma build, in the shape of the body of Figma's variables API                                                          |
+| File                                      | What reads it                                                                                                                                                                                                                              |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `registry/styles/motion.css`              | Components, through the role custom properties. Themes switch on `data-motion`; reduced motion overrides both                                                                                                                              |
+| `registry/styles/theme-linear.css`        | Optional. The Linear theme: its neutral ramp (`--nk-neutral-1` to `-12`), shadcn's variables pointing at ramp steps, the radius and the fonts; a project that sets these itself keeps its own                                              |
+| `registry/styles/extensions.css`          | Components. The `--nk-` colours and amounts, derived from shadcn's variables, with dark mode on `.dark`: success, warning, highlight, the hover and pressed colour of each filled role, and the 8% and 12% layers for transparent surfaces |
+| `registry/styles/density.css`             | Components, through the size custom properties. Compact switches on `data-density`                                                                                                                                                         |
+| `packages/engine/src/tokens.generated.ts` | The engine: duration caps, every role resolved to values, and each role as a Motion transition                                                                                                                                             |
+| `generated/figma-variables.json`          | The Figma build, in the shape of the body of Figma's variables API                                                                                                                                                                         |
 
 A spring becomes two custom properties: a CSS `linear()` easing sampled from the spring, and the time it takes to settle. The engine's `springToLinear()` does the conversion, with the same formula Motion uses, so a CSS transition and a Motion spring with the same token follow the same curve.
 
@@ -48,9 +48,17 @@ Generation stops, listing every problem, if the source breaks a rule from the PR
 - Reduced motion has no springs, movement, scale or stagger, and nothing over 120 ms (FR-M9).
 - Compact is never larger than comfortable, and no control or item is under 24 px (FR-V5).
 - Every text pairing reaches 4.5:1, and the focus ring and the input border 3:1, in both modes; every opaque colour fits in sRGB (FR-V9, FR-V10, WCAG 2.2 1.4.11).
+- Every hover and pressed colour differs visibly from its rest colour (1.04:1 and 1.08:1), pressed further than hovered, and its text still passes 4.5:1.
+- The neutral ramp runs one way per mode, and its text steps pass 4.5:1 (step 11) and 7:1 (step 12) on steps 1 to 3.
 - A shadow keeps one shape in both modes. Its layer colours carry the dark mode, so the Figma effect style can switch with the mode too.
 
 The parser reads only the DTCG features the source uses and refuses the rest by name, so a feature added to the source without parser support fails rather than being ignored.
+
+## Browsers and scope
+
+The outputs need the browsers in the PRD's support table (the last two versions of Chrome, Edge, Firefox and Safari, plus iOS Safari and Android Chrome). The derived colours use relative colour syntax (`oklch(from var(--destructive) ...)`), which needs Safari 16.4, Chrome 119 or Firefox 128, all inside that range; there is no fallback.
+
+A derived `--nk-` colour is worked out where it is declared, on `:root` and `.dark`. A subtree that sets its own `--primary` keeps the page's `--nk-primary-hover` unless it redeclares that too, so a section with its own theme sets both, or adds the `.dark` class, which redeclares every derived colour.
 
 ## Figma parity
 
