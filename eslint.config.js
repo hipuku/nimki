@@ -17,6 +17,7 @@ export default defineConfig([
     '**/node_modules',
     '**/next-env.d.ts',
     '**/storybook-static',
+    '**/.source',
   ]),
 
   {

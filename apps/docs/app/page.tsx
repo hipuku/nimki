@@ -1,30 +1,38 @@
-import { DURATION_CAPS_MS } from '@hipuku/nimki'
+import Link from 'next/link'
+import { SiteHeader } from '../components/site-header'
+import { source } from '../lib/source'
 
 export default function Home() {
   return (
-    <main>
-      <h1>nimki</h1>
-      <p>
-        Nothing is released yet. Version 0 is Button, Input with Label, Select, Switch, Tabs and
-        Dialog.
-      </p>
-      <h2>Duration caps</h2>
-      <table>
-        <thead>
-          <tr>
-            <th scope="col">Role</th>
-            <th scope="col">Cap</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(DURATION_CAPS_MS).map(([role, ms]) => (
-            <tr key={role}>
-              <td>{role}</td>
-              <td>{ms} ms</td>
-            </tr>
+    <>
+      <SiteHeader tree={source.getPageTree()} />
+      <main className="mx-auto max-w-3xl px-4 py-20">
+        <h1 className="font-display text-5xl leading-tight">nimki</h1>
+        <p className="mt-4 text-lg text-muted-foreground">
+          React components for product interfaces: a drop-in superset of shadcn/ui with designed
+          motion.
+        </p>
+        <p className="mt-6 text-sm">
+          Nothing is released yet. Version 0 is Button, Input with Label, Select, Switch, Tabs and
+          Dialog.
+        </p>
+        <ul className="mt-10 grid gap-3 sm:grid-cols-2">
+          {[
+            ['/docs', 'Introduction', 'What nimki is and how these docs work.'],
+            ['/docs/foundations/motion', 'Motion', 'Every role in every theme, played live.'],
+          ].map(([href, title, text]) => (
+            <li key={href}>
+              <Link
+                href={href as string}
+                className="block rounded-lg border border-border bg-card p-4 hover:border-input"
+              >
+                <span className="font-medium">{title}</span>
+                <span className="mt-1 block text-sm text-muted-foreground">{text}</span>
+              </Link>
+            </li>
           ))}
-        </tbody>
-      </table>
-    </main>
+        </ul>
+      </main>
+    </>
   )
 }

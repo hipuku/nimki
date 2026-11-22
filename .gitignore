@@ -13,3 +13,5 @@ next-env.d.ts
 apps/docs/public/r/
 # Written by storybook build (apps/storybook) for Chromatic.
 storybook-static/
+# Written by fumadocs-mdx from apps/docs/content on every docs build and typecheck.
+.source/

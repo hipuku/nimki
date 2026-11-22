@@ -1,0 +1,115 @@
+---
+title: Select
+description: A single value chosen from a list. On a phone it opens as a bottom sheet.
+---
+
+<Status stage="in design" />
+
+<Demo />
+
+## Installation
+
+<Install name="select" />
+
+## Usage
+
+The same API as shadcn's Select.
+
+```tsx
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+
+export function FruitSelect() {
+  return (
+    <Select>
+      <SelectTrigger className="w-48">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Fruit</SelectLabel>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+          <SelectItem value="blueberry">Blueberry</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  )
+}
+```
+
+## Examples
+
+Each example runs live here once the code lands: sizes, a placeholder, a disabled item, an invalid trigger, groups with separators, a long list that scrolls, and the sheet on a phone.
+
+## API reference
+
+<ApiReference
+  parts={[
+    'Select',
+    'SelectTrigger',
+    'SelectValue',
+    'SelectContent',
+    'SelectGroup',
+    'SelectLabel',
+    'SelectItem',
+    'SelectSeparator',
+    'SelectScrollUpButton',
+    'SelectScrollDownButton',
+  ]}
+/>
+
+## Keyboard
+
+<KeyboardMap
+  keys={[
+    ['Space', 'Opens the list from the trigger; chooses the highlighted option'],
+    ['Enter', 'Opens the list from the trigger; chooses the highlighted option'],
+    ['Arrow down', 'Opens the list; moves the highlight to the next option'],
+    ['Arrow up', 'Opens the list; moves the highlight to the previous option'],
+    ['Home', 'Moves the highlight to the first option'],
+    ['End', 'Moves the highlight to the last option'],
+    ['Page up', 'Moves the highlight up by a page'],
+    ['Page down', 'Moves the highlight down by a page'],
+    ['A letter', 'Moves the highlight to the next option starting with it'],
+    ['Escape', 'Closes the list without changing the value'],
+  ]}
+/>
+
+## Accessibility
+
+- The trigger is a combobox that names the list it opens and says whether it is open.
+- The list is a listbox; each option says whether it is selected.
+- Focus returns to the trigger when the list closes.
+- Name the trigger with a `Label`, as with any form field.
+- Disabled options stay in the list and are skipped by the arrow keys.
+
+## Motion
+
+<MotionSpec
+  moments={[
+    ['List opens', 'popover-enter', 'Fades in place'],
+    ['List closes', 'popover-exit', 'Fades'],
+    ['Highlight moves', 'highlight', 'Jumps'],
+    ['Sheet opens', 'sheet-enter', 'Fades in place'],
+    ['Sheet closes', 'sheet-exit', 'Fades'],
+    ['Options on first open', 'stagger', 'All at once'],
+  ]}
+/>
+
+The list grows from the trigger's side. The highlight is one element that slides between options; it jumps for typeahead, Home, End, Page up and Page down, where a slide would cross many options.
+
+## Quality bar
+
+<QualityBar />
+
+## Changelog
+
+<Changelog />

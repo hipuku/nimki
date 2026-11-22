@@ -20,7 +20,10 @@
       "project": ["src/**/*.{ts,tsx}", ".storybook/*.{ts,tsx}"],
     },
     "apps/docs": {
-      "project": ["app/**/*.{ts,tsx}"],
+      "entry": ["lib/**/*.test.ts"],
+      // Imported by app/globals.css (@import 'tailwindcss'), which knip does not read.
+      "ignoreDependencies": ["tailwindcss"],
+      "project": ["app/**/*.{ts,tsx}", "components/**/*.tsx", "lib/**/*.ts"],
     },
   },
 }
