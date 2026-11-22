@@ -177,8 +177,12 @@ export const TEXT_PAIRS: [string, string][] = [
   ['color.muted-foreground', 'color.background'],
   ['color.muted-foreground', 'color.muted'],
   ['nk.highlight-foreground', 'nk.highlight'],
-  // Text on every hovered and pressed fill (step 1.3c). Destructive has no
-  // foreground token in shadcn, so its states are checked for visibility only.
+  // White on the destructive fill and its states. shadcn has no destructive
+  // foreground, so nimki adds one; --destructive itself stays text-safe on the page.
+  ...['nk.destructive-fill', 'nk.destructive-hover', 'nk.destructive-active'].map(
+    (fill): [string, string] => ['nk.destructive-foreground', fill],
+  ),
+  // Text on every hovered and pressed fill (step 1.3c).
   ...(['primary', 'secondary', 'accent', 'card', 'popover'] as const).flatMap(role =>
     (['hover', 'active'] as const).map((state): [string, string] => [
       `color.${role}-foreground`,
@@ -294,7 +298,9 @@ function checkStates(theme: Theme): string[] {
     const match = /^nk\.(.+)-(hover|active)$/.exec(colour.token)
     if (!match) continue
     const [, role, state] = match as unknown as [string, string, 'hover' | 'active']
-    const rest = byToken.get(`color.${role}`)
+    // A role with its own fill (destructive) moves from the fill.
+    const rest = byToken.get(`nk.${role}-fill`) ?? byToken.get(`color.${role}`)
+    const restName = byToken.has(`nk.${role}-fill`) ? `nk.${role}-fill` : `color.${role}`
     if (!rest) {
       problems.push(`${colour.token}: there is no color.${role} for it to be a state of`)
       continue
@@ -304,7 +310,7 @@ function checkStates(theme: Theme): string[] {
       const ratio = contrast(colour.value[mode], rest.value[mode])
       if (ratio < STATE_MIN_CONTRAST[state]) {
         problems.push(
-          `${colour.token} (${mode}): ${ratio.toFixed(3)}:1 from color.${role} is under ${STATE_MIN_CONTRAST[state]}:1, too close to see`,
+          `${colour.token} (${mode}): ${ratio.toFixed(3)}:1 from ${restName} is under ${STATE_MIN_CONTRAST[state]}:1, too close to see`,
         )
       }
       if (state === 'active' && hover && ratio <= contrast(hover.value[mode], rest.value[mode])) {

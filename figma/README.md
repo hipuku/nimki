@@ -33,23 +33,29 @@ The export computes a checksum of its own content inside Figma. `figma:in` recom
 
 ## Every command
 
-| Command                       | What it does                                                                                                            |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `pnpm figma:out`              | Regenerates the tokens and copies the sync data for the plugin. `--print` prints it                                     |
-| `pnpm figma:in [file]`        | Saves an export, pulls Figma's value changes into `tokens/source`, regenerates and compares                             |
-| `pnpm figma:check`            | Compares the snapshot with the variables code generates. Lists every difference                                         |
-| `pnpm figma:sync`             | Prints a script for the file that lists what differs from code and changes nothing                                      |
-| `pnpm figma:sync --apply`     | Prints the script that makes the file match code, the same change as **Sync from code**                                 |
-| `pnpm figma:pull`             | Writes values changed in Figma back into `tokens/source`, and lists what it cannot write. `--dry` lists without writing |
-| `pnpm figma:script`           | Prints the export script                                                                                                |
-| `pnpm figma:save <file>`      | Checks an export's checksum and saves it as the snapshot. A relative path is read from where the command is typed       |
-| `pnpm figma:save --clipboard` | The same, reading the clipboard (macOS)                                                                                 |
-| `pnpm figma:fresh`            | Asks Figma when the file was last saved and fails if that is later than the export (needs `FIGMA_TOKEN`)                |
-| `pnpm figma:plugin`           | Regenerates `plugin/code.js`                                                                                            |
+| Command                           | What it does                                                                                                            |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `pnpm figma:out`                  | Regenerates the tokens and copies the sync data for the plugin. `--print` prints it                                     |
+| `pnpm figma:in [file]`            | Saves an export, pulls Figma's value changes into `tokens/source`, regenerates and compares                             |
+| `pnpm figma:check`                | Compares the snapshot with the variables code generates. Lists every difference                                         |
+| `pnpm figma:sync`                 | Prints a script for the file that lists what differs from code and changes nothing                                      |
+| `pnpm figma:sync --apply`         | Prints the script that makes the file match code, the same change as **Sync from code**                                 |
+| `pnpm figma:pull`                 | Writes values changed in Figma back into `tokens/source`, and lists what it cannot write. `--dry` lists without writing |
+| `pnpm figma:script`               | Prints the export script                                                                                                |
+| `pnpm figma:save <file>`          | Checks an export's checksum and saves it as the snapshot. A relative path is read from where the command is typed       |
+| `pnpm figma:save --clipboard`     | The same, reading the clipboard (macOS)                                                                                 |
+| `pnpm figma:fresh`                | Asks Figma when the file was last saved and fails if that is later than the export (needs `FIGMA_TOKEN`)                |
+| `pnpm figma:plugin`               | Regenerates `plugin/code.js`                                                                                            |
+| `pnpm figma:swatches`             | Reads the Parity page's swatches through the REST API and compares them with code (needs `FIGMA_TOKEN`)                 |
+| `pnpm -s figma:swatches --script` | Prints the script that builds the Parity page, for `use_figma`                                                          |
 
 `figma:in` runs `figma:save`, `figma:pull` and `tokens:write` in turn; `figma:out` runs `tokens:write`. The scripts `figma:script` and `figma:sync` print run inside the file through the Figma MCP's `use_figma`, for working without the plugin.
 
 ## Every situation
+
+### A colour variable is added or removed
+
+Do what "A value changes in code" says, then run the output of `pnpm -s figma:swatches --script` in the file through `use_figma`. It rebuilds the Parity page with a swatch for the new set. The swatch check fails until it is run.
 
 ### A value changes in code
 
@@ -103,21 +109,31 @@ The `Figma parity` workflow runs on every push and pull request, and by hand fro
 | Generated tokens     | The committed generated files against a fresh run of the generator                                                                                                                                                                |
 | Variables and styles | The snapshot against the generated variables: each variable's collection, type, code syntax, scopes and value in every mode, and each effect style layer by layer. Numbers match within 0.002, because Figma stores 32-bit floats |
 | Freshness            | The file's `lastModified`, read through Figma's REST API, against the snapshot's export time                                                                                                                                      |
+| Swatches             | What every swatch on the Parity page shows, read through the REST API, against code's colour in that mode                                                                                                                         |
 | Plugin               | The committed `plugin/code.js` against a fresh `figma:plugin`                                                                                                                                                                     |
 
 Freshness allows 10 minutes between the export and `lastModified`. Figma stamps the file when its server saves, about a minute and a half after an edit, so an export taken straight after an edit would otherwise look older than the file.
 
+## The Parity page
+
+A page in the Figma file with a frame per colour mode. Each frame is set to its mode and holds one swatch per colour variable, bound to it. The swatch check reads what each swatch shows through Figma's REST API, which works on any plan, and compares it with code.
+
+The export is made by a script inside Figma, so a fault in that script would hide a difference from the values check. The swatch check reads the file another way, so it catches that. It covers colours only; sizes, durations and easings have no swatch.
+
+The page is generated: never edit it by hand. A swatch that is missing, extra or unfilled fails the check with an instruction to rebuild the page.
+
 ## When a check fails
 
-| Message                                                   | What happened                                                           | Fix                                                                                              |
-| --------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `The Figma file and tokens/source disagree in N place(s)` | A value differs; the lines name each one, with Figma's value and code's | If code is right: `figma:out`, Sync from code, `figma:in`. If Figma is right: Export, `figma:in` |
-| `Figma has changes that are not in the snapshot`          | The file was saved after the last export                                | Export and `figma:in`                                                                            |
-| `The snapshot has no export time`                         | The snapshot predates timed exports                                     | Export and `figma:in`                                                                            |
-| `FIGMA_TOKEN expired or invalid`                          | Figma refused the token                                                 | Make a new token (below) and update the secret                                                   |
-| `FIGMA_TOKEN is not set`                                  | The secret is missing on a branch of this repository                    | Add the secret (below)                                                                           |
-| `The token rules refused the change`                      | `figma:out` or `figma:in` regenerated and a value broke a rule          | Fix `tokens/source` and run it again                                                             |
-| `The export's checksum does not match`                    | The export changed between Figma and the repository                     | Export again; never edit an export                                                               |
+| Message                                                   | What happened                                                           | Fix                                                                                                                                                  |
+| --------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `The Figma file and tokens/source disagree in N place(s)` | A value differs; the lines name each one, with Figma's value and code's | If code is right: `figma:out`, Sync from code, `figma:in`. If Figma is right: Export, `figma:in`                                                     |
+| `Figma has changes that are not in the snapshot`          | The file was saved after the last export                                | Export and `figma:in`                                                                                                                                |
+| `The snapshot has no export time`                         | The snapshot predates timed exports                                     | Export and `figma:in`                                                                                                                                |
+| `FIGMA_TOKEN expired or invalid`                          | Figma refused the token                                                 | Make a new token (below) and update the secret                                                                                                       |
+| `The Parity page and code disagree`                       | A swatch shows a colour other than code's, or the page is out of date   | If a colour differs: Sync from code, or export and `figma:in`. If the page is out of date: run `pnpm -s figma:swatches --script` through `use_figma` |
+| `FIGMA_TOKEN is not set`                                  | The secret is missing on a branch of this repository                    | Add the secret (below)                                                                                                                               |
+| `The token rules refused the change`                      | `figma:out` or `figma:in` regenerated and a value broke a rule          | Fix `tokens/source` and run it again                                                                                                                 |
+| `The export's checksum does not match`                    | The export changed between Figma and the repository                     | Export again; never edit an export                                                                                                                   |
 
 ## Access
 
@@ -133,7 +149,7 @@ and paste the token when asked. Tokens expire; when one does, the check fails wi
 
 ## Limits
 
-- **Variable values come through the export.** Figma's variables API needs an Enterprise plan, so CI cannot read them directly; the file's `lastModified` is readable on any plan, which is how freshness works.
+- **Variable values come through the export.** Figma's variables API needs an Enterprise plan, so CI cannot read them directly; the file's `lastModified` and its layers are readable on any plan, which is how freshness and the swatch check work. Only colours have swatches.
 - **Motion is checked as variables only.** Figma cannot run motion; the roles are signed off in code.
 - **Publishing the library is manual.** After a variable change, the library is republished in Figma so other files see it.
 - **Figma changes made while exploring** belong in a Figma branch or a copy of the file; freshness watches only the main file.

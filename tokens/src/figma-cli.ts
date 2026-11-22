@@ -11,6 +11,8 @@
  * pnpm figma:sync [--apply]   prints the script that makes Figma match code; a dry run unless --apply
  * pnpm figma:pull [--dry]      writes values changed in Figma back into tokens/source
  * pnpm figma:plugin           writes the dev plugin's code from the export script
+ * pnpm figma:swatches         the Parity page's swatches, read through the REST API, against code (needs FIGMA_TOKEN)
+ * pnpm figma:swatches --script prints the script that builds the Parity page, for use_figma
  */
 import { execFileSync } from 'node:child_process'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -18,6 +20,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { format, resolveConfig } from 'prettier'
 import { applyToText, pull, type SourceFile } from './pull.ts'
+import { SWATCH_PAGE, swatchProblems, swatchScript, type RestNode } from './swatches.ts'
 import {
   FIGMA_EXPORT_SCRIPT,
   FIGMA_FILE_KEY,
@@ -108,6 +111,39 @@ function runWrite(): void {
     )
     process.exit(1)
   }
+}
+
+/**
+ * Reads Figma's REST API with FIGMA_TOKEN. Returns null when there is no token
+ * on a fork pull request, which gets no secrets; exits on every other failure.
+ */
+async function figmaApi(path: string): Promise<unknown> {
+  const token = process.env.FIGMA_TOKEN
+  if (!token) {
+    // Fork pull requests get no secrets; everywhere else the workflow requires it.
+    if (process.env.FIGMA_PARITY_REQUIRED === '1') {
+      console.error('FIGMA_TOKEN is not set, so Figma cannot be read. Add it as a repo secret.')
+      process.exit(1)
+    }
+    console.log(
+      'Skipped: no FIGMA_TOKEN here (a fork pull request). It runs on main and our branches.',
+    )
+    return null
+  }
+  const response = await fetch(`https://api.figma.com/v1/${path}`, {
+    headers: { 'X-Figma-Token': token },
+  })
+  if (response.status === 401 || response.status === 403) {
+    console.error(
+      'FIGMA_TOKEN expired or invalid: Figma refused it. Make a new read-only token and update the secret.',
+    )
+    process.exit(1)
+  }
+  if (!response.ok) {
+    console.error(`Figma answered ${response.status}; the check could not run.`)
+    process.exit(1)
+  }
+  return response.json()
 }
 
 async function main() {
@@ -203,32 +239,10 @@ async function main() {
       )
       return
     }
-    const token = process.env.FIGMA_TOKEN
-    if (!token) {
-      // Fork pull requests get no secrets; everywhere else the workflow requires it.
-      if (process.env.FIGMA_PARITY_REQUIRED === '1') {
-        console.error('FIGMA_TOKEN is not set, so Figma cannot be read. Add it as a repo secret.')
-        process.exit(1)
-      }
-      console.log(
-        'Skipped: no FIGMA_TOKEN here (a fork pull request). It runs on main and our branches.',
-      )
-      return
-    }
-    const response = await fetch(`https://api.figma.com/v1/files/${FIGMA_FILE_KEY}?depth=1`, {
-      headers: { 'X-Figma-Token': token },
-    })
-    if (response.status === 401 || response.status === 403) {
-      console.error(
-        'FIGMA_TOKEN expired or invalid: Figma refused it. Make a new read-only token and update the secret.',
-      )
-      process.exit(1)
-    }
-    if (!response.ok) {
-      console.error(`Figma answered ${response.status}; the freshness check could not run.`)
-      process.exit(1)
-    }
-    const file = (await response.json()) as { lastModified: string; version: string }
+    const file = (await figmaApi(`files/${FIGMA_FILE_KEY}?depth=1`)) as {
+      lastModified: string
+    } | null
+    if (!file) return
     const problem = freshness(file.lastModified, snapshot.exportedAt)
     if (problem) {
       console.error(problem)
@@ -237,9 +251,36 @@ async function main() {
     console.log(
       `Figma has nothing newer than the snapshot: saved ${file.lastModified}, exported ${snapshot.exportedAt}.`,
     )
+  } else if (mode === 'swatches' && arg === '--script') {
+    console.log(swatchScript(expected()))
+  } else if (mode === 'swatches') {
+    const file = (await figmaApi(`files/${FIGMA_FILE_KEY}?depth=1`)) as {
+      document: { children: { id: string; name: string }[] }
+    } | null
+    if (!file) return
+    const id = file.document.children.find(page => page.name === SWATCH_PAGE)?.id
+    const nodes = id
+      ? ((await figmaApi(`files/${FIGMA_FILE_KEY}/nodes?ids=${encodeURIComponent(id)}`)) as {
+          nodes: Record<string, { document: RestNode }>
+        })
+      : null
+    const want = expected()
+    const problems = swatchProblems(want, id ? nodes?.nodes[id]?.document : undefined)
+    if (problems.length > 0) {
+      console.error(`The ${SWATCH_PAGE} page and code disagree in ${problems.length} place(s):`)
+      for (const problem of problems) console.error(`  ${problem}`)
+      console.error(
+        'A colour differs: the file changed without an export, or the export missed it. pnpm figma:out and Sync from code puts code back; export and pnpm figma:in brings Figma in.',
+      )
+      process.exit(1)
+    }
+    const count = Object.values(want.variables).filter(v => v.type === 'COLOR').length
+    console.log(
+      `Every swatch on the ${SWATCH_PAGE} page shows code's colour: ${count} colours in each mode.`,
+    )
   } else {
     console.error(
-      'Usage: node src/figma-cli.ts out [--print] | in [file] | check | fresh | script | save <file> | save --clipboard | sync [--apply] | pull [--dry] | plugin',
+      'Usage: node src/figma-cli.ts out [--print] | in [file] | check | fresh | script | save <file> | save --clipboard | sync [--apply] | pull [--dry] | plugin | swatches [--script]',
     )
     process.exit(2)
   }
