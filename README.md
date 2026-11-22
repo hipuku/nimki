@@ -17,13 +17,14 @@ pnpm run check
 
 [CONTRIBUTING.md](./CONTRIBUTING.md) covers what is wanted, what is out of scope and how a change lands.
 
-| Path              | Contents                                                       |
-| ----------------- | -------------------------------------------------------------- |
-| `packages/engine` | `@hipuku/nimki` on npm: motion maths and hooks                 |
-| `apps/docs`       | The docs site, which also serves the shadcn registry at `/r/`  |
-| `apps/storybook`  | The workbench: every example as a story, run as a browser test |
-| `tokens`          | The DTCG token source and the generator for every output       |
-| `registry/styles` | Generated token CSS that components read                       |
+| Path              | Contents                                                                          |
+| ----------------- | --------------------------------------------------------------------------------- |
+| `packages/engine` | `@hipuku/nimki` on npm: motion maths and hooks                                    |
+| `apps/docs`       | The docs site, which also serves the shadcn registry at `/r/`                     |
+| `apps/storybook`  | The workbench: every example as a story, run as a browser test                    |
+| `tokens`          | The DTCG token source and the generator for every output                          |
+| `registry/styles` | Generated token CSS that components read                                          |
+| `figma`           | The Figma file's snapshot and export plugin ([how sync works](./figma/README.md)) |
 
 ## Release
 
