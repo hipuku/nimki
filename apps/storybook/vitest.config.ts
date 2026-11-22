@@ -15,5 +15,14 @@ export default defineConfig({
       provider: playwright(),
       instances: [{ browser: 'chromium' }],
     },
+    // V8 coverage read from Chromium, over the motion-timing helpers the stories'
+    // play functions call. The floors are where they stand today; the paths not
+    // yet taken (a spring role, a missing transition) are exercised once a
+    // component uses them, and the floors rise with it.
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.ts'],
+      thresholds: { lines: 90, functions: 100, branches: 70, statements: 85 },
+    },
   },
 })

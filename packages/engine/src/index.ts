@@ -1,6 +1,7 @@
 export { capDuration } from './duration.js'
 export {
   SPRING_LINEAR_POINTS,
+  SPRING_POINTS_PER_CYCLE,
   SPRING_REST_DELTA,
   springPosition,
   springSettleTime,

@@ -1,7 +1,8 @@
 /**
  * Whether a surface is mounted and which way it is animating, so an exit can
- * finish before the surface leaves the DOM. A plain reducer: the React hook
- * that drives it from props and animationend events is thin by design.
+ * finish before the surface leaves the DOM. A plain reducer with no React in
+ * it, so the hook that drives it from props and animationend events (added
+ * with the first component that needs it) stays thin.
  *
  * Every transition can be interrupted (PRD FR-S22, NFR-10). Opening during a
  * close goes straight to entering, and the CSS transition runs back from

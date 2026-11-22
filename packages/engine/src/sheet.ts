@@ -35,11 +35,18 @@ export class VelocityTracker {
     while (this.samples.length > 2 && (this.samples[0] as Sample).t < cutoff) this.samples.shift()
   }
 
-  /** px per ms over the window; 0 with fewer than two samples or no time between them. */
-  velocity(): number {
+  /**
+   * px per ms over the window, at `nowMs` (the release time, on the same clock
+   * as add()). A pointer that holds still fires no move events, so the last
+   * samples can be from a flick that already ended: when the newest sample is
+   * older than VELOCITY_WINDOW_MS, the finger has stopped and velocity is 0.
+   * Also 0 with fewer than two samples or no time between them.
+   */
+  velocity(nowMs: number): number {
     const first = this.samples[0]
     const last = this.samples[this.samples.length - 1]
     if (!first || !last || last.t <= first.t) return 0
+    if (nowMs - last.t > VELOCITY_WINDOW_MS) return 0
     return (last.y - first.y) / (last.t - first.t)
   }
 

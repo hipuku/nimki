@@ -13,7 +13,7 @@ describe('VelocityTracker', () => {
     const tracker = new VelocityTracker()
     tracker.add(0, 0)
     tracker.add(50, 25)
-    expect(tracker.velocity()).toBe(0.5)
+    expect(tracker.velocity(50)).toBe(0.5)
   })
 
   it('uses only the samples inside the window, so an early drag does not count', () => {
@@ -22,23 +22,33 @@ describe('VelocityTracker', () => {
     tracker.add(10, 300) // a fast start, well before release
     tracker.add(500, 300)
     tracker.add(500 + VELOCITY_WINDOW_MS, 310)
-    expect(tracker.velocity()).toBeCloseTo(0.1, 5)
+    expect(tracker.velocity(500 + VELOCITY_WINDOW_MS)).toBeCloseTo(0.1, 5)
   })
 
   it('keeps two samples even after a pause, so a flick after holding still is measured', () => {
     const tracker = new VelocityTracker()
     tracker.add(0, 0)
     tracker.add(1000, 40)
-    expect(tracker.velocity()).toBeCloseTo(0.04, 5)
+    expect(tracker.velocity(1000)).toBeCloseTo(0.04, 5)
   })
 
   it('reports 0 with fewer than two samples, or two at the same moment', () => {
     const tracker = new VelocityTracker()
-    expect(tracker.velocity()).toBe(0)
+    expect(tracker.velocity(5)).toBe(0)
     tracker.add(5, 10)
-    expect(tracker.velocity()).toBe(0)
+    expect(tracker.velocity(5)).toBe(0)
     tracker.add(5, 20)
-    expect(tracker.velocity()).toBe(0)
+    expect(tracker.velocity(5)).toBe(0)
+  })
+
+  it('reports 0 when the finger stopped before release, so holding still never dismisses', () => {
+    const tracker = new VelocityTracker()
+    tracker.add(0, 0)
+    tracker.add(16, 20)
+    tracker.add(32, 40) // a fast flick down, then no move events while the finger holds still
+    expect(tracker.velocity(32 + VELOCITY_WINDOW_MS)).toBeCloseTo(1.25, 5)
+    expect(tracker.velocity(32 + VELOCITY_WINDOW_MS + 1)).toBe(0)
+    expect(releaseTarget(40, 400, tracker.velocity(2032))).toBe('open')
   })
 
   it('forgets everything on reset', () => {
@@ -46,7 +56,7 @@ describe('VelocityTracker', () => {
     tracker.add(0, 0)
     tracker.add(10, 10)
     tracker.reset()
-    expect(tracker.velocity()).toBe(0)
+    expect(tracker.velocity(5)).toBe(0)
   })
 })
 
