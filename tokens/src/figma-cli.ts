@@ -13,6 +13,7 @@ import { execFileSync } from 'node:child_process'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { format, resolveConfig } from 'prettier'
 import {
   FIGMA_EXPORT_SCRIPT,
   FIGMA_FILE_KEY,
@@ -55,7 +56,12 @@ async function main() {
       process.exit(1)
     }
     mkdirSync(dirname(snapshotPath), { recursive: true })
-    writeFileSync(snapshotPath, `${JSON.stringify(snapshot, null, 2)}\n`)
+    // Formatted as the repository's Prettier config says, so the Format check passes.
+    const options = (await resolveConfig(snapshotPath)) ?? {}
+    writeFileSync(
+      snapshotPath,
+      await format(JSON.stringify(snapshot), { ...options, filepath: snapshotPath }),
+    )
     console.log(`wrote figma/snapshot/nimki.json, exported ${snapshot.exportedAt}`)
   } else if (mode === 'sync') {
     console.log(figmaSyncScript(expected(), arg !== '--apply'))
