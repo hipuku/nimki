@@ -1,0 +1,101 @@
+{
+  "$description": "Tailwind's fixed scales that components use, mirrored as tokens so Figma can bind to them. nimki does not change Tailwind's spacing or text sizes, so code emits no CSS for these; the generator writes them as Figma variables and text styles, and the rules check each one against Tailwind's defaults.",
+  "spacing": {
+    "$type": "dimension",
+    "$description": "Tailwind's spacing scale: each step is --spacing (4px) times its name, as in p-2 or gap-1.5. Figma binds a component's fixed gaps and padding to these; padding and gaps that change with density use the density tokens.",
+    "0-5": { "$value": { "value": 2, "unit": "px" } },
+    "1": { "$value": { "value": 4, "unit": "px" } },
+    "1-5": { "$value": { "value": 6, "unit": "px" } },
+    "2": { "$value": { "value": 8, "unit": "px" } },
+    "2-5": { "$value": { "value": 10, "unit": "px" } },
+    "3": { "$value": { "value": 12, "unit": "px" } },
+    "3-5": { "$value": { "value": 14, "unit": "px" } },
+    "4": { "$value": { "value": 16, "unit": "px" } },
+    "5": { "$value": { "value": 20, "unit": "px" } },
+    "6": { "$value": { "value": 24, "unit": "px" } },
+    "8": { "$value": { "value": 32, "unit": "px" } },
+    "10": { "$value": { "value": 40, "unit": "px" } },
+    "12": { "$value": { "value": 48, "unit": "px" } },
+    "16": { "$value": { "value": 64, "unit": "px" } }
+  },
+  "text-style": {
+    "$type": "typography",
+    "$description": "Figma's text styles, one per combination of Tailwind classes that components use. Line height is a multiple of the size, as DTCG writes it. The tailwind extension names the classes; the rules check the size, line height, weight and family match them.",
+    "text": {
+      "xs": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontWeight": 400,
+          "fontSize": { "value": 12, "unit": "px" },
+          "lineHeight": 1.333333,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        },
+        "$extensions": { "dev.hipuku.nimki": { "tailwind": "text-xs" } }
+      },
+      "sm": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontWeight": 400,
+          "fontSize": { "value": 14, "unit": "px" },
+          "lineHeight": 1.428571,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        },
+        "$extensions": { "dev.hipuku.nimki": { "tailwind": "text-sm" } }
+      },
+      "sm-medium": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontWeight": 500,
+          "fontSize": { "value": 14, "unit": "px" },
+          "lineHeight": 1.428571,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        },
+        "$extensions": { "dev.hipuku.nimki": { "tailwind": "text-sm font-medium" } }
+      },
+      "base": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontWeight": 400,
+          "fontSize": { "value": 16, "unit": "px" },
+          "lineHeight": 1.5,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        },
+        "$extensions": { "dev.hipuku.nimki": { "tailwind": "text-base" } }
+      },
+      "lg": {
+        "$value": {
+          "fontFamily": "{font.sans}",
+          "fontWeight": 600,
+          "fontSize": { "value": 18, "unit": "px" },
+          "lineHeight": 1.555556,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        },
+        "$extensions": { "dev.hipuku.nimki": { "tailwind": "text-lg font-semibold" } }
+      }
+    },
+    "mono": {
+      "sm": {
+        "$value": {
+          "fontFamily": "{font.mono}",
+          "fontWeight": 400,
+          "fontSize": { "value": 14, "unit": "px" },
+          "lineHeight": 1.428571,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        },
+        "$extensions": { "dev.hipuku.nimki": { "tailwind": "font-mono text-sm" } }
+      }
+    },
+    "display": {
+      "lg": {
+        "$value": {
+          "fontFamily": "{font.display}",
+          "fontWeight": 400,
+          "fontSize": { "value": 36, "unit": "px" },
+          "lineHeight": 1.111111,
+          "letterSpacing": { "value": 0, "unit": "px" }
+        },
+        "$extensions": { "dev.hipuku.nimki": { "tailwind": "font-display text-4xl" } }
+      }
+    }
+  }
+}

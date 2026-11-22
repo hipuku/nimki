@@ -101,6 +101,68 @@ describe('parseDocument', () => {
     })
   })
 
+  it('reads a typography token, its family an alias or names', () => {
+    const font = { value: 14, unit: 'px' }
+    const [aliased, named] = parse({
+      t: {
+        $type: 'typography',
+        a: {
+          $value: {
+            fontFamily: '{font.sans}',
+            fontWeight: 500,
+            fontSize: font,
+            lineHeight: 1.5,
+            letterSpacing: { value: 0, unit: 'px' },
+          },
+        },
+        b: {
+          $value: {
+            fontFamily: ['Inter', 'sans-serif'],
+            fontWeight: 400,
+            fontSize: { value: 1, unit: 'rem' },
+            lineHeight: 1.25,
+            letterSpacing: { value: 0.5, unit: 'px' },
+          },
+        },
+      },
+    })
+    expect(aliased?.value).toEqual({
+      literal: {
+        fontFamily: { alias: 'font.sans' },
+        fontWeight: 500,
+        fontSize: 14,
+        lineHeight: 1.5,
+        letterSpacing: 0,
+      },
+    })
+    expect(named?.value).toEqual({
+      literal: {
+        fontFamily: ['Inter', 'sans-serif'],
+        fontWeight: 400,
+        fontSize: 16,
+        lineHeight: 1.25,
+        letterSpacing: 0.5,
+      },
+    })
+  })
+
+  it.each([
+    ['a typography value that is not an object', 3, /needs an object/],
+    ['a fractional weight', { fontWeight: 450.5 }, /fontWeight must be a whole number/],
+    ['a weight over 1000', { fontWeight: 1200 }, /fontWeight must be a whole number/],
+    ['a line height of zero', { lineHeight: 0 }, /lineHeight must be a positive number/],
+  ] as [string, unknown, RegExp][])('refuses %s', (_label, change, message) => {
+    const base = {
+      fontFamily: 'Inter',
+      fontWeight: 400,
+      fontSize: { value: 14, unit: 'px' },
+      lineHeight: 1.5,
+      letterSpacing: { value: 0, unit: 'px' },
+    }
+    const value = typeof change === 'object' ? { ...base, ...(change as object) } : change
+    expect(() => parse({ t: { $type: 'typography', $value: value } })).toThrow(message)
+  })
+
   it('ignores another vendor extension', () => {
     const [token] = parse({
       a: { $type: 'number', $value: 1, $extensions: { 'com.figma': { hidden: true } } },

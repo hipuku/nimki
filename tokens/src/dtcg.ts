@@ -12,7 +12,14 @@
 export const EXTENSION = 'dev.hipuku.nimki'
 
 export type TokenType =
-  'duration' | 'cubicBezier' | 'number' | 'dimension' | 'color' | 'fontFamily' | 'shadow'
+  | 'duration'
+  | 'cubicBezier'
+  | 'number'
+  | 'dimension'
+  | 'color'
+  | 'fontFamily'
+  | 'shadow'
+  | 'typography'
 const TYPES: readonly TokenType[] = [
   'duration',
   'cubicBezier',
@@ -21,6 +28,7 @@ const TYPES: readonly TokenType[] = [
   'color',
   'fontFamily',
   'shadow',
+  'typography',
 ]
 
 export type CubicBezier = [number, number, number, number]
@@ -37,7 +45,20 @@ export interface Oklch {
  * A literal value after units are normalised: durations in ms, dimensions in
  * px, colours as OKLCH, font families as a list of names.
  */
-export type Literal = number | CubicBezier | Oklch | string[] | ShadowLayer[]
+export type Literal = number | CubicBezier | Oklch | string[] | ShadowLayer[] | Typography
+
+/**
+ * A text style, DTCG's typography composite: size and letter spacing in px,
+ * line height as a multiple of the size. The family is an alias of a
+ * fontFamily token or the names themselves.
+ */
+export interface Typography {
+  fontFamily: { alias: string } | string[]
+  fontWeight: number
+  fontSize: number
+  lineHeight: number
+  letterSpacing: number
+}
 
 /** One layer of a shadow. Its colour is a value or an alias of a color token. */
 export interface ShadowLayer {
@@ -133,6 +154,35 @@ function readLiteral(raw: unknown, type: TokenType, where: string): Literal {
           inset: layer.inset === true,
         }
       })
+    }
+    case 'typography': {
+      if (!isObject(raw)) throw new TokenError(`${where}: a typography token needs an object`)
+      const fontFamily = readEntry(raw.fontFamily, 'fontFamily', `${where} fontFamily`)
+      const { fontWeight, lineHeight } = raw
+      if (
+        typeof fontWeight !== 'number' ||
+        !Number.isInteger(fontWeight) ||
+        fontWeight < 1 ||
+        fontWeight > 1000
+      ) {
+        throw new TokenError(`${where}: fontWeight must be a whole number from 1 to 1000`)
+      }
+      if (typeof lineHeight !== 'number' || !Number.isFinite(lineHeight) || lineHeight <= 0) {
+        throw new TokenError(
+          `${where}: lineHeight must be a positive number, a multiple of the size`,
+        )
+      }
+      return {
+        fontFamily: 'alias' in fontFamily ? fontFamily : (fontFamily.literal as string[]),
+        fontWeight,
+        fontSize: readLiteral(raw.fontSize, 'dimension', `${where} fontSize`) as number,
+        lineHeight,
+        letterSpacing: readLiteral(
+          raw.letterSpacing,
+          'dimension',
+          `${where} letterSpacing`,
+        ) as number,
+      }
     }
     case 'fontFamily': {
       const names = typeof raw === 'string' ? [raw] : raw

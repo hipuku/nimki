@@ -10,6 +10,7 @@ import {
   type MotionMode,
   type RoleValue,
 } from './model.ts'
+import { FONT_STYLE, RADIUS_STEPS, type Layout } from './layout.ts'
 import { COLOUR_MODES, fontCss, type Theme } from './theme.ts'
 
 const NOTICE =
@@ -242,7 +243,12 @@ const seconds = (ms: number) => ms / 1000
  * and an EASING variable holding its bounce, which is how Figma and Motion
  * both define a spring.
  */
-export function figmaVariables(motion: Motion, density: Density, theme: Theme): string {
+export function figmaVariables(
+  motion: Motion,
+  density: Density,
+  theme: Theme,
+  layout: Layout,
+): string {
   const collections: object[] = []
   const modes: object[] = []
   const variables: FigmaVariable[] = []
@@ -265,7 +271,10 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
     collectionId: string,
     name: string,
     type: FigmaVariable['resolvedType'],
-    /** The custom property it matches, or null where the CSS holds a different value. */
+    /**
+     * The custom property it matches (written as var()), another CSS expression
+     * as it is, or null where the CSS holds a different value.
+     */
     web: string | null,
     scopes: string[],
     description?: string,
@@ -278,7 +287,7 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
       variableCollectionId: collectionId,
       resolvedType: type,
       scopes,
-      ...(web ? { codeSyntax: { WEB: `var(${web})` } } : {}),
+      ...(web ? { codeSyntax: { WEB: web.startsWith('--') ? `var(${web})` : web } } : {}),
       ...(description ? { description } : {}),
     })
     return id
@@ -326,6 +335,13 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
   }
   for (const s of motion.primitives.staggers) {
     set(variable(primitives, slash(s.name), 'TIMING', cssVar(s.name), []), p, seconds(s.ms))
+  }
+  // Tailwind's spacing steps, for a component's fixed gaps and padding, named
+  // spacing/1-5 because Figma refuses a dot. The code syntax is what p-1.5
+  // compiles to.
+  for (const s of layout.spacing) {
+    const web = `calc(var(--spacing) * ${s.step})`
+    set(variable(primitives, `spacing/${s.key}`, 'FLOAT', web, ['GAP']), p, s.px)
   }
 
   const motionId = collection('motion', 'nimki/motion', [...MOTION_MODES])
@@ -414,6 +430,11 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
   const themeId = collection('theme', 'nimki/theme', ['linear'])
   const t = 'mode:theme:linear'
   set(variable(themeId, 'radius', 'FLOAT', '--radius', ['CORNER_RADIUS']), t, theme.radiusPx)
+  // Figma has no calc(), so the steps hold their resolved values; the
+  // generator recomputes them whenever radius changes.
+  for (const r of layout.radii) {
+    set(variable(themeId, r.name, 'FLOAT', `--${r.name}`, ['CORNER_RADIUS']), t, r.px)
+  }
   for (const font of theme.fonts) {
     // A Figma font variable names one family; the fallbacks exist only in CSS.
     const id = variable(themeId, font.token.split('.').join('/'), 'STRING', font.cssVar, [
@@ -443,6 +464,18 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
     })),
   }))
 
+  // Text styles, with the family bound to the font variable so a project's
+  // font follows into Figma.
+  const textStyles = layout.textStyles.map(style => ({
+    name: style.name,
+    fontFamilyVariableId: `variable:${style.familyToken.split('.').join('/')}`,
+    fontFamily: style.family,
+    fontStyle: FONT_STYLE[style.weight] as string,
+    fontSize: style.sizePx,
+    lineHeight: style.lineHeightPx,
+    letterSpacing: style.letterSpacingPx,
+  }))
+
   return JSON.stringify(
     {
       variableCollections: collections,
@@ -450,6 +483,7 @@ export function figmaVariables(motion: Motion, density: Density, theme: Theme): 
       variables,
       variableModeValues: values,
       effectStyles,
+      textStyles,
     },
     null,
     2,
@@ -545,10 +579,11 @@ export function tailwindCss(theme: Theme): string {
       ...theme.colours
         .filter(colour => !colour.token.startsWith('ramp.'))
         .map(colour => `--color-${colour.cssVar.slice(2)}: var(${colour.cssVar});`),
-      '--radius-sm: calc(var(--radius) - 4px);',
-      '--radius-md: calc(var(--radius) - 2px);',
-      '--radius-lg: var(--radius);',
-      '--radius-xl: calc(var(--radius) + 4px);',
+      ...RADIUS_STEPS.map(([step, offset]) =>
+        offset === 0
+          ? `--radius-${step}: var(--radius);`
+          : `--radius-${step}: calc(var(--radius) ${offset < 0 ? '-' : '+'} ${Math.abs(offset)}px);`,
+      ),
     ]),
     '',
   ].join('\n')

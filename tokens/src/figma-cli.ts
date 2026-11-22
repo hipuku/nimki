@@ -11,8 +11,9 @@
  * pnpm figma:sync [--apply]   prints the script that makes Figma match code; a dry run unless --apply
  * pnpm figma:pull [--dry]      writes values changed in Figma back into tokens/source
  * pnpm figma:plugin           writes the dev plugin's code from the export script
- * pnpm figma:swatches         the Parity page's swatches, read through the REST API, against code (needs FIGMA_TOKEN)
- * pnpm figma:swatches --script prints the script that builds the Parity page, for use_figma
+ * pnpm figma:live             the Parity page, read through the REST API, against code (needs FIGMA_TOKEN)
+ * pnpm figma:live --script    prints the script that builds the Parity page, for use_figma
+ * pnpm figma:audit            every component's colours, corners, gaps, padding, text and effects come from tokens (needs FIGMA_TOKEN)
  */
 import { execFileSync } from 'node:child_process'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -20,7 +21,8 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { format, resolveConfig } from 'prettier'
 import { applyToText, pull, type SourceFile } from './pull.ts'
-import { SWATCH_PAGE, swatchProblems, swatchScript, type RestNode } from './swatches.ts'
+import { auditPage, holdsComponents, type AuditNode } from './audit.ts'
+import { LIVE_PAGE, liveCount, liveProblems, liveScript, type RestNode } from './live.ts'
 import {
   FIGMA_EXPORT_SCRIPT,
   FIGMA_FILE_KEY,
@@ -45,7 +47,7 @@ const [mode, arg] = process.argv.slice(2)
 const readJson = (path: string): unknown => JSON.parse(readFileSync(path, 'utf8')) as unknown
 const expected = () => fromGenerated(readJson(generatedPath) as Parameters<typeof fromGenerated>[0])
 
-const files: SourceFile[] = ['colour', 'motion', 'density']
+const files: SourceFile[] = ['colour', 'motion', 'density', 'layout']
 const sourcePath = (file: SourceFile) => join(root, `tokens/source/${file}.tokens.json`)
 
 /** Reads an export from the clipboard or a file (relative to where the command was typed). */
@@ -146,6 +148,25 @@ async function figmaApi(path: string): Promise<unknown> {
   return response.json()
 }
 
+/** The file's pages, or null on a fork pull request. */
+async function figmaPages(): Promise<{ id: string; name: string }[] | null> {
+  const file = (await figmaApi(`files/${FIGMA_FILE_KEY}?depth=1`)) as {
+    document: { children: { id: string; name: string }[] }
+  } | null
+  return file ? file.document.children : null
+}
+
+/** Whole node trees by id, or null on a fork pull request. */
+async function figmaNodes(ids: string[]): Promise<Record<string, unknown> | null> {
+  const response = (await figmaApi(
+    `files/${FIGMA_FILE_KEY}/nodes?ids=${encodeURIComponent(ids.join(','))}`,
+  )) as { nodes: Record<string, { document: unknown } | null> } | null
+  if (!response) return null
+  return Object.fromEntries(
+    Object.entries(response.nodes).map(([id, node]) => [id, node?.document]),
+  )
+}
+
 async function main() {
   if (mode === 'script') {
     console.log(FIGMA_EXPORT_SCRIPT)
@@ -180,7 +201,7 @@ async function main() {
     const problems = compare(want, normaliseSnapshot(readJson(snapshotPath) as Snapshot))
     if (problems.length === 0 && manual.length === 0) {
       console.log(
-        `In sync: ${Object.keys(want.variables).length} variables, ${Object.keys(want.effectStyles).length} effect styles. Commit tokens/source, the generated files and figma/snapshot/nimki.json.`,
+        `In sync: ${Object.keys(want.variables).length} variables, ${Object.keys(want.effectStyles).length} effect styles, ${Object.keys(want.textStyles).length} text styles. Commit tokens/source, the generated files and figma/snapshot/nimki.json.`,
       )
       return
     }
@@ -228,7 +249,7 @@ async function main() {
       process.exit(1)
     }
     console.log(
-      `Figma matches the source: ${Object.keys(want.variables).length} variables, ${Object.keys(want.effectStyles).length} effect styles.`,
+      `Figma matches the source: ${Object.keys(want.variables).length} variables, ${Object.keys(want.effectStyles).length} effect styles, ${Object.keys(want.textStyles).length} text styles.`,
     )
   } else if (mode === 'fresh') {
     const snapshot = readJson(snapshotPath) as Snapshot
@@ -251,36 +272,47 @@ async function main() {
     console.log(
       `Figma has nothing newer than the snapshot: saved ${file.lastModified}, exported ${snapshot.exportedAt}.`,
     )
-  } else if (mode === 'swatches' && arg === '--script') {
-    console.log(swatchScript(expected()))
-  } else if (mode === 'swatches') {
-    const file = (await figmaApi(`files/${FIGMA_FILE_KEY}?depth=1`)) as {
-      document: { children: { id: string; name: string }[] }
-    } | null
-    if (!file) return
-    const id = file.document.children.find(page => page.name === SWATCH_PAGE)?.id
-    const nodes = id
-      ? ((await figmaApi(`files/${FIGMA_FILE_KEY}/nodes?ids=${encodeURIComponent(id)}`)) as {
-          nodes: Record<string, { document: RestNode }>
-        })
-      : null
+  } else if (mode === 'live' && arg === '--script') {
+    console.log(liveScript(expected()))
+  } else if (mode === 'live') {
+    const pages = await figmaPages()
+    if (!pages) return
+    const id = pages.find(page => page.name === LIVE_PAGE)?.id
+    const page = id ? (await figmaNodes([id]))?.[id] : undefined
     const want = expected()
-    const problems = swatchProblems(want, id ? nodes?.nodes[id]?.document : undefined)
+    const problems = liveProblems(want, page as RestNode | undefined)
     if (problems.length > 0) {
-      console.error(`The ${SWATCH_PAGE} page and code disagree in ${problems.length} place(s):`)
+      console.error(`The ${LIVE_PAGE} page and code disagree in ${problems.length} place(s):`)
       for (const problem of problems) console.error(`  ${problem}`)
       console.error(
-        'A colour differs: the file changed without an export, or the export missed it. pnpm figma:out and Sync from code puts code back; export and pnpm figma:in brings Figma in.',
+        'A value differs: the file changed without an export, or the export missed it. pnpm figma:out and Sync from code puts code back; export and pnpm figma:in brings Figma in.',
       )
       process.exit(1)
     }
-    const count = Object.values(want.variables).filter(v => v.type === 'COLOR').length
     console.log(
-      `Every swatch on the ${SWATCH_PAGE} page shows code's colour: ${count} colours in each mode.`,
+      `The ${LIVE_PAGE} page shows code's value for all ${liveCount(want)} variables and styles, in every mode.`,
+    )
+  } else if (mode === 'audit') {
+    const pages = await figmaPages()
+    if (!pages) return
+    const trees = await figmaNodes(pages.map(page => page.id))
+    if (!trees) return
+    const audited = (Object.values(trees) as AuditNode[]).filter(holdsComponents)
+    const problems = audited.flatMap(auditPage)
+    if (problems.length > 0) {
+      console.error(`${problems.length} value(s) in components do not come from a token:`)
+      for (const problem of problems) console.error(`  ${problem}`)
+      console.error(
+        'Bind each to its variable or style in Figma (figma/README.md, The component audit), then export and pnpm figma:in.',
+      )
+      process.exit(1)
+    }
+    console.log(
+      `Every component's colours, corners, gaps, padding, text and effects come from tokens: ${audited.map(page => page.name).join(', ')}.`,
     )
   } else {
     console.error(
-      'Usage: node src/figma-cli.ts out [--print] | in [file] | check | fresh | script | save <file> | save --clipboard | sync [--apply] | pull [--dry] | plugin | swatches [--script]',
+      'Usage: node src/figma-cli.ts out [--print] | in [file] | check | fresh | script | save <file> | save --clipboard | sync [--apply] | pull [--dry] | plugin | live [--script] | audit',
     )
     process.exit(2)
   }

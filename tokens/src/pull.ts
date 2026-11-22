@@ -14,7 +14,7 @@ import { close, type Snapshot } from './figma.ts'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Json = Record<string, any>
 
-export type SourceFile = 'colour' | 'motion' | 'density'
+export type SourceFile = 'colour' | 'motion' | 'density' | 'layout'
 
 type Kind =
   | 'duration'
@@ -54,6 +54,9 @@ export function locate(name: string, collection: string): Location | null {
       return { file: 'motion', path: ['scale', second], kind: 'number' }
     if (first === 'stagger' && second && third) {
       return { file: 'motion', path: ['stagger', second, third], kind: 'duration' }
+    }
+    if (first === 'spacing' && second) {
+      return { file: 'layout', path: ['spacing', second], kind: 'dimension' }
     }
     return null
   }
@@ -209,7 +212,9 @@ export function pull(
     const at = locate(name, figma.collection)
     if (!at) {
       manual.push(
-        `${name} (${modes.join(', ')}): a motion role, set per theme under role in tokens/source/motion.tokens.json`,
+        name.startsWith('radius-')
+          ? `${name}: derived from radius in code (Tailwind's radius steps); change radius in tokens/source/colour.tokens.json`
+          : `${name} (${modes.join(', ')}): a motion role, set per theme under role in tokens/source/motion.tokens.json`,
       )
       continue
     }
@@ -358,6 +363,18 @@ export function pull(
     if (!close(layers, expected.effectStyles[name])) {
       manual.push(
         `effect style ${name}: differs from code; shadows are set in nk.elevation-1 and -2 in tokens/source/colour.tokens.json`,
+      )
+    }
+  }
+  for (const [name, style] of Object.entries(actual.textStyles)) {
+    const want = expected.textStyles[name]
+    if (!want) {
+      manual.push(
+        `text style ${name}: in Figma but not in code. Add it under text-style in tokens/source/layout.tokens.json, or remove it from Figma with figma:sync --apply`,
+      )
+    } else if (!close(style, want)) {
+      manual.push(
+        `text style ${name}: differs from code; text styles are set under text-style in tokens/source/layout.tokens.json`,
       )
     }
   }

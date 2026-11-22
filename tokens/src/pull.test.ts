@@ -18,7 +18,7 @@ const expected = fromGenerated(
 type Json = Record<string, any>
 const sources = () =>
   Object.fromEntries(
-    (['colour', 'motion', 'density'] as SourceFile[]).map(file => [
+    (['colour', 'motion', 'density', 'layout'] as SourceFile[]).map(file => [
       file,
       read(`tokens/source/${file}.tokens.json`),
     ]),
@@ -212,6 +212,26 @@ describe('pull', () => {
       ]),
     )
   })
+  it('writes a spacing step back, and reports radius steps and text styles', () => {
+    const s = sources()
+    const figma = figmaWith(v => {
+      values(v, 'spacing/1-5').Value = 7
+      values(v, 'radius-md').Linear = 5
+    })
+    figma.textStyles['text/lg']!.size = 19
+    figma.textStyles['text/gone'] = { ...figma.textStyles['text/xs']! }
+    const { written, manual } = pull(expected, figma, s)
+    expect(s.layout.spacing['1-5'].$value).toEqual({ value: 7, unit: 'px' })
+    expect(written).toEqual([
+      'tokens/source/layout.tokens.json spacing.1-5: {"value":7,"unit":"px"}',
+    ])
+    expect(manual).toEqual([
+      expect.stringMatching(/^radius-md: derived from radius in code/),
+      expect.stringMatching(/^text style text\/lg: differs from code/),
+      expect.stringMatching(/^text style text\/gone: in Figma but not in code/),
+    ])
+  })
+
   it('writes spring durations, offsets and scales', () => {
     const s = sources()
     pull(

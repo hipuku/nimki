@@ -13,6 +13,7 @@ import {
 } from './emit.ts'
 import { readDensity, readMotion } from './model.ts'
 import { checkDensity, checkMotion, checkShape } from './rules.ts'
+import { checkLayout, checkLayoutShape, readLayout } from './layout.ts'
 import { checkTheme, checkThemeShape, readTheme } from './theme.ts'
 
 /** Every generated file, by its path from the repository root. */
@@ -49,12 +50,18 @@ export function loadSource(dir: string): TokenSet {
 
 /** Checks the rules and renders every output, unformatted. Throws RuleError on a broken rule. */
 export function render(set: TokenSet): Record<keyof typeof OUTPUTS, string> {
-  const shape = [...checkShape(set), ...checkThemeShape(set)]
+  const shape = [...checkShape(set), ...checkThemeShape(set), ...checkLayoutShape(set)]
   if (shape.length > 0) throw new RuleError(shape)
   const motion = readMotion(set)
   const density = readDensity(set)
   const theme = readTheme(set)
-  const problems = [...checkMotion(motion), ...checkDensity(density), ...checkTheme(theme)]
+  const layout = readLayout(set, theme)
+  const problems = [
+    ...checkMotion(motion),
+    ...checkDensity(density),
+    ...checkTheme(theme),
+    ...checkLayout(layout),
+  ]
   if (problems.length > 0) throw new RuleError(problems)
   return {
     motionCss: motionCss(motion),
@@ -63,7 +70,7 @@ export function render(set: TokenSet): Record<keyof typeof OUTPUTS, string> {
     extensionsCss: extensionsCss(theme),
     tailwindCss: tailwindCss(theme),
     engine: engineTs(motion),
-    figma: figmaVariables(motion, density, theme),
+    figma: figmaVariables(motion, density, theme, layout),
   }
 }
 
