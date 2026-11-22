@@ -160,7 +160,11 @@ describe('figma-variables.json', () => {
   it('aliases a colour where the CSS does, and resolves a derived one', () => {
     expect(value('muted', 'mode:colour:dark')).toEqual({
       type: 'VARIABLE_ALIAS',
-      id: 'variable:secondary',
+      id: 'variable:ramp/neutral/3',
+    })
+    expect(value('nk/highlight', 'mode:colour:dark')).toEqual({
+      type: 'VARIABLE_ALIAS',
+      id: 'variable:accent',
     })
     const success = value('nk/success', 'mode:colour:light') as { r: number; g: number }
     expect(success.g).toBeGreaterThan(success.r)

@@ -2,54 +2,15 @@
   "$description": "The Linear visual theme (PRD FR-V1 to FR-V5, FR-V9, FR-V12) and nimki's colour extensions. A token's value is light mode; dark is a mode. Colours are OKLCH.",
   "color": {
     "$type": "color",
-    "$description": "shadcn's variables, written to CSS under their shadcn names so a project can replace any of them.",
+    "$description": "shadcn's variables, written to CSS under their shadcn names so a project can replace any of them. In the Linear theme each points at a step of the neutral ramp, except popover and destructive.",
     "background": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.99, 0.002, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.16, 0.005, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.1}"
     },
     "foreground": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.2, 0.006, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.96, 0.003, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.12}"
     },
     "card": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.99, 0.002, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.19, 0.005, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.2}"
     },
     "card-foreground": {
       "$value": "{color.foreground}"
@@ -68,83 +29,32 @@
             }
           }
         }
-      }
+      },
+      "$description": "Off the ramp by decision: white in light, a raised dark in dark, as Radix Themes' panels"
     },
     "popover-foreground": {
       "$value": "{color.foreground}"
     },
     "primary": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.21, 0.006, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.96, 0.003, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.12}"
     },
     "primary-foreground": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.985, 0.002, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.16, 0.005, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.1}"
     },
     "secondary": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.96, 0.004, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.25, 0.006, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.3}"
     },
     "secondary-foreground": {
       "$value": "{color.foreground}"
     },
     "muted": {
-      "$value": "{color.secondary}"
+      "$value": "{ramp.neutral.3}"
     },
     "muted-foreground": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.48, 0.01, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.7, 0.01, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.11}"
     },
     "accent": {
-      "$value": "{color.secondary}"
+      "$value": "{ramp.neutral.4}"
     },
     "accent-foreground": {
       "$value": "{color.foreground}"
@@ -166,54 +76,14 @@
       }
     },
     "border": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.93, 0.004, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [1, 0, 0],
-              "alpha": 0.08
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.6}"
     },
     "input": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.64, 0.004, 260]
-      },
-      "$description": "The edge that identifies a field: 3:1 against the background, card and popover (WCAG 2.2, 1.4.11). --border, for dividers, stays lighter",
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.52, 0.006, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.9}",
+      "$description": "The edge that identifies a field: 3:1 against the background, card and popover (WCAG 2.2, 1.4.11). --border, for dividers, stays lighter"
     },
     "ring": {
-      "$value": {
-        "colorSpace": "oklch",
-        "components": [0.55, 0.01, 260]
-      },
-      "$extensions": {
-        "dev.hipuku.nimki": {
-          "modes": {
-            "dark": {
-              "colorSpace": "oklch",
-              "components": [0.6, 0.01, 260]
-            }
-          }
-        }
-      }
+      "$value": "{ramp.neutral.10}"
     }
   },
   "ramp": {
@@ -462,7 +332,7 @@
         "dev.hipuku.nimki": {
           "relative": {
             "light": {
-              "lightness": 0.54,
+              "lightness": 0.53,
               "chromaMax": 0.145,
               "hue": 150
             },

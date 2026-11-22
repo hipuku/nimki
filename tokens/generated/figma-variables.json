@@ -2492,60 +2492,48 @@
       "variableId": "variable:background",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9839,
-        "g": 0.9872,
-        "b": 0.9925,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/1"
       }
     },
     {
       "variableId": "variable:background",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.047,
-        "g": 0.0522,
-        "b": 0.0606,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/1"
       }
     },
     {
       "variableId": "variable:foreground",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.0801,
-        "g": 0.0867,
-        "b": 0.0973,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/12"
       }
     },
     {
       "variableId": "variable:foreground",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.9431,
-        "g": 0.948,
-        "b": 0.9559,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/12"
       }
     },
     {
       "variableId": "variable:card",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9839,
-        "g": 0.9872,
-        "b": 0.9925,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/2"
       }
     },
     {
       "variableId": "variable:card",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.0724,
-        "g": 0.0778,
-        "b": 0.0865,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/2"
       }
     },
     {
@@ -2604,60 +2592,48 @@
       "variableId": "variable:primary",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.0889,
-        "g": 0.0956,
-        "b": 0.1063,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/12"
       }
     },
     {
       "variableId": "variable:primary",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.9431,
-        "g": 0.948,
-        "b": 0.9559,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/12"
       }
     },
     {
       "variableId": "variable:primary-foreground",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9773,
-        "g": 0.9806,
-        "b": 0.9859,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/1"
       }
     },
     {
       "variableId": "variable:primary-foreground",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.047,
-        "g": 0.0522,
-        "b": 0.0606,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/1"
       }
     },
     {
       "variableId": "variable:secondary",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9417,
-        "g": 0.9482,
-        "b": 0.9587,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/3"
       }
     },
     {
       "variableId": "variable:secondary",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.1252,
-        "g": 0.1321,
-        "b": 0.1433,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/3"
       }
     },
     {
@@ -2681,7 +2657,7 @@
       "modeId": "mode:colour:light",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:secondary"
+        "id": "variable:ramp/neutral/3"
       }
     },
     {
@@ -2689,27 +2665,23 @@
       "modeId": "mode:colour:dark",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:secondary"
+        "id": "variable:ramp/neutral/3"
       }
     },
     {
       "variableId": "variable:muted-foreground",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.3541,
-        "g": 0.3678,
-        "b": 0.3898,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/11"
       }
     },
     {
       "variableId": "variable:muted-foreground",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.6069,
-        "g": 0.6219,
-        "b": 0.6461,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/11"
       }
     },
     {
@@ -2717,7 +2689,7 @@
       "modeId": "mode:colour:light",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:secondary"
+        "id": "variable:ramp/neutral/4"
       }
     },
     {
@@ -2725,7 +2697,7 @@
       "modeId": "mode:colour:dark",
       "value": {
         "type": "VARIABLE_ALIAS",
-        "id": "variable:secondary"
+        "id": "variable:ramp/neutral/4"
       }
     },
     {
@@ -2768,69 +2740,57 @@
       "variableId": "variable:border",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9027,
-        "g": 0.9092,
-        "b": 0.9196,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/6"
       }
     },
     {
       "variableId": "variable:border",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 1,
-        "g": 1,
-        "b": 1,
-        "a": 0.08
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/6"
       }
     },
     {
       "variableId": "variable:input",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.5436,
-        "g": 0.5495,
-        "b": 0.559,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/9"
       }
     },
     {
       "variableId": "variable:input",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.4033,
-        "g": 0.4117,
-        "b": 0.4252,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/9"
       }
     },
     {
       "variableId": "variable:ring",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.4319,
-        "g": 0.446,
-        "b": 0.4688,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/10"
       }
     },
     {
       "variableId": "variable:ring",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.4891,
-        "g": 0.5035,
-        "b": 0.5268,
-        "a": 1
+        "type": "VARIABLE_ALIAS",
+        "id": "variable:ramp/neutral/10"
       }
     },
     {
       "variableId": "variable:nk/success",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.0473,
-        "g": 0.521,
-        "b": 0.2399,
+        "r": 0.0119,
+        "g": 0.5091,
+        "b": 0.2285,
         "a": 1
       }
     },
@@ -2920,9 +2880,9 @@
       "variableId": "variable:nk/primary-hover",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.1534,
-        "g": 0.1605,
-        "b": 0.1721,
+        "r": 0.1515,
+        "g": 0.1586,
+        "b": 0.1701,
         "a": 1
       }
     },
@@ -2930,9 +2890,9 @@
       "variableId": "variable:nk/primary-hover",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.8784,
-        "g": 0.8832,
-        "b": 0.8909,
+        "r": 0.8617,
+        "g": 0.8665,
+        "b": 0.8742,
         "a": 1
       }
     },
@@ -2940,9 +2900,9 @@
       "variableId": "variable:nk/primary-active",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.2021,
-        "g": 0.2096,
-        "b": 0.2216,
+        "r": 0.2001,
+        "g": 0.2076,
+        "b": 0.2196,
         "a": 1
       }
     },
@@ -2950,9 +2910,9 @@
       "variableId": "variable:nk/primary-active",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.8272,
-        "g": 0.8319,
-        "b": 0.8396,
+        "r": 0.8107,
+        "g": 0.8154,
+        "b": 0.8231,
         "a": 1
       }
     },
@@ -2960,9 +2920,9 @@
       "variableId": "variable:nk/secondary-hover",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9209,
-        "g": 0.9273,
-        "b": 0.9378,
+        "r": 0.926,
+        "g": 0.9325,
+        "b": 0.943,
         "a": 1
       }
     },
@@ -2970,9 +2930,9 @@
       "variableId": "variable:nk/secondary-hover",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.1515,
-        "g": 0.1586,
-        "b": 0.1701,
+        "r": 0.1392,
+        "g": 0.1462,
+        "b": 0.1576,
         "a": 1
       }
     },
@@ -2980,9 +2940,9 @@
       "variableId": "variable:nk/secondary-active",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.8988,
-        "g": 0.9053,
-        "b": 0.9157,
+        "r": 0.904,
+        "g": 0.9105,
+        "b": 0.9209,
         "a": 1
       }
     },
@@ -2990,9 +2950,9 @@
       "variableId": "variable:nk/secondary-active",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.1746,
-        "g": 0.1819,
-        "b": 0.1936,
+        "r": 0.162,
+        "g": 0.1692,
+        "b": 0.1808,
         "a": 1
       }
     },
@@ -3000,9 +2960,9 @@
       "variableId": "variable:nk/accent-hover",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9209,
-        "g": 0.9273,
-        "b": 0.9378,
+        "r": 0.9038,
+        "g": 0.9119,
+        "b": 0.9249,
         "a": 1
       }
     },
@@ -3010,9 +2970,9 @@
       "variableId": "variable:nk/accent-hover",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.1515,
-        "g": 0.1586,
-        "b": 0.1701,
+        "r": 0.1648,
+        "g": 0.1732,
+        "b": 0.1868,
         "a": 1
       }
     },
@@ -3020,9 +2980,9 @@
       "variableId": "variable:nk/accent-active",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.8988,
-        "g": 0.9053,
-        "b": 0.9157,
+        "r": 0.8819,
+        "g": 0.8899,
+        "b": 0.9029,
         "a": 1
       }
     },
@@ -3030,9 +2990,9 @@
       "variableId": "variable:nk/accent-active",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.1746,
-        "g": 0.1819,
-        "b": 0.1936,
+        "r": 0.1881,
+        "g": 0.1967,
+        "b": 0.2106,
         "a": 1
       }
     },
@@ -3040,9 +3000,9 @@
       "variableId": "variable:nk/card-hover",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9629,
-        "g": 0.9662,
-        "b": 0.9714,
+        "r": 0.9484,
+        "g": 0.9532,
+        "b": 0.9611,
         "a": 1
       }
     },
@@ -3050,9 +3010,9 @@
       "variableId": "variable:nk/card-hover",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.0971,
-        "g": 0.1027,
-        "b": 0.1117,
+        "r": 0.1052,
+        "g": 0.1108,
+        "b": 0.1199,
         "a": 1
       }
     },
@@ -3060,9 +3020,9 @@
       "variableId": "variable:nk/card-active",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.9407,
-        "g": 0.9439,
-        "b": 0.9492,
+        "r": 0.9262,
+        "g": 0.9311,
+        "b": 0.9389,
         "a": 1
       }
     },
@@ -3070,9 +3030,9 @@
       "variableId": "variable:nk/card-active",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.1189,
-        "g": 0.1246,
-        "b": 0.1339,
+        "r": 0.1272,
+        "g": 0.133,
+        "b": 0.1423,
         "a": 1
       }
     },
@@ -3200,9 +3160,9 @@
       "variableId": "variable:nk/edge",
       "modeId": "mode:colour:light",
       "value": {
-        "r": 0.0801,
-        "g": 0.0867,
-        "b": 0.0973,
+        "r": 0.0872,
+        "g": 0.0938,
+        "b": 0.1045,
         "a": 0
       }
     },
@@ -3210,9 +3170,9 @@
       "variableId": "variable:nk/edge",
       "modeId": "mode:colour:dark",
       "value": {
-        "r": 0.9431,
-        "g": 0.948,
-        "b": 0.9559,
+        "r": 0.9262,
+        "g": 0.9311,
+        "b": 0.9389,
         "a": 0.06
       }
     },
