@@ -50,7 +50,7 @@ Issues labelled `good first issue` name the files to change and what done looks 
 
 ## Response
 
-Every issue and pull request gets a first reply within seven days. A pull request that is not going to be merged is closed with the reason.
+Every issue and pull request gets a first reply within 14 days. A pull request that is not going to be merged is closed with the reason.
 
 ## Conduct
 
