@@ -1,7 +1,7 @@
 {
   "name": "@hipuku/nimki",
   "version": "0.0.0",
-  "description": "Motion engine for nimki components: duration caps, spring maths and motion hooks",
+  "description": "Motion engine for nimki components: duration caps, spring maths, sheet physics and presence state",
   "license": "MIT",
   "type": "module",
   "repository": {

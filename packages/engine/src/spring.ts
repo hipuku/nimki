@@ -18,8 +18,16 @@ export interface SpringOptions {
 /** How close to the target, as a fraction of the distance, counts as settled. */
 export const SPRING_REST_DELTA = 0.001
 
-/** Points sampled along the curve for a linear() easing. */
+/** The fewest points sampled along the curve for a linear() easing. */
 export const SPRING_LINEAR_POINTS = 40
+
+/**
+ * Points per oscillation in a linear() easing. A very bouncy spring swings many
+ * times before it settles, and a fixed number of points spread over all of
+ * them would miss the peaks and draw a different curve (aliasing), so the
+ * count grows with the number of swings.
+ */
+export const SPRING_POINTS_PER_CYCLE = 16
 
 interface SpringShape {
   /** Undamped angular frequency, radians per second. */
@@ -89,12 +97,20 @@ export function springSettleTime(options: SpringOptions): number {
 export function springToLinear(options: SpringOptions): { durationMs: number; easing: string } {
   const spring = shape(options)
   const seconds = springSettleTime(options)
+  const count = linearPointCount(spring, seconds)
   const points: number[] = []
-  for (let i = 0; i <= SPRING_LINEAR_POINTS; i++) {
-    points.push(Number(positionAt(spring, (seconds * i) / SPRING_LINEAR_POINTS).toFixed(4)))
+  for (let i = 0; i <= count; i++) {
+    points.push(Number(positionAt(spring, (seconds * i) / count).toFixed(4)))
   }
   // The last sample is within the rest delta of 1; ending exactly on 1 means the
   // element finishes where it was going rather than a hair short.
-  points[SPRING_LINEAR_POINTS] = 1
+  points[count] = 1
   return { durationMs: Math.round(seconds * 1000), easing: `linear(${points.join(', ')})` }
+}
+
+/** Intervals in the linear() easing: SPRING_POINTS_PER_CYCLE per swing, and never fewer than SPRING_LINEAR_POINTS. */
+function linearPointCount({ omega, zeta }: SpringShape, seconds: number): number {
+  if (zeta >= 1) return SPRING_LINEAR_POINTS
+  const cycles = (seconds * omega * Math.sqrt(1 - zeta * zeta)) / (2 * Math.PI)
+  return Math.max(SPRING_LINEAR_POINTS, Math.ceil(cycles * SPRING_POINTS_PER_CYCLE))
 }

@@ -10,6 +10,18 @@ name: Publish
 # the package. There is deliberately no NPM_TOKEN secret. The package must have
 # hipuku/nimki and publish.yml registered as its trusted publisher on npmjs.com
 # before the first tag. Adapted from haus's publish.yml.
+#
+# Three jobs, so the credential that publishes never shares a runner with
+# third-party code:
+#   plan     reads the tag, and refuses a commit that is not on main or whose
+#            CI did not pass.
+#   build    installs, builds, tests and packs, with read-only permissions. Every
+#            dependency's install script runs here, where it can publish nothing.
+#   publish  holds id-token, installs nothing from the lockfile, and publishes
+#            the tarball build made.
+#
+# Tag a commit only after its CI on main is green. If the tag went out early,
+# re-run this workflow once CI finishes.
 
 on:
   push:
@@ -20,19 +32,24 @@ permissions:
   contents: read
 
 jobs:
-  # Reading the tag is separate from acting on it, so a tag naming a version
-  # already on npm is skipped instead of failed.
   plan:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      # To read the CI results of the tagged commit.
+      checks: read
     outputs:
-      dir: ${{ steps.tag.outputs.dir }}
       name: ${{ steps.tag.outputs.name }}
       version: ${{ steps.tag.outputs.version }}
       publish: ${{ steps.published.outputs.publish }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The whole history, to check the tagged commit is on main.
+          fetch-depth: 0
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
 
@@ -59,36 +76,68 @@ jobs:
             exit 1
           fi
 
-          echo "dir=${dir}"         >> "$GITHUB_OUTPUT"
           echo "name=${name}"       >> "$GITHUB_OUTPUT"
           echo "version=${version}" >> "$GITHUB_OUTPUT"
 
+      # A tag on a branch, or on a commit main later dropped, publishes nothing.
+      - name: Is the commit on main?
+        run: |
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "${GITHUB_REF_NAME} points at ${GITHUB_SHA}, which is not on main."
+            exit 1
+          fi
+
+      # Every check the main ruleset requires passed on this exact commit. CI
+      # runs on every push to main, so a commit that reached main has results.
+      - name: Did CI pass on the commit?
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          runs=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/check-runs?per_page=100" \
+            --jq '[.check_runs[] | {name, conclusion}]')
+          failed=0
+          for check in Lint Links Format Typecheck Test "Test on Node 24" Build; do
+            conclusion=$(echo "$runs" | jq -r --arg n "$check" '[.[] | select(.name == $n)][0].conclusion // "missing"')
+            if [ "$conclusion" != "success" ]; then
+              echo "${check}: ${conclusion}"
+              failed=1
+            fi
+          done
+          if [ "$failed" = 1 ]; then
+            echo "CI has not passed on ${GITHUB_SHA}. Re-run this workflow once it has."
+            exit 1
+          fi
+
+      # Reading the tag is separate from acting on it, so a tag naming a version
+      # already on npm is skipped instead of failed.
       - name: Is this version already on npm?
         id: published
+        env:
+          PACKAGE: ${{ steps.tag.outputs.name }}@${{ steps.tag.outputs.version }}
         run: |
-          if npm view "${{ steps.tag.outputs.name }}@${{ steps.tag.outputs.version }}" version > /dev/null 2>&1; then
-            echo "${{ steps.tag.outputs.name }}@${{ steps.tag.outputs.version }} is already published. Nothing to do."
+          if npm view "$PACKAGE" version > /dev/null 2>&1; then
+            echo "${PACKAGE} is already published. Nothing to do."
             echo "publish=false" >> "$GITHUB_OUTPUT"
           else
             echo "publish=true" >> "$GITHUB_OUTPUT"
           fi
 
-  publish:
+  build:
     needs: plan
     if: needs.plan.outputs.publish == 'true'
     runs-on: ubuntu-latest
-    # id-token lets this job request the OIDC token npm authenticates against.
+    timeout-minutes: 15
     permissions:
-      id-token: write
       contents: read
+    env:
+      PACKAGE: ${{ needs.plan.outputs.name }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: pnpm
-          registry-url: https://registry.npmjs.org
 
       - run: pnpm install --frozen-lockfile
 
@@ -98,26 +147,53 @@ jobs:
         run: pnpm run build
 
       - name: Test
-        run: pnpm --filter ${{ needs.plan.outputs.name }} run --if-present test
+        run: pnpm --filter "$PACKAGE" run --if-present test
 
       - name: Package
-        run: pnpm --filter ${{ needs.plan.outputs.name }} run --if-present check:package
+        run: pnpm --filter "$PACKAGE" run --if-present check:package
+
+      # pnpm packs, because it rewrites workspace: ranges to real versions.
+      - name: Pack
+        run: |
+          mkdir -p "${RUNNER_TEMP}/pack"
+          pnpm --filter "$PACKAGE" pack --pack-destination "${RUNNER_TEMP}/pack"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tarball
+          path: ${{ runner.temp }}/pack/*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: [plan, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # id-token lets this job request the OIDC token npm authenticates against.
+    # Nothing from the lockfile is installed in this job.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: tarball
+          path: ${{ runner.temp }}/pack
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
 
       # Trusted publishing needs npm 11.5.1 or later, newer than the npm that
-      # ships with Node 22. Pinned, because this step runs with the credential
-      # that publishes.
+      # ships with Node 22. Pinned, because this job holds the credential that
+      # publishes.
       - name: Upgrade npm to a version that speaks OIDC
-        run: npm install -g npm@11.21.2
-
-      # pnpm packs, because it rewrites workspace: ranges to real versions. npm
-      # publishes, because it holds the OIDC credential.
-      - name: Pack
-        id: pack
-        run: |
-          pnpm --filter ${{ needs.plan.outputs.name }} pack --pack-destination "${RUNNER_TEMP}"
-          tarball=$(ls "${RUNNER_TEMP}"/*.tgz)
-          echo "tarball=${tarball}" >> "$GITHUB_OUTPUT"
+        run: npm install -g npm@11.21.2 --ignore-scripts
 
       # No token and no .npmrc credential. Provenance is attached automatically.
+      # --ignore-scripts, so nothing in the tarball runs with the credential.
       - name: Publish
-        run: npm publish "${{ steps.pack.outputs.tarball }}" --access public
+        run: |
+          tarball=$(ls "${RUNNER_TEMP}"/pack/*.tgz)
+          npm publish "$tarball" --access public --ignore-scripts

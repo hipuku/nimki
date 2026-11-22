@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   SPRING_LINEAR_POINTS,
+  SPRING_POINTS_PER_CYCLE,
   SPRING_REST_DELTA,
   springPosition,
   springSettleTime,
@@ -122,6 +123,22 @@ describe('springToLinear', () => {
   it('keeps the overshoot in the easing, as values above 1', () => {
     const points = springToLinear(bouncy).easing.slice(7, -1).split(', ').map(Number)
     expect(Math.max(...points)).toBeGreaterThan(1)
+  })
+
+  it('adds points for a spring that swings many times, so its peaks are not lost', () => {
+    const wobbly = { visualDuration: 0.3, bounce: 0.95 }
+    const { durationMs, easing } = springToLinear(wobbly)
+    const points = easing.slice(7, -1).split(', ').map(Number)
+    expect(points.length).toBeGreaterThan(SPRING_LINEAR_POINTS * 4)
+    // The first overshoot, read from the exact curve, survives sampling to within 2%.
+    const truePeak = Math.max(...sample(wobbly, durationMs / 1000))
+    expect(Math.max(...points)).toBeGreaterThan(truePeak - 0.02)
+    // Every swing gets at least SPRING_POINTS_PER_CYCLE points: count the peaks.
+    const peaks = points.filter(
+      (p, i) =>
+        i > 0 && i < points.length - 1 && p > (points[i - 1] ?? 0) && p >= (points[i + 1] ?? 0),
+    ).length
+    expect(points.length / peaks).toBeGreaterThanOrEqual(SPRING_POINTS_PER_CYCLE * 0.9)
   })
 
   it('writes each point with at most four decimal places', () => {

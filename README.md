@@ -19,7 +19,7 @@ pnpm run check
 
 | Path              | Contents                                                                          |
 | ----------------- | --------------------------------------------------------------------------------- |
-| `packages/engine` | `@hipuku/nimki` on npm: motion maths and hooks                                    |
+| `packages/engine` | `@hipuku/nimki` on npm: motion maths, no React                                    |
 | `apps/docs`       | The docs site, which also serves the shadcn registry at `/r/`                     |
 | `apps/storybook`  | The workbench: every example as a story, run as a browser test                    |
 | `tokens`          | The DTCG token source and the generator for every output                          |

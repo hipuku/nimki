@@ -70,25 +70,22 @@ export function applySettings(root: HTMLElement, settings: Settings): void {
 
 /**
  * Runs in a script in <head>, before the first paint, so a reader's saved
- * settings never flash in after the defaults. Self-contained, because it is
- * sent as text: it repeats the rules above rather than importing them.
+ * settings never flash in after the defaults. Written as a string rather than
+ * built with Function.toString(), so what ships is exactly what is tested: a
+ * compiler cannot rename anything or add a helper the inline script lacks. It
+ * repeats parseSettings and applySettings in plain ES5, and the tests run it
+ * against every saved combination to prove the two agree.
  */
-export function bootSettings(key: string): void {
-  let saved: Record<string, unknown>
-  try {
-    saved = JSON.parse(localStorage.getItem(key) ?? '{}') as Record<string, unknown>
-  } catch {
-    saved = {}
-  }
-  const root = document.documentElement
-  const dark =
-    saved.mode === 'dark' ||
-    (saved.mode !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
-  root.classList.toggle('dark', dark)
-  root.style.colorScheme = dark ? 'dark' : 'light'
-  root.dataset.motion = saved.motion === 'expressive' ? 'expressive' : 'subtle'
-  root.dataset.density = saved.density === 'compact' ? 'compact' : 'comfortable'
-  if (saved.reduced === 'on') root.dataset.motionReduce = ''
-}
-
-export const BOOT_SCRIPT = `(${bootSettings.toString()})(${JSON.stringify(SETTINGS_KEY)})`
+export const BOOT_SCRIPT = `(function () {
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(${JSON.stringify(SETTINGS_KEY)}) || 'null'); } catch (e) {}
+  if (!saved || typeof saved !== 'object') saved = {};
+  var root = document.documentElement;
+  var dark = saved.mode === 'dark' ||
+    (saved.mode !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+  root.classList.toggle('dark', dark);
+  root.style.colorScheme = dark ? 'dark' : 'light';
+  root.dataset.motion = saved.motion === 'expressive' ? 'expressive' : 'subtle';
+  root.dataset.density = saved.density === 'compact' ? 'compact' : 'comfortable';
+  if (saved.reduced === 'on') root.dataset.motionReduce = '';
+})()`
