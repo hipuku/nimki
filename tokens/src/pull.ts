@@ -7,7 +7,7 @@
  * source works out (state colours, success and warning, motion roles) are
  * reported with the setting to change instead.
  */
-import { applyEdits, modify } from 'jsonc-parser'
+import { applyEdits, findNodeAtLocation, getNodeValue, modify, parseTree } from 'jsonc-parser'
 import { fromSrgb } from './colour.ts'
 import { close, type Snapshot } from './figma.ts'
 
@@ -140,12 +140,35 @@ export interface Edit {
 export function applyToText(text: string, edits: Edit[]): string {
   let out = text
   for (const edit of edits) {
-    out = applyEdits(
-      out,
-      modify(out, edit.path, edit.value, { formattingOptions: { insertSpaces: true, tabSize: 2 } }),
-    )
+    for (const [path, value] of leaves(out, edit.path, edit.value)) {
+      out = applyEdits(
+        out,
+        modify(out, path, value, { formattingOptions: { insertSpaces: true, tabSize: 2 } }),
+      )
+    }
   }
   return out
+}
+
+/**
+ * Splits a change to an object into changes to the keys that differ, so
+ * writing { value: 420, unit: 'ms' } over { value: 400, unit: 'ms' } edits
+ * one number and leaves a one-line object on one line.
+ */
+function leaves(text: string, path: string[], value: unknown): [string[], unknown][] {
+  const root = parseTree(text)
+  const node = root && findNodeAtLocation(root, path)
+  const plain = (v: unknown): v is Record<string, unknown> =>
+    typeof v === 'object' && v !== null && !Array.isArray(v)
+  if (!node || node.type !== 'object' || !plain(value)) return [[path, value]]
+  const current: unknown = getNodeValue(node)
+  if (!plain(current)) return [[path, value]]
+  const keys = new Set([...Object.keys(current), ...Object.keys(value)])
+  return [...keys].flatMap(key =>
+    JSON.stringify(current[key]) === JSON.stringify(value[key])
+      ? []
+      : leaves(text, [...path, key], value[key]),
+  )
 }
 
 export interface PullPlan {

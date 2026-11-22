@@ -15,7 +15,9 @@
     "figma:fresh": "node src/figma-cli.ts fresh",
     "figma:sync": "node src/figma-cli.ts sync",
     "figma:plugin": "node src/figma-cli.ts plugin",
-    "figma:pull": "node src/figma-cli.ts pull"
+    "figma:pull": "node src/figma-cli.ts pull",
+    "figma:out": "node src/figma-cli.ts out",
+    "figma:in": "node src/figma-cli.ts in"
   },
   "devDependencies": {
     "@hipuku/nimki": "workspace:^",

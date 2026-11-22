@@ -25,6 +25,8 @@
     "storybook": "pnpm --filter storybook run dev",
     "tokens:write": "pnpm --filter tokens run write",
     "tokens:check": "pnpm --filter tokens run check",
+    "figma:out": "pnpm --filter tokens run figma:out",
+    "figma:in": "pnpm --filter tokens run figma:in",
     "figma:check": "pnpm --filter tokens run figma:check",
     "figma:script": "pnpm --silent --filter tokens run figma:script",
     "figma:save": "pnpm --filter tokens run figma:save",

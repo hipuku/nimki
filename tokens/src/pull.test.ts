@@ -33,6 +33,25 @@ function figmaWith(change: (variables: Snapshot['variables']) => void): Snapshot
 const values = (v: Snapshot['variables'], name: string) =>
   (v[name] as Snapshot['variables'][string]).values
 
+describe('applyToText', () => {
+  it('edits only the keys that differ, keeping one-line objects on one line', () => {
+    const text = '{\n  "a": { "$value": { "value": 400, "unit": "ms" } }\n}\n'
+    const out = applyToText(text, [
+      { file: 'motion', path: ['a', '$value'], value: { value: 420, unit: 'ms' } },
+    ])
+    expect(out).toBe('{\n  "a": { "$value": { "value": 420, "unit": "ms" } }\n}\n')
+  })
+
+  it('replaces a value whose shape changed', () => {
+    const out = applyToText('{ "a": 1, "b": { "c": 1 } }', [
+      { file: 'motion', path: ['a'], value: { x: 1 } },
+      { file: 'motion', path: ['b'], value: [1] },
+      { file: 'motion', path: ['b'], value: { d: 2 } },
+    ])
+    expect(JSON.parse(out)).toEqual({ a: { x: 1 }, b: { d: 2 } })
+  })
+})
+
 describe('pull', () => {
   it('writes nothing when Figma matches code', () => {
     expect(pull(expected, expected, sources())).toEqual({ written: [], manual: [], edits: [] })
