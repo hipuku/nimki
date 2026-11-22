@@ -37,7 +37,10 @@ const preview: Preview = {
     },
   },
   // An axe violation fails the story's test, not only the panel (PRD NFR-1).
-  parameters: { a11y: { test: 'error' } },
+  // Base UI's focus guards are the one exclusion: while a list or dialog is
+  // open it places two hidden, focusable spans around it so Tab stays inside,
+  // which axe reads as focusable content inside aria-hidden. Radix does the same.
+  parameters: { a11y: { test: 'error', context: { exclude: ['[data-base-ui-focus-guard]'] } } },
 }
 
 export default preview

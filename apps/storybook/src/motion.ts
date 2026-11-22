@@ -23,6 +23,13 @@ export function runningTransition(element: Element, property: string): Timing | 
   return { durationMs: Number(duration), easing: easing ?? 'linear' }
 }
 
+/**
+ * How far a browser's easing may sit from the token's: WebKit reports linear()
+ * outputs to two decimals (0.0229 reads as 0.02), so half of 0.01, the most
+ * that rounding moves a value. Chromium and Firefox report four.
+ */
+const EASING_TOLERANCE = 0.005 + 1e-9
+
 // The browser writes linear() with an input position after each point
 // ("linear(0 0%, 0.0229 2.5%, ...)"); only the output values are the curve.
 const numbers = (easing: string) =>
@@ -58,7 +65,7 @@ export function roleTimingProblems(
   const sameCurve =
     actual.easing.split('(')[0] === token.easing.split('(')[0] &&
     want.length === got.length &&
-    want.every((n, i) => Math.abs(n - (got[i] as number)) < 1e-3)
+    want.every((n, i) => Math.abs(n - (got[i] as number)) <= EASING_TOLERANCE)
   if (!sameCurve) problems.push(`${where}: easing ${actual.easing}, the token is ${token.easing}`)
   return problems
 }

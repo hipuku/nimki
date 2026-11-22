@@ -5,7 +5,12 @@
     "noEmit": true,
     "allowJs": false,
     "incremental": true,
-    "plugins": [{ "name": "next" }]
+    "plugins": [{ "name": "next" }],
+    // The registry's components, and shadcn's alias for their cn helper.
+    "paths": {
+      "@registry/*": ["../../registry/*"],
+      "@/lib/utils": ["../../registry/lib/utils.ts"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules", ".next", "public"]

@@ -125,9 +125,9 @@ jobs:
       # The token tests run the engine's spring maths from its dist/.
       - name: Build engine
         run: pnpm run build:engine
-      # The stories run as tests in a real browser (apps/storybook).
-      - name: Install Chromium
-        run: pnpm --filter storybook exec playwright install --with-deps --only-shell chromium
+      # The stories run as tests in all three engines (PRD NFR-12).
+      - name: Install browsers
+        run: pnpm --filter storybook exec playwright install --with-deps --only-shell chromium firefox webkit
       # With coverage, so the floors in each vitest.config.ts are enforced here.
       - name: Test
         run: pnpm run test:coverage
@@ -149,8 +149,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Build engine
         run: pnpm run build:engine
-      - name: Install Chromium
-        run: pnpm --filter storybook exec playwright install --with-deps --only-shell chromium
+      # The stories run as tests in all three engines (PRD NFR-12).
+      - name: Install browsers
+        run: pnpm --filter storybook exec playwright install --with-deps --only-shell chromium firefox webkit
       - name: Test
         run: pnpm run test
 

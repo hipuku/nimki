@@ -21,8 +21,9 @@ pnpm run check
 | ----------------- | --------------------------------------------------------------------------------- |
 | `packages/engine` | `@hipuku/nimki` on npm: motion maths, no React                                    |
 | `apps/docs`       | The docs site, which also serves the shadcn registry at `/r/`                     |
-| `apps/storybook`  | The workbench: every example as a story, run as a browser test                    |
+| `apps/storybook`  | The workbench: every story run as a test in Chromium, Firefox and WebKit          |
 | `tokens`          | The DTCG token source and the generator for every output                          |
+| `registry/ui`     | The components users copy with the shadcn CLI, each with its stories              |
 | `registry/styles` | Generated token CSS that components read                                          |
 | `figma`           | The Figma file's snapshot and export plugin ([how sync works](./figma/README.md)) |
 
