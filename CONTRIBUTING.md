@@ -17,10 +17,14 @@ pnpm install
 | Command                  | What it does                                                    |
 | ------------------------ | --------------------------------------------------------------- |
 | `pnpm run check`         | Every CI check, locally. Run it before opening a pull request   |
-| `pnpm storybook`         | The workbench: every example as a story                         |
+| `pnpm storybook`         | The workbench: each component's states, to look at              |
 | `pnpm --filter docs dev` | The docs site                                                   |
 | `pnpm tokens:write`      | Regenerates the token outputs after a change to `tokens/source` |
 | `pnpm changeset`         | Adds a note for the next release of `@hipuku/nimki`             |
+
+## Stories
+
+Each component in `registry/ui/<name>/` has two story files. `<name>.stories.tsx` holds still states to look at in Storybook. `<name>.test.stories.tsx` holds the behaviour tests: play functions that drive the component, tagged `!dev` so they run in CI (`pnpm test`) and Storybook's test panel without replaying in the sidebar.
 
 ## What is wanted
 

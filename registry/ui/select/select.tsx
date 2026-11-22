@@ -44,6 +44,8 @@ interface SelectContextValue {
   /** Opens or closes the list as a change of the root's own, telling onOpenChange. */
   setOpen: (open: boolean) => void
   disabled: boolean
+  /** The root's dir, carried onto the list, which renders in a portal outside the page's own dir. */
+  dir: 'ltr' | 'rtl' | undefined
   value: string | null
   /** Each item's text, by value: from the children the root was given, and from items as they mount. */
   labels: ReadonlyMap<string, React.ReactNode>
@@ -200,6 +202,7 @@ function Select({
       open: currentOpen,
       setOpen,
       disabled: props.disabled ?? false,
+      dir,
       value: currentValue,
       labels,
       register,
@@ -207,7 +210,17 @@ function Select({
       setTriggerId,
       setHandlers,
     }),
-    [currentOpen, setOpen, props.disabled, currentValue, labels, register, triggerId, setHandlers],
+    [
+      currentOpen,
+      setOpen,
+      props.disabled,
+      dir,
+      currentValue,
+      labels,
+      register,
+      triggerId,
+      setHandlers,
+    ],
   )
 
   const root = (
@@ -276,7 +289,7 @@ function Select({
 const LAYER = {
   hover: 'hover:bg-[color-mix(in_srgb,var(--foreground)_var(--nk-hover-amount),transparent)]',
   pressed:
-    'data-[pressed]:bg-[color-mix(in_srgb,var(--foreground)_var(--nk-pressed-amount),transparent)]',
+    'data-[nk-pressed]:bg-[color-mix(in_srgb,var(--foreground)_var(--nk-pressed-amount),transparent)]',
 }
 
 type SelectTriggerProps = Omit<SelectPrimitive.Trigger.Props, 'render' | 'className'> & {
@@ -291,9 +304,30 @@ function SelectTrigger({
   asChild,
   children,
   onKeyDown,
+  onPointerDown,
   ...props
 }: SelectTriggerProps) {
   const { open, setOpen, disabled, setTriggerId } = useSelectContext('SelectTrigger')
+  // The press, from pointer down to up or Space down to up. Base UI's
+  // data-pressed stays on while the list is open, and :active does not hold
+  // in Firefox once Base UI cancels the mousedown, so the trigger tracks it.
+  const [pressed, setPressed] = React.useState(false)
+  React.useEffect(() => {
+    if (!pressed) return
+    // Released wherever the release happens: Space's keyup lands in the list it opened.
+    const release = () => setPressed(false)
+    const releaseKey = (event: KeyboardEvent) => event.key === ' ' && release()
+    // Capture phase: Base UI stops some of these events from bubbling.
+    window.addEventListener('pointerup', release, true)
+    window.addEventListener('pointercancel', release, true)
+    window.addEventListener('keyup', releaseKey, true)
+    return () => {
+      window.removeEventListener('pointerup', release, true)
+      window.removeEventListener('pointercancel', release, true)
+      window.removeEventListener('keyup', releaseKey, true)
+    }
+  }, [pressed])
+  const inactive = disabled || props.disabled
   const ownId = React.useId()
   const id = props.id ?? ownId
   React.useEffect(() => {
@@ -306,11 +340,17 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       data-state={open ? 'open' : 'closed'}
+      data-nk-pressed={pressed ? '' : undefined}
+      onPointerDown={event => {
+        onPointerDown?.(event)
+        if (!inactive && event.button === 0) setPressed(true)
+      }}
       onKeyDown={event => {
         onKeyDown?.(event)
+        if (event.key === ' ' && !inactive) setPressed(true)
         // Base UI opens on Enter and Space; the arrows open too, as in Radix
         // and the select-only combobox pattern (FR-S9).
-        if (event.defaultPrevented || open || disabled || props.disabled) return
+        if (event.defaultPrevented || open || inactive) return
         if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
           event.preventDefault()
           setOpen(true)
@@ -324,7 +364,7 @@ function SelectTrigger({
         'transition-[scale,background-color,border-color,box-shadow] duration-(--nk-press-duration) ease-(--nk-press-easing)',
         LAYER.hover,
         LAYER.pressed,
-        'data-[pressed]:scale-(--nk-press-scale)',
+        'data-[nk-pressed]:scale-(--nk-press-scale)',
         // Focus, open and invalid draw a 2 px border: the 1 px border and a 1 px inset ring.
         'focus-visible:border-ring focus-visible:shadow-[inset_0_0_0_1px_var(--ring)]',
         'data-[popup-open]:border-ring data-[popup-open]:shadow-[inset_0_0_0_1px_var(--ring)]',
@@ -445,7 +485,7 @@ function SelectContent({
   onCloseAutoFocus,
   ...props
 }: SelectContentProps) {
-  const { open, setHandlers, triggerId } = useSelectContext('SelectContent')
+  const { open, setHandlers, triggerId, dir } = useSelectContext('SelectContent')
   // The closed list's fragment exists only in the browser; the server renders without it.
   const client = React.useSyncExternalStore(subscribeToNothing, onClient, onServer)
   const fragment = React.useMemo(() => (client ? new DocumentFragment() : null), [client])
@@ -469,6 +509,7 @@ function SelectContent({
           {...(avoidCollisions ? {} : { collisionAvoidance: { side: 'none', align: 'none' } })}
           {...(collisionBoundary ? { collisionBoundary } : {})}
           {...(collisionPadding === undefined ? {} : { collisionPadding })}
+          dir={dir}
           className={cn('z-50 outline-none', hideWhenDetached && 'data-[anchor-hidden]:invisible')}
         >
           <SelectPrimitive.Popup
