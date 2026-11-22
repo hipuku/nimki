@@ -30,6 +30,7 @@
     "figma:save": "pnpm --filter tokens run figma:save",
     "figma:fresh": "pnpm --filter tokens run figma:fresh",
     "figma:sync": "pnpm --silent --filter tokens run figma:sync",
+    "figma:pull": "pnpm --filter tokens run figma:pull",
     "figma:plugin": "pnpm --filter tokens run figma:plugin"
   },
   "devDependencies": {

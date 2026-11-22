@@ -7,6 +7,7 @@
  * pnpm figma:save <file>      checks an export's checksum and saves it as the snapshot
  * pnpm figma:save --clipboard the same, from the clipboard (the dev plugin copies there; macOS)
  * pnpm figma:sync [--apply]   prints the script that makes Figma match code; a dry run unless --apply
+ * pnpm figma:pull [--dry]      writes values changed in Figma back into tokens/source
  * pnpm figma:plugin           writes the dev plugin's code from the export script
  */
 import { execFileSync } from 'node:child_process'
@@ -14,6 +15,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { format, resolveConfig } from 'prettier'
+import { pull, type SourceFile } from './pull.ts'
 import {
   FIGMA_EXPORT_SCRIPT,
   FIGMA_FILE_KEY,
@@ -65,6 +67,45 @@ async function main() {
     console.log(`wrote figma/snapshot/nimki.json, exported ${snapshot.exportedAt}`)
   } else if (mode === 'sync') {
     console.log(figmaSyncScript(expected(), arg !== '--apply'))
+  } else if (mode === 'pull') {
+    // A deliberate change made in Figma, written back into tokens/source.
+    const files: SourceFile[] = ['colour', 'motion', 'density']
+    const sourcePath = (file: SourceFile) => join(root, `tokens/source/${file}.tokens.json`)
+    const sources = Object.fromEntries(
+      files.map(file => [file, readJson(sourcePath(file))]),
+    ) as Parameters<typeof pull>[2]
+    const actual = normaliseSnapshot(readJson(snapshotPath) as Snapshot)
+    const { written, manual } = pull(expected(), actual, sources)
+    const dry = arg === '--dry'
+    if (!dry) {
+      for (const file of files) {
+        const path = sourcePath(file)
+        const options = (await resolveConfig(path)) ?? {}
+        writeFileSync(
+          path,
+          await format(JSON.stringify(sources[file]), { ...options, filepath: path }),
+        )
+      }
+    }
+    if (written.length === 0 && manual.length === 0) {
+      console.log('Figma and code hold the same values: nothing to pull.')
+      return
+    }
+    if (written.length > 0) {
+      console.log(
+        `${dry ? 'Would write' : 'Wrote'} ${written.length} value(s) from Figma into tokens/source:`,
+      )
+      for (const line of written) console.log(`  ${line}`)
+    }
+    if (manual.length > 0) {
+      console.log(`${manual.length} change(s) need a decision in tokens/source:`)
+      for (const line of manual) console.log(`  ${line}`)
+    }
+    if (!dry && written.length > 0) {
+      console.log(
+        'Next: pnpm tokens:write (the rules check the new values), then pnpm figma:check.',
+      )
+    }
   } else if (mode === 'check') {
     const want = expected()
     const actual = normaliseSnapshot(readJson(snapshotPath) as Snapshot)
@@ -125,7 +166,7 @@ async function main() {
     )
   } else {
     console.error(
-      'Usage: node src/figma-cli.ts check | fresh | script | save <file> | save --clipboard | sync [--apply] | plugin',
+      'Usage: node src/figma-cli.ts check | fresh | script | save <file> | save --clipboard | sync [--apply] | pull [--dry] | plugin',
     )
     process.exit(2)
   }

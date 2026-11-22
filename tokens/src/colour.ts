@@ -55,3 +55,22 @@ export function toSrgb(colour: Oklch): { r: number; g: number; b: number; a: num
   const [r, g, b] = toLinearSrgb(colour).map(encode) as [number, number, number]
   return { r, g, b, a: colour.alpha }
 }
+
+/**
+ * Gamma-encoded sRGB (0 to 1 per channel) back to OKLCH, the inverse of
+ * toSrgb, for reading a colour changed in Figma back into the source. An
+ * achromatic colour has no hue; it comes back as 0.
+ */
+export function fromSrgb(r: number, g: number, b: number, alpha = 1): Oklch {
+  const decode = (v: number) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
+  const [lr, lg, lb] = [decode(r), decode(g), decode(b)]
+  const l = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb)
+  const m = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb)
+  const s = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb)
+  const L = 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s
+  const A = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s
+  const B = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
+  const c = Math.sqrt(A * A + B * B)
+  const h = c < 1e-4 ? 0 : ((Math.atan2(B, A) * 180) / Math.PI + 360) % 360
+  return { l: L, c, h, alpha }
+}
