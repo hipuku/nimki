@@ -35,6 +35,19 @@ type Story = StoryObj<typeof meta>
 
 const page = (element: HTMLElement) => within(element.ownerDocument.body)
 
+/**
+ * Opens the list with the pointer and waits until it has finished appearing,
+ * as a person would before choosing: Base UI ignores an option pressed in the
+ * first moments after opening, so the press that opened it cannot choose.
+ */
+async function openList(trigger: HTMLElement) {
+  await userEvent.click(trigger)
+  const list = await within(trigger.ownerDocument.body).findByRole('listbox')
+  const popup = list.closest('[data-slot=select-content]') as HTMLElement
+  await waitFor(() => expect(getComputedStyle(popup).opacity).toBe('1'))
+  return list
+}
+
 function Fruit(props: React.ComponentProps<typeof Select>) {
   return (
     <Select {...props}>
@@ -70,13 +83,12 @@ function Fruit(props: React.ComponentProps<typeof Select>) {
 /** Chooses with the pointer: the trigger shows the item's text, and onValueChange gets the value alone. */
 export const Default: Story = {
   render: args => <Fruit {...args} />,
-  play: async ({ canvas, canvasElement, args }) => {
+  play: async ({ canvas, args }) => {
     const trigger = canvas.getByRole('combobox', { name: 'Fruit' })
     await expect(trigger).toHaveTextContent('Select a fruit')
     await expect(trigger).toHaveAttribute('data-state', 'closed')
     await expect(trigger).toHaveAttribute('data-placeholder')
-    await userEvent.click(trigger)
-    const list = await page(canvasElement).findByRole('listbox')
+    const list = await openList(trigger)
     await expect(trigger).toHaveAttribute('data-state', 'open')
     await expect(args.onOpenChange).toHaveBeenLastCalledWith(true)
     // The empty group's label is not shown.
@@ -172,13 +184,12 @@ function Controlled() {
 /** Controlled: the value follows the state, and Radix's empty string clears it to the placeholder. */
 export const ControlledValue: Story = {
   render: () => <Controlled />,
-  play: async ({ canvas, canvasElement }) => {
+  play: async ({ canvas }) => {
     const trigger = canvas.getByRole('combobox', { name: 'Fruit' })
     await expect(trigger).toHaveTextContent('Apple')
     await userEvent.click(canvas.getByRole('button', { name: 'Choose leek' }))
     await expect(trigger).toHaveTextContent('Leek')
-    await userEvent.click(trigger)
-    const list = await page(canvasElement).findByRole('listbox')
+    const list = await openList(trigger)
     await userEvent.click(within(list).getByRole('option', { name: 'Carrot' }))
     await waitFor(() => expect(canvas.getByText('carrot')).toBeInTheDocument())
     await userEvent.click(canvas.getByRole('button', { name: 'Clear' }))
@@ -348,11 +359,10 @@ export const RadixApi: Story = {
       </SelectContent>
     </Select>
   ),
-  play: async ({ canvas, canvasElement }) => {
+  play: async ({ canvas }) => {
     const trigger = canvas.getByRole('combobox', { name: 'Weather' })
     await expect(trigger).toHaveTextContent('Sunny')
-    await userEvent.click(trigger)
-    const list = await page(canvasElement).findByRole('listbox')
+    const list = await openList(trigger)
     const popup = list.closest('[data-slot=select-content]') as HTMLElement
     await expect(popup).toHaveAttribute('data-side', 'none')
     await userEvent.keyboard('{Escape}')
@@ -373,14 +383,13 @@ export const RightToLeft: Story = {
       <Fruit dir="rtl" defaultValue="apple" />
     </div>
   ),
-  play: async ({ canvas, canvasElement }) => {
+  play: async ({ canvas }) => {
     const trigger = canvas.getByRole('combobox', { name: 'Fruit' })
     const chevron = trigger.querySelector('svg') as SVGElement
     await expect(chevron.getBoundingClientRect().left).toBeLessThan(
       trigger.getBoundingClientRect().left + 40,
     )
-    await userEvent.click(trigger)
-    const list = await page(canvasElement).findByRole('listbox')
+    const list = await openList(trigger)
     await expect(getComputedStyle(list).direction).toBe('rtl')
     const apple = within(list).getByRole('option', { name: 'Apple' })
     const check = apple.querySelector('svg') as SVGElement
@@ -452,16 +461,12 @@ export const RadixSurface: Story = {
       <button type="button">Elsewhere</button>
     </div>
   ),
-  play: async ({ canvas, canvasElement }) => {
+  play: async ({ canvas }) => {
     const trigger = canvas.getByRole('combobox', { name: 'Herb' })
     await expect(trigger.tagName).toBe('BUTTON')
     await expect(trigger).toHaveTextContent('Herb')
-    await userEvent.click(trigger)
-    const list = await page(canvasElement).findByRole('listbox')
+    const list = await openList(trigger)
     await expect(within(list).getByText('Herbs').tagName).toBe('DIV')
-    // Wait for the list to finish appearing: toBeVisible reads opacity 0 as hidden.
-    const popup = list.closest('[data-slot=select-content]') as HTMLElement
-    await waitFor(() => expect(getComputedStyle(popup).opacity).toBe('1'))
     // An outside press is prevented, so the list stays open.
     await userEvent.click(canvas.getByRole('button', { name: 'Elsewhere' }))
     await expect(list).toBeVisible()
