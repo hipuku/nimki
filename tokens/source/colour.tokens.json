@@ -830,12 +830,12 @@
     "hover-amount": {
       "$type": "number",
       "$value": 0.08,
-      "$description": "The share of the text colour laid over a fill on hover"
+      "$description": "The share of the text colour laid over a transparent surface (ghost, outline, Select's trigger) on hover, mixed in sRGB to match Figma. Filled roles use their --nk-<role>-hover colour instead"
     },
     "pressed-amount": {
       "$type": "number",
       "$value": 0.12,
-      "$description": "The share of the text colour laid over a fill when pressed"
+      "$description": "The share of the text colour laid over a transparent surface when pressed, mixed in sRGB to match Figma. Filled roles use their --nk-<role>-active colour instead"
     },
     "shadow-soft": {
       "$type": "color",

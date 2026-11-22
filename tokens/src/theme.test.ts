@@ -236,6 +236,12 @@ describe('the neutral ramp (step 1.3c)', () => {
     expect(themeVar('ramp.neutral.12')).toBe('--nk-neutral-12')
   })
 
+  it('stays out of the Tailwind mapping, which only offers the semantic colours', () => {
+    const { tailwindCss } = renderWith(() => {})
+    expect(tailwindCss).not.toContain('neutral')
+    expect(tailwindCss).toContain('--color-nk-secondary-hover: var(--nk-secondary-hover);')
+  })
+
   it('fails a step that runs the wrong way', () => {
     const found = problems(c => (step(c, 5).$value = oklch(0.97, 0.006, 260)))
     expect(found).toContain('ramp.neutral.5 (light): must be darker than step 4')

@@ -541,7 +541,10 @@ export function tailwindCss(theme: Theme): string {
     `/* ${NOTICE} */`,
     '',
     block('@theme inline', [
-      ...theme.colours.map(colour => `--color-${colour.cssVar.slice(2)}: var(${colour.cssVar});`),
+      // Not the ramp: it is the theme's primitives, which components never read.
+      ...theme.colours
+        .filter(colour => !colour.token.startsWith('ramp.'))
+        .map(colour => `--color-${colour.cssVar.slice(2)}: var(${colour.cssVar});`),
       '--radius-sm: calc(var(--radius) - 4px);',
       '--radius-md: calc(var(--radius) - 2px);',
       '--radius-lg: var(--radius);',
