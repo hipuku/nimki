@@ -1,14 +1,9 @@
 # Figma parity (master plan step 1.4c): code is the source of truth, and any
-# difference between the Figma file and tokens/source fails here.
+# difference between the Figma file and tokens/source fails here. How it works
+# and what to do when it fails: figma/README.md.
 #
-# 1. Values: the committed snapshot of the file (figma/snapshot/nimki.json)
-#    against the variables and effect styles the source generates. Offline.
-# 2. Freshness: the file's lastModified, read through Figma's REST API, must not
-#    be later than the snapshot's export time, so the snapshot is never stale.
-#    Needs the FIGMA_TOKEN secret (read-only). Fork pull requests get no
-#    secrets, so it skips there with a notice; on main and our branches a
-#    missing or refused token fails. It stays dormant until the first export
-#    that carries a time.
+# Each check runs even when one before it fails, and the last step writes a
+# table of every result to the run's summary and fails unless all passed.
 #
 # Runs on every push and pull request, and by hand from the Actions tab.
 name: Figma parity
@@ -38,10 +33,57 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Variables and effect styles
+
+      # The generated files match tokens/source, so the values compared below are code's.
+      - name: Generated tokens
+        id: tokens
+        continue-on-error: true
+        run: pnpm run build:engine && pnpm run tokens:check
+
+      # The snapshot against the generated variables and effect styles. Offline.
+      - name: Values
+        id: values
+        continue-on-error: true
         run: pnpm run figma:check
+
+      # Nothing saved in Figma after the snapshot was exported (10-minute grace).
+      # Needs FIGMA_TOKEN; fork pull requests get no secrets and skip it.
       - name: Freshness
+        id: fresh
+        continue-on-error: true
         run: pnpm run figma:fresh
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           FIGMA_PARITY_REQUIRED: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && '1' || '0' }}
+
+      # The dev plugin's code is generated from the export and sync scripts.
+      - name: Plugin
+        id: plugin
+        continue-on-error: true
+        run: pnpm run figma:plugin && git diff --exit-code figma/plugin/code.js
+
+      - name: Summary
+        if: always()
+        env:
+          TOKENS: ${{ steps.tokens.outcome }}
+          VALUES: ${{ steps.values.outcome }}
+          FRESH: ${{ steps.fresh.outcome }}
+          PLUGIN: ${{ steps.plugin.outcome }}
+        run: |
+          mark() { [ "$1" = success ] && echo pass || echo "**$1**"; }
+          {
+            echo "### Figma parity"
+            echo
+            echo "| Check | Result |"
+            echo "| --- | --- |"
+            echo "| Generated tokens match tokens/source | $(mark "$TOKENS") |"
+            echo "| Figma snapshot matches code | $(mark "$VALUES") |"
+            echo "| Nothing in Figma newer than the snapshot | $(mark "$FRESH") |"
+            echo "| Plugin code is current | $(mark "$PLUGIN") |"
+            echo
+            echo "How to fix a failure: figma/README.md, When a check fails."
+          } >> "$GITHUB_STEP_SUMMARY"
+          for outcome in "$TOKENS" "$VALUES" "$FRESH" "$PLUGIN"; do
+            [ "$outcome" = success ] || { echo "A parity check failed; see the summary."; exit 1; }
+          done
+          echo "Every parity check passed."

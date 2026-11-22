@@ -1,6 +1,8 @@
 /**
  * Figma parity (master plan step 1.4c). Code is the source of truth.
  *
+ * pnpm figma:out              code to Figma: tokens:write, then copies the sync data for the plugin's Sync from code
+ * pnpm figma:in [file]        Figma to code: saves the export (clipboard or file), pulls Figma's changes, tokens:write, reports
  * pnpm figma:check            the snapshot against the generated variables (offline)
  * pnpm figma:fresh            the file's lastModified against the snapshot's export time (needs FIGMA_TOKEN)
  * pnpm figma:script           prints the export script, for use_figma
@@ -15,17 +17,19 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { format, resolveConfig } from 'prettier'
-import { pull, type SourceFile } from './pull.ts'
+import { applyToText, pull, type SourceFile } from './pull.ts'
 import {
   FIGMA_EXPORT_SCRIPT,
   FIGMA_FILE_KEY,
   compare,
+  SYNC_PAYLOAD_KIND,
   figmaSyncScript,
   freshness,
   fromGenerated,
   normaliseSnapshot,
   pluginCode,
   readExport,
+  syncData,
   type Snapshot,
 } from './figma.ts'
 
@@ -38,6 +42,74 @@ const [mode, arg] = process.argv.slice(2)
 const readJson = (path: string): unknown => JSON.parse(readFileSync(path, 'utf8')) as unknown
 const expected = () => fromGenerated(readJson(generatedPath) as Parameters<typeof fromGenerated>[0])
 
+const files: SourceFile[] = ['colour', 'motion', 'density']
+const sourcePath = (file: SourceFile) => join(root, `tokens/source/${file}.tokens.json`)
+
+/** Reads an export from the clipboard or a file (relative to where the command was typed). */
+function readExportText(from: string | undefined): string {
+  const file =
+    from && from !== '--clipboard' ? resolve(process.env.INIT_CWD ?? process.cwd(), from) : null
+  try {
+    return file ? readFileSync(file, 'utf8') : execFileSync('pbpaste', { encoding: 'utf8' })
+  } catch {
+    console.error(`Cannot read ${file ?? 'the clipboard'}.`)
+    process.exit(1)
+  }
+}
+
+/** Checks an export and writes it as the snapshot, formatted for the Format check. */
+async function saveSnapshot(text: string): Promise<Snapshot> {
+  let snapshot: Snapshot
+  try {
+    snapshot = readExport(JSON.parse(text))
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : String(error))
+    process.exit(1)
+  }
+  mkdirSync(dirname(snapshotPath), { recursive: true })
+  const options = (await resolveConfig(snapshotPath)) ?? {}
+  writeFileSync(
+    snapshotPath,
+    await format(JSON.stringify(snapshot), { ...options, filepath: snapshotPath }),
+  )
+  return snapshot
+}
+
+/** figma:pull's work: values changed in Figma into tokens/source, edited in place. */
+async function runPull(write: boolean) {
+  const sources = Object.fromEntries(
+    files.map(file => [file, readJson(sourcePath(file))]),
+  ) as Parameters<typeof pull>[2]
+  const actual = normaliseSnapshot(readJson(snapshotPath) as Snapshot)
+  const result = pull(expected(), actual, sources)
+  if (write) {
+    for (const file of files) {
+      const fileEdits = result.edits.filter(edit => edit.file === file)
+      if (fileEdits.length === 0) continue
+      const path = sourcePath(file)
+      const options = (await resolveConfig(path)) ?? {}
+      const text = applyToText(readFileSync(path, 'utf8'), fileEdits)
+      writeFileSync(path, await format(text, { ...options, filepath: path }))
+    }
+  }
+  return result
+}
+
+/** tokens:write, in a child process so its rule failures print as usual. */
+function runWrite(): void {
+  try {
+    // Its progress goes to stderr, so `figma:out --print` prints only the payload.
+    execFileSync(process.execPath, [join(root, 'tokens/src/cli.ts'), 'write'], {
+      stdio: ['ignore', process.stderr, process.stderr],
+    })
+  } catch {
+    console.error(
+      'The token rules refused the change; nothing was synced. Fix tokens/source and run it again.',
+    )
+    process.exit(1)
+  }
+}
+
 async function main() {
   if (mode === 'script') {
     console.log(FIGMA_EXPORT_SCRIPT)
@@ -46,47 +118,48 @@ async function main() {
     writeFileSync(pluginCodePath, pluginCode())
     console.log('wrote figma/plugin/code.js')
   } else if (mode === 'save' && arg) {
-    const text =
-      arg === '--clipboard'
-        ? execFileSync('pbpaste', { encoding: 'utf8' })
-        : readFileSync(resolve(arg), 'utf8')
-    let snapshot: Snapshot
-    try {
-      snapshot = readExport(JSON.parse(text))
-    } catch (error) {
-      console.error(error instanceof Error ? error.message : String(error))
-      process.exit(1)
-    }
-    mkdirSync(dirname(snapshotPath), { recursive: true })
-    // Formatted as the repository's Prettier config says, so the Format check passes.
-    const options = (await resolveConfig(snapshotPath)) ?? {}
-    writeFileSync(
-      snapshotPath,
-      await format(JSON.stringify(snapshot), { ...options, filepath: snapshotPath }),
-    )
+    const snapshot = await saveSnapshot(readExportText(arg))
     console.log(`wrote figma/snapshot/nimki.json, exported ${snapshot.exportedAt}`)
+  } else if (mode === 'out') {
+    runWrite()
+    const payload = JSON.stringify({ kind: SYNC_PAYLOAD_KIND, expected: syncData(expected()) })
+    if (arg === '--print') {
+      console.log(payload)
+      return
+    }
+    execFileSync('pbcopy', { input: payload })
+    console.log(
+      'Copied the sync data. In Figma: Plugins, Development, nimki export, Sync from code: paste, then the button. Then: pnpm figma:in',
+    )
+  } else if (mode === 'in') {
+    const snapshot = await saveSnapshot(readExportText(arg))
+    console.log(`Saved the export taken at ${snapshot.exportedAt}.`)
+    const { written, manual } = await runPull(true)
+    if (written.length > 0) {
+      console.log(`Pulled ${written.length} value(s) changed in Figma into tokens/source:`)
+      for (const line of written) console.log(`  ${line}`)
+      runWrite()
+    }
+    const want = expected()
+    const problems = compare(want, normaliseSnapshot(readJson(snapshotPath) as Snapshot))
+    if (problems.length === 0 && manual.length === 0) {
+      console.log(
+        `In sync: ${Object.keys(want.variables).length} variables, ${Object.keys(want.effectStyles).length} effect styles. Commit tokens/source, the generated files and figma/snapshot/nimki.json.`,
+      )
+      return
+    }
+    for (const line of manual) console.error(`Needs a decision: ${line}`)
+    for (const problem of problems) console.error(`Still differs: ${problem}`)
+    console.error(
+      'Not in sync. Keep code: pnpm figma:out, Sync from code in Figma, pnpm figma:in. Keep Figma: change the named setting in tokens/source, then pnpm figma:out.',
+    )
+    process.exit(1)
   } else if (mode === 'sync') {
     console.log(figmaSyncScript(expected(), arg !== '--apply'))
   } else if (mode === 'pull') {
     // A deliberate change made in Figma, written back into tokens/source.
-    const files: SourceFile[] = ['colour', 'motion', 'density']
-    const sourcePath = (file: SourceFile) => join(root, `tokens/source/${file}.tokens.json`)
-    const sources = Object.fromEntries(
-      files.map(file => [file, readJson(sourcePath(file))]),
-    ) as Parameters<typeof pull>[2]
-    const actual = normaliseSnapshot(readJson(snapshotPath) as Snapshot)
-    const { written, manual } = pull(expected(), actual, sources)
     const dry = arg === '--dry'
-    if (!dry) {
-      for (const file of files) {
-        const path = sourcePath(file)
-        const options = (await resolveConfig(path)) ?? {}
-        writeFileSync(
-          path,
-          await format(JSON.stringify(sources[file]), { ...options, filepath: path }),
-        )
-      }
-    }
+    const { written, manual } = await runPull(!dry)
     if (written.length === 0 && manual.length === 0) {
       console.log('Figma and code hold the same values: nothing to pull.')
       return
@@ -114,7 +187,7 @@ async function main() {
       console.error(`The Figma file and tokens/source disagree in ${problems.length} place(s):`)
       for (const problem of problems) console.error(`  ${problem}`)
       console.error(
-        'Code wins: run pnpm figma:sync --apply in the file, export it, then pnpm figma:save.',
+        'Code changed: pnpm figma:out, Sync from code in Figma, pnpm figma:in. Figma changed: export in Figma, pnpm figma:in.',
       )
       process.exit(1)
     }
@@ -166,7 +239,7 @@ async function main() {
     )
   } else {
     console.error(
-      'Usage: node src/figma-cli.ts check | fresh | script | save <file> | save --clipboard | sync [--apply] | pull [--dry] | plugin',
+      'Usage: node src/figma-cli.ts out [--print] | in [file] | check | fresh | script | save <file> | save --clipboard | sync [--apply] | pull [--dry] | plugin',
     )
     process.exit(2)
   }

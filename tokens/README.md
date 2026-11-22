@@ -62,23 +62,4 @@ A derived `--nk-` colour is worked out where it is declared, on `:root` and `.da
 
 ## Figma parity
 
-Code is the source of truth. The [Figma file](https://www.figma.com/design/7EoZah6GtSPR9XQlYWbzAO/nimki) holds the same values as the source, and the `Figma parity` workflow fails on any difference, on every push and pull request and by hand from the Actions tab.
-
-| Command                       | What it does                                                                                                  |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `pnpm figma:sync`             | Prints a dry-run script for the file: lists what differs from code, changes nothing                           |
-| `pnpm figma:sync --apply`     | Prints the script that makes the file match code: creates, updates and removes variables and effect styles    |
-| `pnpm figma:script`           | Prints the export script, for the Figma MCP's `use_figma`                                                     |
-| `pnpm figma:save <file>`      | Checks an export's checksum and saves it as `figma/snapshot/nimki.json`                                       |
-| `pnpm figma:save --clipboard` | The same, from the clipboard, where the dev plugin copies the export (macOS)                                  |
-| `pnpm figma:check`            | The snapshot against `generated/figma-variables.json`                                                         |
-| `pnpm figma:fresh`            | The file's `lastModified`, through Figma's REST API, against the snapshot's export time (needs `FIGMA_TOKEN`) |
-| `pnpm figma:plugin`           | Writes the dev plugin's `figma/plugin/code.js` from the export script                                         |
-
-**Changing a value:** edit `tokens/source`, run `pnpm tokens:write`, run `figma:sync --apply`'s script in the file, export, `figma:save`, and commit everything together. Values are never changed by hand in Figma.
-
-**Any other Figma edit:** export and `figma:save`, then commit the snapshot.
-
-**Exporting:** the dev plugin in `figma/plugin` (Figma desktop, Plugins, Development, Import plugin from manifest) runs the export and copies it; then `pnpm figma:save --clipboard`. Or run `figma:script`'s output through `use_figma` and save the JSON it returns. The export carries its own time and a checksum computed inside Figma, so a copy changed on its way to the repository is refused, and a file saved after the export fails the freshness check.
-
-**What CI compares:** variables by name, with their collection, type, code syntax, scopes and values in every mode, and the elevation effect styles layer by layer; numbers match within 0.002, because Figma stores 32-bit floats. Freshness needs the `FIGMA_TOKEN` secret, a read-only Figma token; fork pull requests get no secrets, so it skips there and always runs on `main` and our branches. It stays dormant until the first export that carries a time. Figma's variables API needs an Enterprise plan; the file's `lastModified` does not, which is why the values come through the snapshot and freshness through the API.
+Code is the source of truth; the Figma file holds the same values, and the `Figma parity` workflow fails on any difference. How it works, every command and what to do in each situation are in [figma/README.md](../figma/README.md).

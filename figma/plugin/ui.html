@@ -1,4 +1,4 @@
-<!-- The nimki export's window: shows the export and copies it. Then run pnpm figma:save --clipboard. -->
+<!-- The nimki export window. Export copies the file's export; Sync from code takes what pnpm figma:out copied. Then run pnpm figma:in. -->
 <style>
   body {
     font:
@@ -6,34 +6,68 @@
       sans-serif;
     margin: 12px;
   }
+  .row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  button {
+    padding: 6px 12px;
+  }
   textarea {
     width: 100%;
-    height: 110px;
+    height: 90px;
     font:
       11px ui-monospace,
       monospace;
+    box-sizing: border-box;
   }
-  button {
-    margin-top: 8px;
-    padding: 6px 12px;
+  #status {
+    margin: 8px 0;
   }
 </style>
-<p id="status">Exporting…</p>
+<div class="row">
+  <button id="export" type="button">Export</button>
+  <button id="sync" type="button">Sync from code</button>
+</div>
+<label for="paste">For Sync from code: paste what pnpm figma:out copied</label>
+<textarea id="paste" aria-label="Sync data"></textarea>
+<p id="status" role="status">Export copies the file for pnpm figma:in.</p>
 <textarea id="out" readonly aria-label="Export"></textarea>
-<button id="copy" type="button">Copy</button>
 <script>
   const out = document.getElementById('out')
   const status = document.getElementById('status')
   const copy = () => {
     out.select()
-    const done = document.execCommand('copy')
-    status.textContent = done
-      ? 'Copied. Now run: pnpm figma:save --clipboard'
-      : 'Select the text and copy it by hand.'
+    return document.execCommand('copy')
   }
+  document.getElementById('export').addEventListener('click', () => {
+    status.textContent = 'Exporting…'
+    parent.postMessage({ pluginMessage: { type: 'export' } }, '*')
+  })
+  document.getElementById('sync').addEventListener('click', () => {
+    status.textContent = 'Syncing from code…'
+    parent.postMessage(
+      { pluginMessage: { type: 'sync', text: document.getElementById('paste').value } },
+      '*',
+    )
+  })
   onmessage = event => {
-    out.value = event.data.pluginMessage
-    copy()
+    const message = event.data.pluginMessage
+    if (message.type === 'error') {
+      status.textContent = message.text
+      return
+    }
+    out.value = message.text
+    const copied = copy()
+    const lead =
+      message.type === 'synced'
+        ? message.changes.length === 0
+          ? 'Already matched code. '
+          : `Changed ${message.changes.length}: ${message.changes.join(', ')}. `
+        : ''
+    status.textContent =
+      lead +
+      (copied ? 'Export copied. Now run: pnpm figma:in' : 'Select the export below and copy it.')
   }
-  document.getElementById('copy').addEventListener('click', copy)
 </script>

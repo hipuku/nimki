@@ -42,7 +42,7 @@ Issues labelled `good first issue` name the files to change and what done looks 
 ## How a change lands
 
 1. For anything beyond a small fix, open an issue first, so the approach is agreed before the work.
-2. New components and visual changes are designed in the nimki Figma file before their code; the maintainer does that part.
+2. New components and visual changes are designed in the nimki Figma file before their code; the maintainer does that part. How Figma and code stay the same is in [figma/README.md](./figma/README.md); a contributor never needs to open Figma.
 3. Open a pull request using the template. CI runs the same checks as `pnpm run check`, plus the Figma parity check. Chromatic publishes the stories for visual review, but is not a required check.
 4. If a consumer of `@hipuku/nimki` would notice the change, add a changeset (`pnpm changeset`).
 

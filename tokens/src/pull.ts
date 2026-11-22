@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access --
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment --
    pull edits the raw DTCG source documents in place, which have no static type. */
 /**
  * figma:pull (master plan step 1.4c): a deliberate change made in Figma,
@@ -7,6 +7,7 @@
  * source works out (state colours, success and warning, motion roles) are
  * reported with the setting to change instead.
  */
+import { applyEdits, findNodeAtLocation, getNodeValue, modify, parseTree } from 'jsonc-parser'
 import { fromSrgb } from './colour.ts'
 import { close, type Snapshot } from './figma.ts'
 
@@ -103,10 +104,71 @@ function colourValue(value: unknown): Json | null {
   }
 }
 
+/**
+ * A colour read back from Figma, keeping the source's own chroma and hue where
+ * the difference is rounding: Figma holds three decimals of sRGB, which at low
+ * chroma moves the hue by a degree or two.
+ */
+function settle(next: Json | null, previous: Json | undefined): Json | null {
+  if (!next || !previous || !Array.isArray(previous.components)) return next
+  const [l, c, h] = next.components as [number, number, number]
+  const [, c0, h0] = previous.components as [number, number, number]
+  const turn = Math.abs(((h - h0 + 540) % 360) - 180)
+  return {
+    ...next,
+    components: [l, Math.abs(c - c0) <= 0.002 ? c0 : c, turn <= 3 || c < 0.002 ? h0 : h],
+  }
+}
+
 /** A variable's Figma name back to its token name, for aliases. */
 function tokenName(figmaName: string, collection: string): string | null {
   const at = locate(figmaName, collection)
   return at ? at.path.join('.') : null
+}
+
+/** One change to a source file: the JSON path inside it and the new value (undefined removes it). */
+export interface Edit {
+  file: SourceFile
+  path: string[]
+  value: unknown
+}
+
+/**
+ * Applies edits to a source file's text in place, so everything else in it
+ * (layout, key order, hand-tidied one-line objects) stays exactly as it was.
+ */
+export function applyToText(text: string, edits: Edit[]): string {
+  let out = text
+  for (const edit of edits) {
+    for (const [path, value] of leaves(out, edit.path, edit.value)) {
+      out = applyEdits(
+        out,
+        modify(out, path, value, { formattingOptions: { insertSpaces: true, tabSize: 2 } }),
+      )
+    }
+  }
+  return out
+}
+
+/**
+ * Splits a change to an object into changes to the keys that differ, so
+ * writing { value: 420, unit: 'ms' } over { value: 400, unit: 'ms' } edits
+ * one number and leaves a one-line object on one line.
+ */
+function leaves(text: string, path: string[], value: unknown): [string[], unknown][] {
+  const root = parseTree(text)
+  const node = root && findNodeAtLocation(root, path)
+  const plain = (v: unknown): v is Record<string, unknown> =>
+    typeof v === 'object' && v !== null && !Array.isArray(v)
+  if (!node || node.type !== 'object' || !plain(value)) return [[path, value]]
+  const current: unknown = getNodeValue(node)
+  if (!plain(current)) return [[path, value]]
+  const keys = new Set([...Object.keys(current), ...Object.keys(value)])
+  return [...keys].flatMap(key =>
+    JSON.stringify(current[key]) === JSON.stringify(value[key])
+      ? []
+      : leaves(text, [...path, key], value[key]),
+  )
 }
 
 export interface PullPlan {
@@ -114,6 +176,8 @@ export interface PullPlan {
   written: string[]
   /** What could not be written, with the setting to change. */
   manual: string[]
+  /** The changes, for applyToText. */
+  edits: Edit[]
 }
 
 /**
@@ -128,6 +192,8 @@ export function pull(
 ): PullPlan {
   const written: string[] = []
   const manual: string[] = []
+  const edits: Edit[] = []
+  const NK = 'dev.hipuku.nimki'
   for (const [name, figma] of Object.entries(actual.variables)) {
     const want = expected.variables[name]
     if (!want) {
@@ -170,7 +236,15 @@ export function pull(
       if (isAlias(light) && isAlias(dark) && light.alias === dark.alias) {
         const target = tokenName(light.alias, figma.collection)
         token.$value = `{${target}}`
-        delete token.$extensions?.['dev.hipuku.nimki']?.modes
+        edits.push({ file: at.file, path: [...at.path, '$value'], value: `{${target}}` })
+        if (token.$extensions?.[NK]?.modes) {
+          delete token.$extensions[NK].modes
+          edits.push({
+            file: at.file,
+            path: [...at.path, '$extensions', NK, 'modes'],
+            value: undefined,
+          })
+        }
         written.push(`${where}: now {${target}}`)
         continue
       }
@@ -180,18 +254,35 @@ export function pull(
         )
         continue
       }
-      const l = colourValue(light)
-      const d = colourValue(dark)
+      const darkModes = (ext(token).modes ?? {}) as Json
+      // Only a mode Figma changed is rewritten, and it keeps the source's hue
+      // and chroma when they moved less than Figma's 3-decimal sRGB can show.
+      const l = modes.includes('Light')
+        ? settle(colourValue(light), token.$value as Json)
+        : token.$value
+      const d = modes.includes('Dark')
+        ? settle(colourValue(dark), darkModes.dark as Json)
+        : darkModes.dark
       if (!l || !d) {
         manual.push(
           `${name}: Light and Dark point at different variables, or one is an alias; the source takes one alias for both modes or a value per mode`,
         )
         continue
       }
-      token.$value = l
-      token.$extensions ??= {}
-      token.$extensions['dev.hipuku.nimki'] ??= {}
-      token.$extensions['dev.hipuku.nimki'].modes = { dark: d }
+      if (modes.includes('Light')) {
+        token.$value = l
+        edits.push({ file: at.file, path: [...at.path, '$value'], value: l })
+      }
+      if (modes.includes('Dark')) {
+        token.$extensions ??= {}
+        token.$extensions[NK] ??= {}
+        token.$extensions[NK].modes = { ...(token.$extensions[NK].modes ?? {}), dark: d }
+        edits.push({
+          file: at.file,
+          path: [...at.path, '$extensions', NK, 'modes', 'dark'],
+          value: d,
+        })
+      }
       written.push(
         `${where}: light ${JSON.stringify(l.components)}, dark ${JSON.stringify(d.components)}`,
       )
@@ -229,17 +320,29 @@ export function pull(
         token.$extensions ??= {}
         token.$extensions['dev.hipuku.nimki'] ??= {}
         token.$extensions['dev.hipuku.nimki'].bounce = round(bounce, 3)
+        edits.push({
+          file: at.file,
+          path: [...at.path, '$extensions', NK, 'bounce'],
+          value: round(bounce, 3),
+        })
         written.push(`${where}: bounce ${round(bounce, 3)}`)
         continue
       }
-      if (key === null) token.$value = next
-      else {
+      if (key === null) {
+        token.$value = next
+        edits.push({ file: at.file, path: [...at.path, '$value'], value: next })
+      } else {
         const modesNode = ext(token).modes as Json | undefined
         if (!modesNode) {
           manual.push(`${name} (${mode}): ${where} has no ${key} mode to write`)
           continue
         }
         modesNode[key] = next
+        edits.push({
+          file: at.file,
+          path: [...at.path, '$extensions', NK, 'modes', key],
+          value: next,
+        })
       }
       written.push(`${where}${key ? ` (${key})` : ''}: ${JSON.stringify(next)}`)
     }
@@ -258,5 +361,5 @@ export function pull(
       )
     }
   }
-  return { written, manual }
+  return { written, manual, edits }
 }

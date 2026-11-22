@@ -4,7 +4,6 @@ import { runInNewContext } from 'node:vm'
 import { describe, expect, it } from 'vitest'
 import {
   CHECKSUM_SOURCE,
-  FIGMA_EXPORT_SCRIPT,
   checksum,
   close,
   compare,
@@ -12,7 +11,6 @@ import {
   freshness,
   fromGenerated,
   normaliseSnapshot,
-  pluginCode,
   readExport,
   type Snapshot,
 } from './figma.ts'
@@ -195,12 +193,17 @@ describe('readExport', () => {
 describe('freshness', () => {
   it('passes when nothing was saved after the export', () => {
     expect(freshness('2026-11-23T09:59:59Z', '2026-11-23T10:00:00Z')).toBeNull()
-    expect(freshness('2026-11-23T10:00:00Z', '2026-11-23T10:00:00Z')).toBeNull()
   })
 
-  it('fails when Figma was saved after the export, naming the fix', () => {
-    expect(freshness('2026-11-23T10:00:01Z', '2026-11-23T10:00:00Z')).toMatch(
-      /changes that are not in the snapshot.*pnpm figma:save/,
+  it("allows Figma's save lag after the export", () => {
+    // An export taken right after an edit, stamped by Figma 94 s later.
+    expect(freshness('2026-11-22T04:37:12Z', '2026-11-22T04:35:52Z')).toBeNull()
+    expect(freshness('2026-11-23T10:10:00Z', '2026-11-23T10:00:00Z')).toBeNull()
+  })
+
+  it('fails when Figma was saved after the grace window, naming the fixes', () => {
+    expect(freshness('2026-11-23T10:10:01Z', '2026-11-23T10:00:00Z')).toMatch(
+      /changes that are not in the snapshot.*pnpm figma:in.*figma:out/,
     )
   })
 
@@ -220,12 +223,5 @@ describe('figmaSyncScript', () => {
 
   it('fits in one use_figma call', () => {
     expect(figmaSyncScript(generated, false).length).toBeLessThan(50_000)
-  })
-})
-
-describe('the dev plugin', () => {
-  it('is the export script as generated', () => {
-    expect(readFileSync(join(root, 'figma/plugin/code.js'), 'utf8')).toBe(pluginCode())
-    expect(pluginCode()).toContain(FIGMA_EXPORT_SCRIPT.split('\n')[0])
   })
 })

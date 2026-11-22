@@ -1,3 +1,5 @@
 #!/bin/sh
-# Blocks a commit whose staged files or identity contain a blocked name.
-exec node scripts/check-names.mjs --staged
+# Blocks a commit whose staged files or identity contain a blocked name, and a
+# commit of tokens or the Figma snapshot while code and Figma disagree.
+node scripts/check-names.mjs --staged || exit 1
+exec node scripts/check-figma-staged.mjs
