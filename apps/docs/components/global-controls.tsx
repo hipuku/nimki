@@ -16,60 +16,56 @@ const OPTION_LABELS: Record<string, string> = {
 }
 
 /**
- * The four switches every page carries (PRD FR-D1). Each is a radio group
- * drawn as a segmented control. They become nimki's own components as those
+ * The four switches (PRD FR-D1), each a labelled radio group drawn as a
+ * two-part segmented control. They become nimki's own components as those
  * ship; until then they are native inputs, which keep the keyboard and screen
  * reader behaviour for free.
  */
-export function GlobalControls({ layout = 'row' }: { layout?: 'row' | 'stack' }) {
+export function GlobalControls() {
   const { settings, set } = useSettings()
   const id = useId()
   return (
-    <div
-      className={layout === 'row' ? 'flex flex-wrap items-center gap-x-4 gap-y-2' : 'grid gap-3'}
-    >
-      {(Object.keys(SETTING_OPTIONS) as SettingName[]).map(name => (
-        <fieldset
-          key={name}
-          className={layout === 'row' ? 'flex items-center gap-2' : 'grid gap-1.5'}
-        >
-          <legend
-            className={
-              layout === 'row' ? 'sr-only' : 'mb-1 text-xs font-medium text-muted-foreground'
-            }
-          >
-            {SETTING_LABELS[name]}
-          </legend>
-          <div
-            className="inline-flex rounded-md border border-border bg-muted p-0.5"
-            title={SETTING_LABELS[name]}
-          >
-            {SETTING_OPTIONS[name].map(option => {
-              const inputId = `${id}-${name}-${option}`
-              return (
-                <span key={option} className="relative">
-                  <input
-                    id={inputId}
-                    type="radio"
-                    name={`${id}-${name}`}
-                    value={option}
-                    checked={settings[name] === option}
-                    onChange={() => set(name, option)}
-                    className="peer absolute inset-0 m-0 cursor-pointer opacity-0"
-                  />
-                  <label
-                    htmlFor={inputId}
-                    className="pointer-events-none block rounded-sm px-2 py-1 text-xs whitespace-nowrap text-muted-foreground peer-checked:bg-background peer-checked:text-foreground peer-checked:shadow-[var(--nk-elevation-1)] peer-focus-visible:outline-2 peer-focus-visible:outline-ring"
-                  >
-                    {name === 'reduced' ? `${SETTING_LABELS[name]}: ` : ''}
-                    {OPTION_LABELS[option]}
-                  </label>
-                </span>
-              )
-            })}
-          </div>
-        </fieldset>
-      ))}
+    <div className="grid gap-4">
+      {(Object.keys(SETTING_OPTIONS) as SettingName[]).map(name => {
+        const selected = SETTING_OPTIONS[name].indexOf(settings[name] as never)
+        return (
+          <fieldset key={name} className="grid gap-1.5">
+            <legend className="float-left text-xs text-muted-foreground">
+              {SETTING_LABELS[name]}
+            </legend>
+            <div className="relative grid grid-cols-2 rounded-md bg-muted p-1">
+              {/* One indicator slides to the chosen option, on the highlight role. */}
+              <span
+                aria-hidden="true"
+                className="nk-slide absolute top-1 bottom-1 left-1 w-[calc(50%-0.25rem)] rounded-sm bg-background shadow-[var(--nk-elevation-1)]"
+                style={{ translate: selected === 1 ? '100% 0' : '0 0' }}
+              />
+              {SETTING_OPTIONS[name].map(option => {
+                const inputId = `${id}-${name}-${option}`
+                return (
+                  <span key={option} className="relative">
+                    <input
+                      id={inputId}
+                      type="radio"
+                      name={`${id}-${name}`}
+                      value={option}
+                      checked={settings[name] === option}
+                      onChange={() => set(name, option)}
+                      className="peer absolute inset-0 z-10 m-0 cursor-pointer opacity-0"
+                    />
+                    <label
+                      htmlFor={inputId}
+                      className="pointer-events-none relative block rounded-sm px-3 py-1.5 text-center text-[0.8125rem] whitespace-nowrap text-muted-foreground transition-[color] duration-[var(--nk-duration-fast)] peer-checked:text-foreground peer-focus-visible:outline-2 peer-focus-visible:outline-ring"
+                    >
+                      {OPTION_LABELS[option]}
+                    </label>
+                  </span>
+                )
+              })}
+            </div>
+          </fieldset>
+        )
+      })}
     </div>
   )
 }

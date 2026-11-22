@@ -16,9 +16,9 @@ export default async function Page({ params }: Props) {
   const Body = page.data.body
   const toc = page.data.toc
   return (
-    <div className="flex gap-10 py-10">
+    <div className="flex gap-12 pt-12 pb-24">
       <article className="min-w-0 flex-1">
-        <header className="mb-8">
+        <header className="mb-10">
           <h1 className="font-display text-4xl leading-tight">{page.data.title}</h1>
           {page.data.description && (
             <p className="mt-3 text-base text-muted-foreground">{page.data.description}</p>

@@ -1,8 +1,8 @@
 import { DURATION_CAPS_MS, MOTION_LIMITS, STAGGER, type MotionMode } from '@hipuku/nimki'
 
 const MODES: [MotionMode, string][] = [
-  ['subtle', 'Subtle'],
   ['expressive', 'Expressive'],
+  ['subtle', 'Subtle'],
   ['reduced', 'Reduced'],
 ]
 
