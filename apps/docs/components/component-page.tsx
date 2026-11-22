@@ -1,4 +1,7 @@
+import { Info } from 'lucide-react'
+import Link from 'next/link'
 import type { ReactNode } from 'react'
+import { CodeBlock } from './code-block'
 
 /**
  * The parts of a component page (PRD FR-D2). Every component page uses them
@@ -19,9 +22,9 @@ const STAGE_TEXT: Record<Stage, string> = {
 export function Status({ stage, weight }: { stage: Stage; weight?: string }) {
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs">
-      <span className="rounded-full border border-border px-2.5 py-1">{STAGE_TEXT[stage]}</span>
+      <span className="rounded-full bg-muted px-3 py-1.5">{STAGE_TEXT[stage]}</span>
       <span
-        className="rounded-full border border-border px-2.5 py-1 text-muted-foreground"
+        className="rounded-full bg-muted px-3 py-1.5 text-muted-foreground"
         title="Runtime weight, minified and compressed, measured by size-limit"
       >
         Weight: {weight ?? 'measured once built'}
@@ -33,7 +36,7 @@ export function Status({ stage, weight }: { stage: Stage; weight?: string }) {
 /** The live example. Until the component exists it states what will be here. */
 export function Demo({ children }: { children?: ReactNode }) {
   return (
-    <div className="flex min-h-48 items-center justify-center rounded-lg border border-border bg-card p-8 text-sm text-muted-foreground">
+    <div className="flex min-h-64 items-center justify-center rounded-xl border border-border bg-card p-10 text-sm text-muted-foreground">
       {children ?? 'The live demo lands with the code, under the global controls above.'}
     </div>
   )
@@ -43,9 +46,9 @@ export function Demo({ children }: { children?: ReactNode }) {
 export function Install({ name }: { name: string }) {
   return (
     <div className="grid gap-2">
-      <pre>
+      <CodeBlock>
         <code>{`npx shadcn add @nimki/${name}`}</code>
-      </pre>
+      </CodeBlock>
       <p className="text-sm text-muted-foreground">
         The registry is not published yet; this command works from the first release.
       </p>
@@ -89,7 +92,7 @@ export function KeyboardMap({ keys }: { keys: [string, string][] }) {
           {keys.map(([key, does]) => (
             <tr key={key}>
               <td>
-                <kbd className="rounded-sm border border-border bg-muted px-1.5 py-0.5 font-mono text-xs">
+                <kbd className="inline-block rounded-md bg-muted px-2 py-1 font-mono text-xs leading-none">
                   {key}
                 </kbd>
               </td>
@@ -119,9 +122,17 @@ export function MotionSpec({ moments }: { moments: [string, string, string][] })
             <tr key={moment}>
               <td>{moment}</td>
               <td>
-                <a href={`/docs/foundations/motion#${role}`}>
+                <span className="inline-flex items-center gap-1.5">
                   <code>{role}</code>
-                </a>
+                  <Link
+                    href={`/docs/foundations/motion#${role}`}
+                    aria-label={`About ${role}, on the motion page`}
+                    title={`About ${role}`}
+                    className="inline-flex text-muted-foreground no-underline hover:text-foreground"
+                  >
+                    <Info aria-hidden="true" size={14} strokeWidth={1.5} />
+                  </Link>
+                </span>
               </td>
               <td>{reduced}</td>
             </tr>

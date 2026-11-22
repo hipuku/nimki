@@ -1,5 +1,6 @@
 import type { MDXComponents } from 'mdx/types'
 import type { ComponentProps } from 'react'
+import { CodeBlock } from './code-block'
 import {
   ApiReference,
   Changelog,
@@ -20,6 +21,7 @@ export const mdxComponents: MDXComponents = {
       <table {...props} />
     </div>
   ),
+  pre: (props: ComponentProps<'pre'>) => <CodeBlock {...props} />,
   ApiReference,
   Changelog,
   Demo,

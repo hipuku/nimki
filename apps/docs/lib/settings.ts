@@ -11,7 +11,7 @@ export const SETTINGS_KEY = 'nimki-docs-settings'
 
 export const SETTING_OPTIONS = {
   mode: ['light', 'dark'],
-  motion: ['subtle', 'expressive'],
+  motion: ['expressive', 'subtle'],
   density: ['comfortable', 'compact'],
   reduced: ['off', 'on'],
 } as const
@@ -27,7 +27,7 @@ export const SETTING_LABELS: Record<SettingName, string> = {
   reduced: 'Reduced motion',
 }
 
-/** Defaults; mode follows the operating system until a reader picks one. */
+/** Defaults: Subtle motion, as in the library; mode follows the operating system until a reader picks one. */
 export function defaultSettings(prefersDark: boolean): Settings {
   return {
     mode: prefersDark ? 'dark' : 'light',
