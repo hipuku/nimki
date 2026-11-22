@@ -18,6 +18,8 @@ export default defineConfig([
     '**/next-env.d.ts',
     '**/storybook-static',
     '**/.source',
+    // Generated from tokens/src/figma.ts; runs in Figma's plugin sandbox.
+    'figma/plugin/code.js',
   ]),
 
   {

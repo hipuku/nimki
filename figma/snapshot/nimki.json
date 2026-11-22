@@ -1,4 +1,5 @@
 {
+  "exportedAt": "2026-11-22T04:18:34.609Z",
   "collections": {
     "nimki/primitives": ["Value"],
     "nimki/motion": ["Subtle", "Expressive", "Reduced"],
@@ -8,1437 +9,1074 @@
   },
   "variables": {
     "duration/fast": {
+      "id": "VariableID:3:5",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-duration-fast)",
       "scopes": null,
-      "values": {
-        "Value": 0.12
-      }
+      "values": { "Value": 0.12 }
     },
     "duration/base": {
+      "id": "VariableID:3:6",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-duration-base)",
       "scopes": null,
-      "values": {
-        "Value": 0.18
-      }
+      "values": { "Value": 0.18 }
     },
     "duration/moderate": {
+      "id": "VariableID:3:7",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-duration-moderate)",
       "scopes": null,
-      "values": {
-        "Value": 0.24
-      }
+      "values": { "Value": 0.24 }
     },
     "duration/slow": {
+      "id": "VariableID:3:8",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-duration-slow)",
       "scopes": null,
-      "values": {
-        "Value": 0.32
-      }
+      "values": { "Value": 0.32 }
     },
     "duration/slower": {
+      "id": "VariableID:3:9",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-duration-slower)",
       "scopes": null,
-      "values": {
-        "Value": 0.4
-      }
+      "values": { "Value": 0.4 }
     },
     "ease/enter": {
+      "id": "VariableID:3:10",
       "collection": "nimki/primitives",
       "type": "EASING",
       "web": "var(--nk-ease-enter)",
       "scopes": null,
       "values": {
         "Value": {
-          "easingFunctionCubicBezier": {
-            "x1": 0.16,
-            "x2": 0.3,
-            "y1": 1,
-            "y2": 1
-          },
+          "easingFunctionCubicBezier": { "x1": 0.16, "x2": 0.3, "y1": 1, "y2": 1 },
           "type": "CUSTOM_CUBIC_BEZIER"
         }
       }
     },
     "ease/exit": {
+      "id": "VariableID:3:11",
       "collection": "nimki/primitives",
       "type": "EASING",
       "web": "var(--nk-ease-exit)",
       "scopes": null,
       "values": {
         "Value": {
-          "easingFunctionCubicBezier": {
-            "x1": 0.4,
-            "x2": 1,
-            "y1": 0,
-            "y2": 1
-          },
+          "easingFunctionCubicBezier": { "x1": 0.4, "x2": 1, "y1": 0, "y2": 1 },
           "type": "CUSTOM_CUBIC_BEZIER"
         }
       }
     },
     "ease/move": {
+      "id": "VariableID:3:12",
       "collection": "nimki/primitives",
       "type": "EASING",
       "web": "var(--nk-ease-move)",
       "scopes": null,
       "values": {
         "Value": {
-          "easingFunctionCubicBezier": {
-            "x1": 0.65,
-            "x2": 0.35,
-            "y1": 0,
-            "y2": 1
-          },
+          "easingFunctionCubicBezier": { "x1": 0.65, "x2": 0.35, "y1": 0, "y2": 1 },
           "type": "CUSTOM_CUBIC_BEZIER"
         }
       }
     },
     "spring/snappy/duration": {
+      "id": "VariableID:3:13",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": null,
       "scopes": null,
-      "values": {
-        "Value": 0.2
-      }
+      "values": { "Value": 0.2 }
     },
     "spring/snappy/easing": {
+      "id": "VariableID:3:14",
       "collection": "nimki/primitives",
       "type": "EASING",
       "web": "var(--nk-spring-snappy-easing)",
       "scopes": null,
-      "values": {
-        "Value": {
-          "easingFunctionSpring": {
-            "bounce": 0
-          },
-          "type": "CUSTOM_SPRING"
-        }
-      }
+      "values": { "Value": { "easingFunctionSpring": { "bounce": 0 }, "type": "CUSTOM_SPRING" } }
     },
     "spring/smooth/duration": {
+      "id": "VariableID:3:15",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": null,
       "scopes": null,
-      "values": {
-        "Value": 0.3
-      }
+      "values": { "Value": 0.3 }
     },
     "spring/smooth/easing": {
+      "id": "VariableID:3:16",
       "collection": "nimki/primitives",
       "type": "EASING",
       "web": "var(--nk-spring-smooth-easing)",
       "scopes": null,
-      "values": {
-        "Value": {
-          "easingFunctionSpring": {
-            "bounce": 0
-          },
-          "type": "CUSTOM_SPRING"
-        }
-      }
+      "values": { "Value": { "easingFunctionSpring": { "bounce": 0 }, "type": "CUSTOM_SPRING" } }
     },
     "spring/snappy-bounce/duration": {
+      "id": "VariableID:3:17",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": null,
       "scopes": null,
-      "values": {
-        "Value": 0.2
-      }
+      "values": { "Value": 0.2 }
     },
     "spring/snappy-bounce/easing": {
+      "id": "VariableID:3:18",
       "collection": "nimki/primitives",
       "type": "EASING",
       "web": "var(--nk-spring-snappy-bounce-easing)",
       "scopes": null,
-      "values": {
-        "Value": {
-          "easingFunctionSpring": {
-            "bounce": 0.15
-          },
-          "type": "CUSTOM_SPRING"
-        }
-      }
+      "values": { "Value": { "easingFunctionSpring": { "bounce": 0.15 }, "type": "CUSTOM_SPRING" } }
     },
     "spring/smooth-bounce/duration": {
+      "id": "VariableID:3:19",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": null,
       "scopes": null,
-      "values": {
-        "Value": 0.32
-      }
+      "values": { "Value": 0.32 }
     },
     "spring/smooth-bounce/easing": {
+      "id": "VariableID:3:20",
       "collection": "nimki/primitives",
       "type": "EASING",
       "web": "var(--nk-spring-smooth-bounce-easing)",
       "scopes": null,
-      "values": {
-        "Value": {
-          "easingFunctionSpring": {
-            "bounce": 0.1
-          },
-          "type": "CUSTOM_SPRING"
-        }
-      }
+      "values": { "Value": { "easingFunctionSpring": { "bounce": 0.1 }, "type": "CUSTOM_SPRING" } }
     },
     "offset/sm": {
+      "id": "VariableID:3:21",
       "collection": "nimki/primitives",
       "type": "FLOAT",
       "web": "var(--nk-offset-sm)",
       "scopes": [],
-      "values": {
-        "Value": 4
-      }
+      "values": { "Value": 4 }
     },
     "offset/md": {
+      "id": "VariableID:3:22",
       "collection": "nimki/primitives",
       "type": "FLOAT",
       "web": "var(--nk-offset-md)",
       "scopes": [],
-      "values": {
-        "Value": 8
-      }
+      "values": { "Value": 8 }
     },
     "scale/sm": {
+      "id": "VariableID:3:23",
       "collection": "nimki/primitives",
       "type": "FLOAT",
       "web": "var(--nk-scale-sm)",
       "scopes": [],
-      "values": {
-        "Value": 0.96
-      }
+      "values": { "Value": 0.96 }
     },
     "scale/md": {
+      "id": "VariableID:3:24",
       "collection": "nimki/primitives",
       "type": "FLOAT",
       "web": "var(--nk-scale-md)",
       "scopes": [],
-      "values": {
-        "Value": 0.94
-      }
+      "values": { "Value": 0.94 }
     },
     "stagger/sm/step": {
+      "id": "VariableID:3:25",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-stagger-sm-step)",
       "scopes": null,
-      "values": {
-        "Value": 0.02
-      }
+      "values": { "Value": 0.02 }
     },
     "stagger/sm/max": {
+      "id": "VariableID:3:26",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-stagger-sm-max)",
       "scopes": null,
-      "values": {
-        "Value": 0.12
-      }
+      "values": { "Value": 0.12 }
     },
     "stagger/md/step": {
+      "id": "VariableID:3:27",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-stagger-md-step)",
       "scopes": null,
-      "values": {
-        "Value": 0.03
-      }
+      "values": { "Value": 0.03 }
     },
     "stagger/md/max": {
+      "id": "VariableID:3:28",
       "collection": "nimki/primitives",
       "type": "TIMING",
       "web": "var(--nk-stagger-md-max)",
       "scopes": null,
-      "values": {
-        "Value": 0.18
-      }
+      "values": { "Value": 0.18 }
     },
     "scale/xs": {
+      "id": "VariableID:6:2",
       "collection": "nimki/primitives",
       "type": "FLOAT",
       "web": "var(--nk-scale-xs)",
       "scopes": [],
-      "values": {
-        "Value": 0.98
-      }
+      "values": { "Value": 0.98 }
     },
     "press/duration": {
+      "id": "VariableID:3:29",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-press-duration)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "duration/fast"
-        },
-        "Expressive": {
-          "alias": "duration/base"
-        },
-        "Reduced": {
-          "alias": "duration/fast"
-        }
+        "Subtle": { "alias": "duration/fast" },
+        "Expressive": { "alias": "duration/base" },
+        "Reduced": { "alias": "duration/fast" }
       }
     },
     "press/easing": {
+      "id": "VariableID:3:30",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-press-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "ease/move"
-        },
-        "Expressive": {
-          "alias": "ease/move"
-        },
-        "Reduced": {
-          "alias": "ease/move"
-        }
+        "Subtle": { "alias": "ease/move" },
+        "Expressive": { "alias": "ease/move" },
+        "Reduced": { "alias": "ease/move" }
       }
     },
     "highlight/duration": {
+      "id": "VariableID:3:31",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": null,
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "spring/snappy/duration"
-        },
-        "Expressive": {
-          "alias": "spring/snappy-bounce/duration"
-        },
+        "Subtle": { "alias": "spring/snappy/duration" },
+        "Expressive": { "alias": "spring/snappy-bounce/duration" },
         "Reduced": 0
       }
     },
     "highlight/easing": {
+      "id": "VariableID:3:32",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-highlight-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "spring/snappy/easing"
-        },
-        "Expressive": {
-          "alias": "spring/snappy-bounce/easing"
-        },
-        "Reduced": {
-          "type": "LINEAR"
-        }
+        "Subtle": { "alias": "spring/snappy/easing" },
+        "Expressive": { "alias": "spring/snappy-bounce/easing" },
+        "Reduced": { "type": "LINEAR" }
       }
     },
     "feedback/duration": {
+      "id": "VariableID:3:33",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": null,
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "spring/snappy/duration"
-        },
-        "Expressive": {
-          "alias": "spring/snappy-bounce/duration"
-        },
+        "Subtle": { "alias": "spring/snappy/duration" },
+        "Expressive": { "alias": "spring/snappy-bounce/duration" },
         "Reduced": 0
       }
     },
     "feedback/easing": {
+      "id": "VariableID:3:34",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-feedback-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "spring/snappy/easing"
-        },
-        "Expressive": {
-          "alias": "spring/snappy-bounce/easing"
-        },
-        "Reduced": {
-          "type": "LINEAR"
-        }
+        "Subtle": { "alias": "spring/snappy/easing" },
+        "Expressive": { "alias": "spring/snappy-bounce/easing" },
+        "Reduced": { "type": "LINEAR" }
       }
     },
     "layout/duration": {
+      "id": "VariableID:3:35",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": null,
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "spring/smooth/duration"
-        },
-        "Expressive": {
-          "alias": "spring/smooth-bounce/duration"
-        },
+        "Subtle": { "alias": "spring/smooth/duration" },
+        "Expressive": { "alias": "spring/smooth-bounce/duration" },
         "Reduced": 0
       }
     },
     "layout/easing": {
+      "id": "VariableID:3:36",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-layout-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "spring/smooth/easing"
-        },
-        "Expressive": {
-          "alias": "spring/smooth-bounce/easing"
-        },
-        "Reduced": {
-          "type": "LINEAR"
-        }
+        "Subtle": { "alias": "spring/smooth/easing" },
+        "Expressive": { "alias": "spring/smooth-bounce/easing" },
+        "Reduced": { "type": "LINEAR" }
       }
     },
     "popover-enter/duration": {
+      "id": "VariableID:3:37",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-popover-enter-duration)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "duration/base"
-        },
-        "Expressive": {
-          "alias": "duration/moderate"
-        },
-        "Reduced": {
-          "alias": "duration/fast"
-        }
+        "Subtle": { "alias": "duration/base" },
+        "Expressive": { "alias": "duration/moderate" },
+        "Reduced": { "alias": "duration/fast" }
       }
     },
     "popover-enter/easing": {
+      "id": "VariableID:3:38",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-popover-enter-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "ease/enter"
-        },
-        "Expressive": {
-          "alias": "ease/enter"
-        },
-        "Reduced": {
-          "alias": "ease/move"
-        }
+        "Subtle": { "alias": "ease/enter" },
+        "Expressive": { "alias": "ease/enter" },
+        "Reduced": { "alias": "ease/move" }
       }
     },
     "popover-enter/offset": {
+      "id": "VariableID:3:39",
       "collection": "nimki/motion",
       "type": "FLOAT",
       "web": "var(--nk-popover-enter-offset)",
       "scopes": [],
       "values": {
-        "Subtle": {
-          "alias": "offset/sm"
-        },
-        "Expressive": {
-          "alias": "offset/md"
-        },
+        "Subtle": { "alias": "offset/sm" },
+        "Expressive": { "alias": "offset/md" },
         "Reduced": 0
       }
     },
     "popover-enter/scale": {
+      "id": "VariableID:3:40",
       "collection": "nimki/motion",
       "type": "FLOAT",
       "web": "var(--nk-popover-enter-scale)",
       "scopes": [],
       "values": {
-        "Subtle": {
-          "alias": "scale/sm"
-        },
-        "Expressive": {
-          "alias": "scale/md"
-        },
+        "Subtle": { "alias": "scale/sm" },
+        "Expressive": { "alias": "scale/md" },
         "Reduced": 1
       }
     },
     "popover-exit/duration": {
+      "id": "VariableID:3:41",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-popover-exit-duration)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "duration/fast"
-        },
-        "Expressive": {
-          "alias": "duration/base"
-        },
-        "Reduced": {
-          "alias": "duration/fast"
-        }
+        "Subtle": { "alias": "duration/fast" },
+        "Expressive": { "alias": "duration/base" },
+        "Reduced": { "alias": "duration/fast" }
       }
     },
     "popover-exit/easing": {
+      "id": "VariableID:3:42",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-popover-exit-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "ease/exit"
-        },
-        "Expressive": {
-          "alias": "ease/exit"
-        },
-        "Reduced": {
-          "alias": "ease/move"
-        }
+        "Subtle": { "alias": "ease/exit" },
+        "Expressive": { "alias": "ease/exit" },
+        "Reduced": { "alias": "ease/move" }
       }
     },
     "dialog-enter/duration": {
+      "id": "VariableID:3:43",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-dialog-enter-duration)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "duration/moderate"
-        },
-        "Expressive": {
-          "alias": "duration/slow"
-        },
-        "Reduced": {
-          "alias": "duration/fast"
-        }
+        "Subtle": { "alias": "duration/moderate" },
+        "Expressive": { "alias": "duration/slow" },
+        "Reduced": { "alias": "duration/fast" }
       }
     },
     "dialog-enter/easing": {
+      "id": "VariableID:3:44",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-dialog-enter-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "ease/enter"
-        },
-        "Expressive": {
-          "alias": "ease/enter"
-        },
-        "Reduced": {
-          "alias": "ease/move"
-        }
+        "Subtle": { "alias": "ease/enter" },
+        "Expressive": { "alias": "ease/enter" },
+        "Reduced": { "alias": "ease/move" }
       }
     },
     "dialog-enter/offset": {
+      "id": "VariableID:3:45",
       "collection": "nimki/motion",
       "type": "FLOAT",
       "web": "var(--nk-dialog-enter-offset)",
       "scopes": [],
       "values": {
-        "Subtle": {
-          "alias": "offset/sm"
-        },
-        "Expressive": {
-          "alias": "offset/md"
-        },
+        "Subtle": { "alias": "offset/sm" },
+        "Expressive": { "alias": "offset/md" },
         "Reduced": 0
       }
     },
     "dialog-enter/scale": {
+      "id": "VariableID:3:46",
       "collection": "nimki/motion",
       "type": "FLOAT",
       "web": "var(--nk-dialog-enter-scale)",
       "scopes": [],
       "values": {
-        "Subtle": {
-          "alias": "scale/sm"
-        },
-        "Expressive": {
-          "alias": "scale/md"
-        },
+        "Subtle": { "alias": "scale/sm" },
+        "Expressive": { "alias": "scale/md" },
         "Reduced": 1
       }
     },
     "dialog-exit/duration": {
+      "id": "VariableID:3:47",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-dialog-exit-duration)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "duration/base"
-        },
-        "Expressive": {
-          "alias": "duration/moderate"
-        },
-        "Reduced": {
-          "alias": "duration/fast"
-        }
+        "Subtle": { "alias": "duration/base" },
+        "Expressive": { "alias": "duration/moderate" },
+        "Reduced": { "alias": "duration/fast" }
       }
     },
     "dialog-exit/easing": {
+      "id": "VariableID:3:48",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-dialog-exit-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "ease/exit"
-        },
-        "Expressive": {
-          "alias": "ease/exit"
-        },
-        "Reduced": {
-          "alias": "ease/move"
-        }
+        "Subtle": { "alias": "ease/exit" },
+        "Expressive": { "alias": "ease/exit" },
+        "Reduced": { "alias": "ease/move" }
       }
     },
     "sheet-enter/duration": {
+      "id": "VariableID:3:49",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-sheet-enter-duration)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "duration/slow"
-        },
-        "Expressive": {
-          "alias": "duration/slower"
-        },
-        "Reduced": {
-          "alias": "duration/fast"
-        }
+        "Subtle": { "alias": "duration/slow" },
+        "Expressive": { "alias": "duration/slower" },
+        "Reduced": { "alias": "duration/fast" }
       }
     },
     "sheet-enter/easing": {
+      "id": "VariableID:3:50",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-sheet-enter-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "ease/enter"
-        },
-        "Expressive": {
-          "alias": "ease/enter"
-        },
-        "Reduced": {
-          "alias": "ease/move"
-        }
+        "Subtle": { "alias": "ease/enter" },
+        "Expressive": { "alias": "ease/enter" },
+        "Reduced": { "alias": "ease/move" }
       }
     },
     "sheet-enter/offset": {
+      "id": "VariableID:3:51",
       "collection": "nimki/motion",
       "type": "FLOAT",
       "web": "var(--nk-sheet-enter-offset)",
       "scopes": [],
       "values": {
-        "Subtle": {
-          "alias": "offset/sm"
-        },
-        "Expressive": {
-          "alias": "offset/md"
-        },
+        "Subtle": { "alias": "offset/sm" },
+        "Expressive": { "alias": "offset/md" },
         "Reduced": 0
       }
     },
     "sheet-enter/scale": {
+      "id": "VariableID:3:52",
       "collection": "nimki/motion",
       "type": "FLOAT",
       "web": "var(--nk-sheet-enter-scale)",
       "scopes": [],
       "values": {
-        "Subtle": {
-          "alias": "scale/sm"
-        },
-        "Expressive": {
-          "alias": "scale/md"
-        },
+        "Subtle": { "alias": "scale/sm" },
+        "Expressive": { "alias": "scale/md" },
         "Reduced": 1
       }
     },
     "sheet-exit/duration": {
+      "id": "VariableID:3:53",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-sheet-exit-duration)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "duration/moderate"
-        },
-        "Expressive": {
-          "alias": "duration/slow"
-        },
-        "Reduced": {
-          "alias": "duration/fast"
-        }
+        "Subtle": { "alias": "duration/moderate" },
+        "Expressive": { "alias": "duration/slow" },
+        "Reduced": { "alias": "duration/fast" }
       }
     },
     "sheet-exit/easing": {
+      "id": "VariableID:3:54",
       "collection": "nimki/motion",
       "type": "EASING",
       "web": "var(--nk-sheet-exit-easing)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "ease/exit"
-        },
-        "Expressive": {
-          "alias": "ease/exit"
-        },
-        "Reduced": {
-          "alias": "ease/move"
-        }
+        "Subtle": { "alias": "ease/exit" },
+        "Expressive": { "alias": "ease/exit" },
+        "Reduced": { "alias": "ease/move" }
       }
     },
     "stagger/step": {
+      "id": "VariableID:3:55",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-stagger-step)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "stagger/sm/step"
-        },
-        "Expressive": {
-          "alias": "stagger/md/step"
-        },
+        "Subtle": { "alias": "stagger/sm/step" },
+        "Expressive": { "alias": "stagger/md/step" },
         "Reduced": 0
       }
     },
     "stagger/max": {
+      "id": "VariableID:3:56",
       "collection": "nimki/motion",
       "type": "TIMING",
       "web": "var(--nk-stagger-max)",
       "scopes": null,
       "values": {
-        "Subtle": {
-          "alias": "stagger/sm/max"
-        },
-        "Expressive": {
-          "alias": "stagger/md/max"
-        },
+        "Subtle": { "alias": "stagger/sm/max" },
+        "Expressive": { "alias": "stagger/md/max" },
         "Reduced": 0
       }
     },
     "press/scale": {
+      "id": "VariableID:6:3",
       "collection": "nimki/motion",
       "type": "FLOAT",
       "web": "var(--nk-press-scale)",
       "scopes": [],
       "values": {
-        "Subtle": {
-          "alias": "scale/xs"
-        },
-        "Expressive": {
-          "alias": "scale/sm"
-        },
+        "Subtle": { "alias": "scale/xs" },
+        "Expressive": { "alias": "scale/sm" },
         "Reduced": 1
       }
     },
     "control-sm": {
+      "id": "VariableID:3:57",
       "collection": "nimki/density",
       "type": "FLOAT",
       "web": "var(--nk-control-sm)",
       "scopes": ["WIDTH_HEIGHT"],
-      "values": {
-        "Comfortable": 32,
-        "Compact": 28
-      }
+      "values": { "Comfortable": 32, "Compact": 28 }
     },
     "control-md": {
+      "id": "VariableID:3:58",
       "collection": "nimki/density",
       "type": "FLOAT",
       "web": "var(--nk-control-md)",
       "scopes": ["WIDTH_HEIGHT"],
-      "values": {
-        "Comfortable": 36,
-        "Compact": 32
-      }
+      "values": { "Comfortable": 36, "Compact": 32 }
     },
     "control-lg": {
+      "id": "VariableID:3:59",
       "collection": "nimki/density",
       "type": "FLOAT",
       "web": "var(--nk-control-lg)",
       "scopes": ["WIDTH_HEIGHT"],
-      "values": {
-        "Comfortable": 40,
-        "Compact": 36
-      }
+      "values": { "Comfortable": 40, "Compact": 36 }
     },
     "item": {
+      "id": "VariableID:3:60",
       "collection": "nimki/density",
       "type": "FLOAT",
       "web": "var(--nk-item)",
       "scopes": ["WIDTH_HEIGHT"],
-      "values": {
-        "Comfortable": 32,
-        "Compact": 28
-      }
+      "values": { "Comfortable": 32, "Compact": 28 }
     },
     "control-px": {
+      "id": "VariableID:3:61",
       "collection": "nimki/density",
       "type": "FLOAT",
       "web": "var(--nk-control-px)",
       "scopes": ["GAP"],
-      "values": {
-        "Comfortable": 16,
-        "Compact": 12
-      }
+      "values": { "Comfortable": 16, "Compact": 12 }
     },
     "gap": {
+      "id": "VariableID:3:62",
       "collection": "nimki/density",
       "type": "FLOAT",
       "web": "var(--nk-gap)",
       "scopes": ["GAP"],
-      "values": {
-        "Comfortable": 8,
-        "Compact": 6
-      }
+      "values": { "Comfortable": 8, "Compact": 6 }
     },
     "background": {
+      "id": "VariableID:7:4",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--background)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/1"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/1"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/1" }, "Dark": { "alias": "ramp/neutral/1" } }
     },
     "foreground": {
+      "id": "VariableID:7:5",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--foreground)",
       "scopes": ["SHAPE_FILL", "TEXT_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/12"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/12"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/12" }, "Dark": { "alias": "ramp/neutral/12" } }
     },
     "card": {
+      "id": "VariableID:7:6",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--card)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/2"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/2"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/2" }, "Dark": { "alias": "ramp/neutral/2" } }
     },
     "card-foreground": {
+      "id": "VariableID:7:7",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--card-foreground)",
       "scopes": ["SHAPE_FILL", "TEXT_FILL"],
-      "values": {
-        "Light": {
-          "alias": "foreground"
-        },
-        "Dark": {
-          "alias": "foreground"
-        }
-      }
+      "values": { "Light": { "alias": "foreground" }, "Dark": { "alias": "foreground" } }
     },
     "popover": {
+      "id": "VariableID:7:8",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--popover)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [1, 1, 1, 1],
-        "Dark": [0.089, 0.096, 0.106, 1]
-      }
+      "values": { "Light": [1, 1, 1, 1], "Dark": [0.089, 0.096, 0.106, 1] }
     },
     "popover-foreground": {
+      "id": "VariableID:7:9",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--popover-foreground)",
       "scopes": ["SHAPE_FILL", "TEXT_FILL"],
-      "values": {
-        "Light": {
-          "alias": "foreground"
-        },
-        "Dark": {
-          "alias": "foreground"
-        }
-      }
+      "values": { "Light": { "alias": "foreground" }, "Dark": { "alias": "foreground" } }
     },
     "primary": {
+      "id": "VariableID:7:10",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--primary)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/12"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/12"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/12" }, "Dark": { "alias": "ramp/neutral/12" } }
     },
     "primary-foreground": {
+      "id": "VariableID:7:11",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--primary-foreground)",
       "scopes": ["SHAPE_FILL", "TEXT_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/1"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/1"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/1" }, "Dark": { "alias": "ramp/neutral/1" } }
     },
     "secondary": {
+      "id": "VariableID:7:12",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--secondary)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/3"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/3"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/3" }, "Dark": { "alias": "ramp/neutral/3" } }
     },
     "secondary-foreground": {
+      "id": "VariableID:7:13",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--secondary-foreground)",
       "scopes": ["SHAPE_FILL", "TEXT_FILL"],
-      "values": {
-        "Light": {
-          "alias": "foreground"
-        },
-        "Dark": {
-          "alias": "foreground"
-        }
-      }
+      "values": { "Light": { "alias": "foreground" }, "Dark": { "alias": "foreground" } }
     },
     "muted": {
+      "id": "VariableID:7:14",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--muted)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/3"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/3"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/3" }, "Dark": { "alias": "ramp/neutral/3" } }
     },
     "muted-foreground": {
+      "id": "VariableID:7:15",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--muted-foreground)",
       "scopes": ["SHAPE_FILL", "TEXT_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/11"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/11"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/11" }, "Dark": { "alias": "ramp/neutral/11" } }
     },
     "accent": {
+      "id": "VariableID:7:16",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--accent)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/4"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/4"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/4" }, "Dark": { "alias": "ramp/neutral/4" } }
     },
     "accent-foreground": {
+      "id": "VariableID:7:17",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--accent-foreground)",
       "scopes": ["SHAPE_FILL", "TEXT_FILL"],
-      "values": {
-        "Light": {
-          "alias": "foreground"
-        },
-        "Dark": {
-          "alias": "foreground"
-        }
-      }
+      "values": { "Light": { "alias": "foreground" }, "Dark": { "alias": "foreground" } }
     },
     "destructive": {
+      "id": "VariableID:7:18",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--destructive)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR", "TEXT_FILL"],
-      "values": {
-        "Light": [0.874, 0.133, 0.147, 1],
-        "Dark": [0.944, 0.304, 0.299, 1]
-      }
+      "values": { "Light": [0.874, 0.133, 0.147, 1], "Dark": [0.944, 0.304, 0.299, 1] }
     },
     "border": {
+      "id": "VariableID:7:19",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--border)",
       "scopes": ["STROKE_COLOR"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/6"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/6"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/6" }, "Dark": { "alias": "ramp/neutral/6" } }
     },
     "input": {
+      "id": "VariableID:7:20",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--input)",
       "scopes": ["STROKE_COLOR"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/9"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/9"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/9" }, "Dark": { "alias": "ramp/neutral/9" } }
     },
     "ring": {
+      "id": "VariableID:7:21",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--ring)",
       "scopes": ["STROKE_COLOR"],
-      "values": {
-        "Light": {
-          "alias": "ramp/neutral/10"
-        },
-        "Dark": {
-          "alias": "ramp/neutral/10"
-        }
-      }
+      "values": { "Light": { "alias": "ramp/neutral/10" }, "Dark": { "alias": "ramp/neutral/10" } }
     },
     "nk/success": {
+      "id": "VariableID:7:22",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-success)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR", "TEXT_FILL"],
-      "values": {
-        "Light": [0.012, 0.509, 0.228, 1],
-        "Dark": [0.068, 0.672, 0.316, 1]
-      }
+      "values": { "Light": [0.012, 0.509, 0.228, 1], "Dark": [0.068, 0.672, 0.316, 1] }
     },
     "nk/warning": {
+      "id": "VariableID:7:23",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-warning)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR", "TEXT_FILL"],
-      "values": {
-        "Light": [0.576, 0.412, 0.051, 1],
-        "Dark": [0.907, 0.656, 0.094, 1]
-      }
+      "values": { "Light": [0.576, 0.412, 0.051, 1], "Dark": [0.907, 0.656, 0.094, 1] }
     },
     "nk/highlight": {
+      "id": "VariableID:7:24",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-highlight)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": {
-          "alias": "accent"
-        },
-        "Dark": {
-          "alias": "accent"
-        }
-      }
+      "values": { "Light": { "alias": "accent" }, "Dark": { "alias": "accent" } }
     },
     "nk/highlight-foreground": {
+      "id": "VariableID:7:25",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-highlight-foreground)",
       "scopes": ["SHAPE_FILL", "TEXT_FILL"],
       "values": {
-        "Light": {
-          "alias": "accent-foreground"
-        },
-        "Dark": {
-          "alias": "accent-foreground"
-        }
+        "Light": { "alias": "accent-foreground" },
+        "Dark": { "alias": "accent-foreground" }
       }
     },
     "nk/scrim": {
+      "id": "VariableID:7:26",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-scrim)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0, 0, 0, 0.5],
-        "Dark": [0, 0, 0, 0.6]
-      }
+      "values": { "Light": [0, 0, 0, 0.5], "Dark": [0, 0, 0, 0.6] }
     },
     "nk/shadow-soft": {
+      "id": "VariableID:8:2",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-shadow-soft)",
       "scopes": ["EFFECT_COLOR"],
-      "values": {
-        "Light": [0, 0, 0, 0.06],
-        "Dark": [0, 0, 0, 0.24]
-      }
+      "values": { "Light": [0, 0, 0, 0.06], "Dark": [0, 0, 0, 0.24] }
     },
     "nk/shadow-strong": {
+      "id": "VariableID:8:3",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-shadow-strong)",
       "scopes": ["EFFECT_COLOR"],
-      "values": {
-        "Light": [0, 0, 0, 0.12],
-        "Dark": [0, 0, 0, 0.48]
-      }
+      "values": { "Light": [0, 0, 0, 0.12], "Dark": [0, 0, 0, 0.48] }
     },
     "nk/edge": {
+      "id": "VariableID:8:4",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-edge)",
       "scopes": ["EFFECT_COLOR"],
-      "values": {
-        "Light": [0.087, 0.094, 0.105, 0],
-        "Dark": [0.926, 0.931, 0.939, 0.06]
-      }
-    },
-    "radius": {
-      "collection": "nimki/theme",
-      "type": "FLOAT",
-      "web": "var(--radius)",
-      "scopes": ["CORNER_RADIUS"],
-      "values": {
-        "Linear": 6
-      }
-    },
-    "font/sans": {
-      "collection": "nimki/theme",
-      "type": "STRING",
-      "web": "var(--font-sans)",
-      "scopes": ["FONT_FAMILY"],
-      "values": {
-        "Linear": "DM Sans"
-      }
-    },
-    "font/mono": {
-      "collection": "nimki/theme",
-      "type": "STRING",
-      "web": "var(--font-mono)",
-      "scopes": ["FONT_FAMILY"],
-      "values": {
-        "Linear": "DM Mono"
-      }
-    },
-    "font/serif": {
-      "collection": "nimki/theme",
-      "type": "STRING",
-      "web": "var(--font-serif)",
-      "scopes": ["FONT_FAMILY"],
-      "values": {
-        "Linear": "DM Serif Text"
-      }
-    },
-    "font/display": {
-      "collection": "nimki/theme",
-      "type": "STRING",
-      "web": "var(--font-display)",
-      "scopes": ["FONT_FAMILY"],
-      "values": {
-        "Linear": "DM Serif Display"
-      }
-    },
-    "nk/hover-amount": {
-      "collection": "nimki/theme",
-      "type": "FLOAT",
-      "web": "var(--nk-hover-amount)",
-      "scopes": [],
-      "values": {
-        "Linear": 8
-      }
-    },
-    "nk/pressed-amount": {
-      "collection": "nimki/theme",
-      "type": "FLOAT",
-      "web": "var(--nk-pressed-amount)",
-      "scopes": [],
-      "values": {
-        "Linear": 12
-      }
+      "values": { "Light": [0.087, 0.094, 0.105, 0], "Dark": [0.926, 0.931, 0.939, 0.06] }
     },
     "ramp/neutral/1": {
+      "id": "VariableID:31:2",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-1)",
       "scopes": [],
-      "values": {
-        "Light": [0.984, 0.987, 0.993, 1],
-        "Dark": [0.047, 0.052, 0.061, 1]
-      }
+      "values": { "Light": [0.984, 0.987, 0.993, 1], "Dark": [0.047, 0.052, 0.061, 1] }
     },
     "ramp/neutral/2": {
+      "id": "VariableID:31:3",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-2)",
       "scopes": [],
-      "values": {
-        "Light": [0.969, 0.974, 0.982, 1],
-        "Dark": [0.08, 0.086, 0.094, 1]
-      }
+      "values": { "Light": [0.969, 0.974, 0.982, 1], "Dark": [0.08, 0.086, 0.094, 1] }
     },
     "ramp/neutral/3": {
+      "id": "VariableID:31:4",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-3)",
       "scopes": [],
-      "values": {
-        "Light": [0.947, 0.953, 0.964, 1],
-        "Dark": [0.113, 0.12, 0.131, 1]
-      }
+      "values": { "Light": [0.947, 0.953, 0.964, 1], "Dark": [0.113, 0.12, 0.131, 1] }
     },
     "ramp/neutral/4": {
+      "id": "VariableID:31:5",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-4)",
       "scopes": [],
-      "values": {
-        "Light": [0.925, 0.933, 0.946, 1],
-        "Dark": [0.138, 0.146, 0.16, 1]
-      }
+      "values": { "Light": [0.925, 0.933, 0.946, 1], "Dark": [0.138, 0.146, 0.16, 1] }
     },
     "ramp/neutral/5": {
+      "id": "VariableID:31:6",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-5)",
       "scopes": [],
-      "values": {
-        "Light": [0.901, 0.911, 0.926, 1],
-        "Dark": [0.16, 0.169, 0.185, 1]
-      }
+      "values": { "Light": [0.901, 0.911, 0.926, 1], "Dark": [0.16, 0.169, 0.185, 1] }
     },
     "ramp/neutral/6": {
+      "id": "VariableID:31:7",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-6)",
       "scopes": [],
-      "values": {
-        "Light": [0.869, 0.88, 0.898, 1],
-        "Dark": [0.187, 0.198, 0.216, 1]
-      }
+      "values": { "Light": [0.869, 0.88, 0.898, 1], "Dark": [0.187, 0.198, 0.216, 1] }
     },
     "ramp/neutral/7": {
+      "id": "VariableID:31:8",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-7)",
       "scopes": [],
-      "values": {
-        "Light": [0.825, 0.838, 0.858, 1],
-        "Dark": [0.223, 0.235, 0.256, 1]
-      }
+      "values": { "Light": [0.825, 0.838, 0.858, 1], "Dark": [0.223, 0.235, 0.256, 1] }
     },
     "ramp/neutral/8": {
+      "id": "VariableID:31:9",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-8)",
       "scopes": [],
-      "values": {
-        "Light": [0.733, 0.747, 0.77, 1],
-        "Dark": [0.29, 0.304, 0.327, 1]
-      }
+      "values": { "Light": [0.733, 0.747, 0.77, 1], "Dark": [0.29, 0.304, 0.327, 1] }
     },
     "ramp/neutral/9": {
+      "id": "VariableID:31:10",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-9)",
       "scopes": [],
-      "values": {
-        "Light": [0.541, 0.556, 0.58, 1],
-        "Dark": [0.387, 0.403, 0.43, 1]
-      }
+      "values": { "Light": [0.541, 0.556, 0.58, 1], "Dark": [0.387, 0.403, 0.43, 1] }
     },
     "ramp/neutral/10": {
+      "id": "VariableID:31:11",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-10)",
       "scopes": [],
-      "values": {
-        "Light": [0.5, 0.514, 0.537, 1],
-        "Dark": [0.423, 0.44, 0.467, 1]
-      }
+      "values": { "Light": [0.5, 0.514, 0.537, 1], "Dark": [0.423, 0.44, 0.467, 1] }
     },
     "ramp/neutral/11": {
+      "id": "VariableID:31:12",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-11)",
       "scopes": [],
-      "values": {
-        "Light": [0.361, 0.374, 0.396, 1],
-        "Dark": [0.595, 0.61, 0.634, 1]
-      }
+      "values": { "Light": [0.361, 0.374, 0.396, 1], "Dark": [0.595, 0.61, 0.634, 1] }
     },
     "ramp/neutral/12": {
+      "id": "VariableID:31:13",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-neutral-12)",
       "scopes": [],
-      "values": {
-        "Light": [0.087, 0.094, 0.105, 1],
-        "Dark": [0.926, 0.931, 0.939, 1]
-      }
+      "values": { "Light": [0.087, 0.094, 0.105, 1], "Dark": [0.926, 0.931, 0.939, 1] }
     },
     "nk/primary-hover": {
+      "id": "VariableID:31:14",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-primary-hover)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.152, 0.159, 0.17, 1],
-        "Dark": [0.862, 0.867, 0.874, 1]
-      }
+      "values": { "Light": [0.152, 0.159, 0.17, 1], "Dark": [0.862, 0.867, 0.874, 1] }
     },
     "nk/primary-active": {
+      "id": "VariableID:31:15",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-primary-active)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.2, 0.208, 0.22, 1],
-        "Dark": [0.811, 0.815, 0.823, 1]
-      }
+      "values": { "Light": [0.2, 0.208, 0.22, 1], "Dark": [0.811, 0.815, 0.823, 1] }
     },
     "nk/secondary-hover": {
+      "id": "VariableID:31:16",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-secondary-hover)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.926, 0.933, 0.943, 1],
-        "Dark": [0.139, 0.146, 0.158, 1]
-      }
+      "values": { "Light": [0.926, 0.933, 0.943, 1], "Dark": [0.139, 0.146, 0.158, 1] }
     },
     "nk/secondary-active": {
+      "id": "VariableID:31:17",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-secondary-active)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.904, 0.91, 0.921, 1],
-        "Dark": [0.162, 0.169, 0.181, 1]
-      }
+      "values": { "Light": [0.904, 0.91, 0.921, 1], "Dark": [0.162, 0.169, 0.181, 1] }
     },
     "nk/accent-hover": {
+      "id": "VariableID:31:18",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-accent-hover)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.904, 0.912, 0.925, 1],
-        "Dark": [0.165, 0.173, 0.187, 1]
-      }
+      "values": { "Light": [0.904, 0.912, 0.925, 1], "Dark": [0.165, 0.173, 0.187, 1] }
     },
     "nk/accent-active": {
+      "id": "VariableID:31:19",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-accent-active)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.882, 0.89, 0.903, 1],
-        "Dark": [0.188, 0.197, 0.211, 1]
-      }
+      "values": { "Light": [0.882, 0.89, 0.903, 1], "Dark": [0.188, 0.197, 0.211, 1] }
     },
     "nk/card-hover": {
+      "id": "VariableID:31:20",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-card-hover)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.948, 0.953, 0.961, 1],
-        "Dark": [0.105, 0.111, 0.12, 1]
-      }
+      "values": { "Light": [0.948, 0.953, 0.961, 1], "Dark": [0.105, 0.111, 0.12, 1] }
     },
     "nk/card-active": {
+      "id": "VariableID:31:21",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-card-active)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.926, 0.931, 0.939, 1],
-        "Dark": [0.127, 0.133, 0.142, 1]
-      }
+      "values": { "Light": [0.926, 0.931, 0.939, 1], "Dark": [0.127, 0.133, 0.142, 1] }
     },
     "nk/popover-hover": {
+      "id": "VariableID:31:22",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-popover-hover)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.979, 0.979, 0.979, 1],
-        "Dark": [0.114, 0.121, 0.132, 1]
-      }
+      "values": { "Light": [0.979, 0.979, 0.979, 1], "Dark": [0.114, 0.121, 0.132, 1] }
     },
     "nk/popover-active": {
+      "id": "VariableID:31:23",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-popover-active)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.957, 0.957, 0.957, 1],
-        "Dark": [0.136, 0.143, 0.155, 1]
-      }
+      "values": { "Light": [0.957, 0.957, 0.957, 1], "Dark": [0.136, 0.143, 0.155, 1] }
     },
     "nk/destructive-hover": {
+      "id": "VariableID:31:24",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-destructive-hover)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.788, 0.06, 0.101, 1],
-        "Dark": [0.873, 0.232, 0.24, 1]
-      }
+      "values": { "Light": [0.788, 0.06, 0.101, 1], "Dark": [0.873, 0.232, 0.24, 1] }
     },
     "nk/destructive-active": {
+      "id": "VariableID:31:25",
       "collection": "nimki/colour",
       "type": "COLOR",
       "web": "var(--nk-destructive-active)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"],
-      "values": {
-        "Light": [0.711, 0.042, 0.084, 1],
-        "Dark": [0.816, 0.169, 0.193, 1]
-      }
+      "values": { "Light": [0.711, 0.042, 0.084, 1], "Dark": [0.816, 0.169, 0.193, 1] }
+    },
+    "radius": {
+      "id": "VariableID:7:27",
+      "collection": "nimki/theme",
+      "type": "FLOAT",
+      "web": "var(--radius)",
+      "scopes": ["CORNER_RADIUS"],
+      "values": { "Linear": 6 }
+    },
+    "font/sans": {
+      "id": "VariableID:7:28",
+      "collection": "nimki/theme",
+      "type": "STRING",
+      "web": "var(--font-sans)",
+      "scopes": ["FONT_FAMILY"],
+      "values": { "Linear": "DM Sans" }
+    },
+    "font/mono": {
+      "id": "VariableID:7:29",
+      "collection": "nimki/theme",
+      "type": "STRING",
+      "web": "var(--font-mono)",
+      "scopes": ["FONT_FAMILY"],
+      "values": { "Linear": "DM Mono" }
+    },
+    "font/serif": {
+      "id": "VariableID:7:30",
+      "collection": "nimki/theme",
+      "type": "STRING",
+      "web": "var(--font-serif)",
+      "scopes": ["FONT_FAMILY"],
+      "values": { "Linear": "DM Serif Text" }
+    },
+    "font/display": {
+      "id": "VariableID:7:31",
+      "collection": "nimki/theme",
+      "type": "STRING",
+      "web": "var(--font-display)",
+      "scopes": ["FONT_FAMILY"],
+      "values": { "Linear": "DM Serif Display" }
+    },
+    "nk/hover-amount": {
+      "id": "VariableID:7:32",
+      "collection": "nimki/theme",
+      "type": "FLOAT",
+      "web": "var(--nk-hover-amount)",
+      "scopes": [],
+      "values": { "Linear": 8 }
+    },
+    "nk/pressed-amount": {
+      "id": "VariableID:7:33",
+      "collection": "nimki/theme",
+      "type": "FLOAT",
+      "web": "var(--nk-pressed-amount)",
+      "scopes": [],
+      "values": { "Linear": 12 }
     }
   },
   "effectStyles": {
@@ -1459,14 +1097,7 @@
         "x": 0,
         "y": 4
       },
-      {
-        "color": "nk/edge",
-        "radius": 0,
-        "spread": 0,
-        "type": "INNER_SHADOW",
-        "x": 0,
-        "y": 1
-      }
+      { "color": "nk/edge", "radius": 0, "spread": 0, "type": "INNER_SHADOW", "x": 0, "y": 1 }
     ],
     "elevation/2": [
       {
@@ -1485,14 +1116,7 @@
         "x": 0,
         "y": 16
       },
-      {
-        "color": "nk/edge",
-        "radius": 0,
-        "spread": 0,
-        "type": "INNER_SHADOW",
-        "x": 0,
-        "y": 1
-      }
+      { "color": "nk/edge", "radius": 0, "spread": 0, "type": "INNER_SHADOW", "x": 0, "y": 1 }
     ]
   }
 }

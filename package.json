@@ -27,7 +27,11 @@
     "tokens:check": "pnpm --filter tokens run check",
     "figma:check": "pnpm --filter tokens run figma:check",
     "figma:script": "pnpm --silent --filter tokens run figma:script",
-    "figma:save": "pnpm --filter tokens run figma:save"
+    "figma:save": "pnpm --filter tokens run figma:save",
+    "figma:fresh": "pnpm --filter tokens run figma:fresh",
+    "figma:sync": "pnpm --silent --filter tokens run figma:sync",
+    "figma:pull": "pnpm --filter tokens run figma:pull",
+    "figma:plugin": "pnpm --filter tokens run figma:plugin"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",

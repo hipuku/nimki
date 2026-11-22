@@ -1,6 +1,9 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "ignoreExportsUsedInFile": true,
+  // Figma loads the dev plugin's code; pbpaste is macOS's clipboard command.
+  "ignore": ["figma/plugin/code.js"],
+  "ignoreBinaries": ["pbpaste"],
   "workspaces": {
     ".": {
       "entry": ["scripts/*.mjs"],
