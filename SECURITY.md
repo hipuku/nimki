@@ -4,7 +4,7 @@
 
 Report it privately through GitHub: open the repository's **Security** tab and choose **Report a vulnerability**. Do not open a public issue.
 
-Include what is affected, how to reproduce it and what it allows. You get a first reply within seven days, and a note when a fix is released.
+Include what is affected, how to reproduce it and what it allows. You get a first reply within 14 days, and a note when a fix is released.
 
 ## Supported versions
 
