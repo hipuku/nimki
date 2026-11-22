@@ -117,8 +117,11 @@ export const Keyboard: Story = {
     // not chosen (WAI-ARIA Authoring Practices; Radix skips it instead).
     await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}')
     await waitFor(() => expect(highlighted()).toHaveTextContent('Grapes'))
+    // Enter on it chooses nothing and leaves the list open. Read from the state,
+    // not visibility: on a fast runner the list can still be fading in.
     await userEvent.keyboard('{Enter}')
-    await expect(list).toBeVisible()
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    await expect(args.onValueChange).not.toHaveBeenCalled()
     await userEvent.keyboard('{ArrowDown}')
     await waitFor(() => expect(highlighted()).toHaveTextContent('Pineapple'))
     await userEvent.keyboard('c')
